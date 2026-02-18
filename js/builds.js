@@ -4700,19 +4700,14 @@ window.filterBuilds = (type) => {
 // ==========================================
 // INTEGRAÇÃO DISCORD BUILD
 // ==========================================
-// ==========================================
-// INTEGRAÇÃO DISCORD (V11 - DICIONÁRIO DE NOMES REAIS)
-// ==========================================
 async function sendToDiscordWebhook(buildData) {
-  // ⚠️ IMPORTANTE: Se você estiver usando CANAL DE FÓRUM,
-  // certifique-se de que este URL é de um webhook criado DENTRO do canal de fórum.
+
   const WEBHOOK_URL =
     "https://discord.com/api/webhooks/1473695531459936266/AOJMbgFj_xgZjKAi89razau-V0CNZ7tKmLFXfjcK9npGfmtJkO3U01obEuv6zUZ8xBT8";
 
   const BASE_GITHUB_URL =
     "https://raw.githubusercontent.com/Antonizinhobr/cxampdbd-ttk/master/assets/img/dbd";
 
-  // --- SEU DICIONÁRIO DE ADDONS (A LÓGICA PRINCIPAL) ---
   const ADDONS_DB = {
     automaticdrawing:
     "Automatic Drawing. Reduz o tempo de recarga dos Corvos em 1.5s.",
@@ -6443,55 +6438,42 @@ async function sendToDiscordWebhook(buildData) {
     "Victor's Razor Blade. Ao final do Quebra-Mundos, Sobreviventes feridos ganham o status Quebrado (Broken) por 20 segundos.",
   };
 
-  // --- NOVA FUNÇÃO DE LIMPEZA (Busca no Dicionário Primeiro) ---
   function getOfficialName(path) {
     if (!path || path === "empty") return "Indefinido";
 
-    // 1. Limpa o nome do arquivo para criar a "chave" de busca
-    // Ex: .../iconAddon_jmyersmemorial.png -> jmyersmemorial
     let rawKey = path
       .split("/")
       .pop()
       .replace(/\.png|\.jpg/gi, "");
 
-    // Remove todos os prefixos possíveis (case-insensitive)
     rawKey = rawKey.replace(
       /^(T_UI_|T_|IconPerks_|iconPerks_|IconItems_|iconItems_|IconAddon_|iconAddon_|CharPortrait_)/i,
       "",
     );
 
-    // Converte para minúsculo para garantir que bate com a chave do dicionário
     let key = rawKey.toLowerCase();
 
-    // 2. TENTA ACHAR NO DICIONÁRIO (A Mágica Acontece Aqui)
     if (ADDONS_DB[key]) {
-      // Pega a descrição completa
       const fullDescription = ADDONS_DB[key];
-      // Corta a string no primeiro ponto final
       const parts = fullDescription.split(".");
       if (parts.length > 0) {
-        // O primeiro elemento do array é o nome antes do ponto
-        return parts[0].trim(); // Retorna "J. Myers Memorial" perfeitinho!
+        return parts[0].trim();
       }
     }
 
-    // 3. FALLBACK (Plano B)
-    // Se não achar no dicionário, usa a formatação automática como garantia
     console.warn(
       `Aviso: Chave '${key}' não encontrada no ADDONS_DB. Usando formatação automática.`,
     );
 
-    let name = rawKey.replace(/([A-Z])(?=[A-Z])/g, "$1 "); // Separa siglas (BBQ -> B B Q)
-    name = name.replace(/([a-z])(?=[A-Z])/g, "$1 "); // Separa CamelCase (DeadHard -> Dead Hard)
+    let name = rawKey.replace(/([A-Z])(?=[A-Z])/g, "$1 ");
+    name = name.replace(/([a-z])(?=[A-Z])/g, "$1 ");
 
     name = name.replace(/_/g, " ").trim();
-    // Capitaliza a primeira letra
     if (name.length > 0) name = name.charAt(0).toUpperCase() + name.slice(1);
 
-    return name.replace(/\s+/g, " "); // Remove espaços duplos
+    return name.replace(/\s+/g, " ");
   }
 
-  // --- FUNÇÃO DE URL DO GITHUB ---
   function getMyGithubUrl(localPath) {
     if (!localPath || typeof localPath !== "string" || localPath === "empty")
       return null;
@@ -6528,7 +6510,7 @@ async function sendToDiscordWebhook(buildData) {
     mainItemUrl = getMyGithubUrl(buildData.loadout.item);
   }
 
-  // 3. Formatar Perks (Lista com Links Clicáveis)
+  // 3. Formatar Perks
   let perksText = "Nenhuma perk selecionada";
   if (buildData.loadout.perks && buildData.loadout.perks.length > 0) {
     const validPerks = buildData.loadout.perks.filter(
@@ -6537,7 +6519,7 @@ async function sendToDiscordWebhook(buildData) {
     if (validPerks.length > 0) {
       perksText = validPerks
         .map((p) => {
-          const name = getOfficialName(p); // Usa a nova função com dicionário
+          const name = getOfficialName(p);
           const url = getMyGithubUrl(p);
           return url ? `💎 [${name}](${url})` : `💎 ${name}`;
         })
@@ -6545,7 +6527,7 @@ async function sendToDiscordWebhook(buildData) {
     }
   }
 
-  // 4. Formatar Add-ons (Lista com Links Clicáveis)
+  // 4. Formatar Add-ons
   let addonsText = "";
   if (buildData.loadout.addons && buildData.loadout.addons.length > 0) {
     const validAddons = buildData.loadout.addons.filter(
@@ -6554,7 +6536,7 @@ async function sendToDiscordWebhook(buildData) {
     if (validAddons.length > 0) {
       addonsText = validAddons
         .map((a) => {
-          const name = getOfficialName(a); // Usa a nova função com dicionário
+          const name = getOfficialName(a);
           const url = getMyGithubUrl(a);
           return url ? `🔧 [${name}](${url})` : `🔧 ${name}`;
         })
@@ -6585,7 +6567,6 @@ async function sendToDiscordWebhook(buildData) {
 
   // 6. Montar o Embed (Cartão Visual)
   const embed = {
-    // Título opcional dentro do cartão
     title: "DETALHES DA ESTRATÉGIA",
     description: `>>> *${buildData.description || "Sem descrição tática."}*`,
     url: "https://deadbydaylight.com",
@@ -6612,22 +6593,19 @@ async function sendToDiscordWebhook(buildData) {
     timestamp: new Date().toISOString(),
   };
 
-  // Adiciona a imagem do personagem como imagem principal
   if (charUrl) {
     embed.image = { url: charUrl };
   }
 
-  // 7. Payload Final (Configurado para FÓRUM)
+  // 7. Payload Final
   const payload = {
     username: "A Entidade",
     avatar_url:
       "https://i.ibb.co/KYsR2S1/20620020-estrangeiro-logotipo-icone-criatura-face-do-desconhecido-entidade-vetor.jpg",
 
-    // --- TÍTULO DO POST NO FÓRUM ---
-    // O Discord usa isso para criar o tópico.
     thread_name: `Build de ${buildData.authorName}: ${buildData.title.toUpperCase()}`,
 
-    content: `🔔 **NOVA ESTRATÉGIA FORJADA!** @here`,
+    content: `🔔 **NOVA ESTRATÉGIA FORJADA!**`,
     embeds: [embed],
   };
 
@@ -6641,8 +6619,6 @@ async function sendToDiscordWebhook(buildData) {
     if (!response.ok) {
       const errText = await response.text();
       console.error("Erro Discord (Webhook):", errText);
-      // Se o erro for relacionado a thread_name em canal que não é fórum,
-      // o Discord pode retornar um erro 400.
     } else {
       console.log("Post no Fórum criado com sucesso!");
     }
