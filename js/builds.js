@@ -6605,7 +6605,7 @@ async function sendToDiscordWebhook(buildData) {
 
     thread_name: `Build de ${buildData.authorName}: ${buildData.title.toUpperCase()}`,
 
-    content: `🔔 **NOVA ESTRATÉGIA FORJADA!**`,
+    content: `🔔 **NOVA ESTRATÉGIA FORJADA!** @here`,
     embeds: [embed],
   };
 
