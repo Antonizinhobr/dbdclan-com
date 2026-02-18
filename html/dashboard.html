@@ -1,0 +1,679 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Comunidade DbD - Home</title>
+    <link rel="stylesheet" href="../assets/css/index.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link rel="icon" href="../assets/icon.jpg" type="image/jpg" />
+  </head>
+  <body>
+    <header class="dashboard-header">
+      <div class="logo">DBD COMMUNITY</div>
+
+      <nav class="nav-menu">
+        <a href="#" class="nav-link active">Home</a>
+        <a href="builds.html" class="nav-link">Builds da Comunidade</a>
+        <a href="regras_servidor.html" class="nav-link">Regras do Servidor</a>
+      </nav>
+
+      <div style="position: relative">
+        <div class="user-container" id="user-profile-trigger">
+          <span id="display-name">...</span>
+          <div class="avatar-circle">
+            <img src="../assets/icon.jpg" alt="User Profile" />
+          </div>
+        </div>
+
+        <div
+          id="user-submenu"
+          class="hidden"
+          style="
+            position: absolute;
+            top: 60px;
+            right: 0;
+            background: rgba(0, 0, 0, 0.95);
+            border: 1px solid #333;
+            padding: 15px;
+            z-index: 1001;
+            min-width: 180px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+          "
+        >
+          <button
+            id="logout-btn"
+            style="
+              background: none;
+              border: none;
+              color: #ff0000;
+              cursor: pointer;
+              width: 100%;
+              text-align: left;
+              font-family: &quot;Arial Black&quot;;
+              font-size: 0.7rem;
+              text-transform: uppercase;
+              display: flex;
+              align-items: center;
+              gap: 10px;
+            "
+          >
+            <i class="fas fa-sign-out-alt"></i> SAIR DA NÉVOA
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <div class="fade-in">
+      <section class="hero-section">
+        <div class="hero-split-container">
+          <div class="hero-col-right reveal">
+            <img
+              src="https://deadbydaylight.com/static/4b4a2cc749f4fe4f8b214b9593ba6330/cadf7/dbd_platform_generator_survivor_3x_0734c1e5d6.webp"
+              alt="Survivors"
+            />
+          </div>
+          <div class="hero-col-left">
+            <div class="hero-content reveal">
+              <h1 class="glitch-text">SERVIDOR TTKBIEL</h1>
+              <p>
+                O servidor da comunidade de
+                <span class="glitch-text">Dead By Daylight</span> mais sombrio
+                da Névoa. Junte-se a nós.
+              </p>
+              <div class="hero-buttons">
+                <a href="#ferramentas" class="cta-btn">CAMPEONATOS</a>
+                <a href="#discord-invite" class="cta-btn outline">DISCORD</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="hero-overlay-global"></div>
+      </section>
+
+      <section id="ferramentas" class="content-section">
+        <div class="container">
+          <h2 class="section-title reveal">FERRAMENTAS DO TORNEIO</h2>
+          <div class="tools-grid">
+            <div
+              class="tool-card reveal"
+              onclick="window.location.href = 'home.html'"
+            >
+              <div class="tool-icon"><i class="fas fa-map-marked-alt"></i></div>
+              <h3>VOTAÇÃO DE REINOS</h3>
+              <p>Defina o palco do próximo massacre.</p>
+            </div>
+            <div
+              class="tool-card reveal"
+              onclick="window.location.href = 'teams.html'"
+            >
+              <div class="tool-icon"><i class="fas fa-users"></i></div>
+              <h3>EQUIPES</h3>
+              <p>Veja quem são os sobreviventes e assassinos.</p>
+            </div>
+            <div
+              class="tool-card reveal"
+              onclick="window.location.href = 'perks.html'"
+            >
+              <div class="tool-icon"><i class="fas fa-ban"></i></div>
+              <h3>PERKS BANIDAS</h3>
+              <p>O que é proibido pela Entidade.</p>
+            </div>
+            <div
+              class="tool-card reveal"
+              onclick="window.location.href = 'regras.html'"
+            >
+              <div class="tool-icon"><i class="fas fa-star"></i></div>
+              <h3>SISTEMA DE PONTUAÇÃO</h3>
+              <p>Regras do campeonato, pontuações e penalidades.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="stats-section">
+        <h2 class="stats-title reveal">ESTATÍSTICAS DA NÉVOA</h2>
+        <div class="container stats-grid-glass">
+          <div class="glass-card reveal">
+            <div class="card-3d-element">
+              <i
+                class="fas fa-users"
+                style="
+                  font-size: 50px;
+                  color: #fff;
+                  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+                "
+              ></i>
+            </div>
+            <div class="card-content">
+              <h3 id="stat-members">0</h3>
+              <p>MEMBROS TOTAIS</p>
+            </div>
+            <div class="card-glow"></div>
+          </div>
+          <div class="glass-card reveal" style="animation-delay: 0.2s">
+            <div class="card-3d-element">
+              <i
+                class="fas fa-circle"
+                style="
+                  font-size: 40px;
+                  color: #00ff00;
+                  filter: drop-shadow(0 0 15px #00ff00);
+                "
+              ></i>
+            </div>
+            <div class="card-content">
+              <h3 id="stat-online" style="color: #00ff00">0</h3>
+              <p style="color: #fff">ONLINE AGORA</p>
+            </div>
+            <div
+              class="card-glow"
+              style="
+                background: radial-gradient(
+                  circle,
+                  rgba(0, 255, 0, 0.3) 0%,
+                  transparent 70%
+                );
+              "
+            ></div>
+          </div>
+          <div
+            class="glass-card reveal"
+            style="animation-delay: 0.4s; position: relative"
+          >
+            <button
+              id="edit-boost-btn"
+              class="hidden"
+              style="
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                z-index: 10;
+                background: rgba(255, 0, 0, 0.5);
+                border: 1px solid red;
+                color: white;
+                border-radius: 50%;
+                width: 25px;
+                height: 25px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              "
+            >
+              <i class="fas fa-pen" style="font-size: 10px"></i>
+            </button>
+            <div class="card-3d-element">
+              <i
+                class="fas fa-gem"
+                style="
+                  font-size: 50px;
+                  color: #ff73fa;
+                  filter: drop-shadow(0 0 15px #ff73fa);
+                "
+              ></i>
+            </div>
+            <div class="card-content">
+              <h3 id="stat-boosts" style="color: #ff73fa">0</h3>
+              <p style="color: #fff">BOOSTERS</p>
+            </div>
+            <div
+              class="card-glow"
+              style="
+                background: radial-gradient(
+                  circle,
+                  rgba(255, 115, 250, 0.3) 0%,
+                  transparent 70%
+                );
+              "
+            ></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <div class="container">
+          <h2 class="section-title reveal">A ENTIDADE (STAFF)</h2>
+          <div class="staff-grid">
+            <div class="staff-card reveal" onclick="openStaffModal('biel')">
+              <div class="staff-img-container">
+                <img
+                  src="https://i.ibb.co/ns16ByFk/Whats-App-Image-2026-02-07-at-08-40-33.jpg"
+                  alt="Dono"
+                />
+              </div>
+              <h3>BIEL</h3>
+              <span class="role owner">DONO</span>
+            </div>
+            <div class="staff-card reveal" onclick="openStaffModal('anthonny')">
+              <div class="staff-img-container">
+                <img
+                  src="https://i.ibb.co/VYKvgG8F/Whats-App-Image-2026-02-07-at-00-25-22.jpg"
+                  alt="Mod"
+                />
+              </div>
+              <h3>ANTHONNY</h3>
+              <span class="role mod">ADMINISTRADOR</span>
+            </div>
+            <div class="staff-card reveal" onclick="openStaffModal('riven')">
+              <div class="staff-img-container">
+                <img
+                  src="https://i.ibb.co/HT6ZC13S/584556983-17918106219237476-7930827916909993787-n.jpg"
+                  alt="Mod"
+                />
+              </div>
+              <h3>RIVEN</h3>
+              <span class="role mod">ADMINISTRADOR</span>
+            </div>
+            <div class="staff-card reveal" onclick="openStaffModal('kimmy')">
+              <div class="staff-img-container">
+                <img src="https://i.ibb.co/TSdrxPq/kimmy.jpg" alt="Mod" />
+              </div>
+              <h3>KIMMY</h3>
+              <span class="role mod">ADMINISTRADORA</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="discord-invite" class="invite-section reveal">
+        <div class="invite-content">
+          <i class="fab fa-discord"></i>
+          <h2>JUNTE-SE À NÉVOA</h2>
+          <p>Clique abaixo para entrar no nosso servidor oficial.</p>
+          <a href="#" target="_blank" class="discord-btn" id="btn-invite"
+            >ENTRAR AGORA</a
+          >
+        </div>
+      </section>
+
+      <footer
+        style="
+          text-align: center;
+          padding: 20px;
+          background: #000;
+          color: #444;
+          font-size: 0.7rem;
+        "
+      >
+        &copy; 2026 COMUNIDADE DBD TTKBIEL. Todos os direitos reservados. Feito
+        por Anthonny Michael
+      </footer>
+    </div>
+
+    <div
+      id="staff-modal"
+      class="perk-modal"
+      onclick="closeStaffModalOut(event)"
+    >
+      <div class="perk-modal-content">
+        <button class="close-modal-btn" onclick="closeStaffModal()">
+          &times;
+        </button>
+
+        <div class="modal-image-side" style="flex-direction: column">
+          <img
+            id="staff-modal-img"
+            src=""
+            alt="Staff Profile"
+            style="
+              border-radius: 50%;
+              width: 200px;
+              height: 200px;
+              object-fit: cover;
+              border: 4px solid #333;
+            "
+          />
+          <span
+            id="staff-modal-role"
+            style="
+              margin-top: 15px;
+              font-weight: bold;
+              font-family: &quot;Arial Black&quot;;
+              color: gold;
+              border: 1px solid gold;
+              padding: 5px 15px;
+              border-radius: 5px;
+            "
+            >CARGO</span
+          >
+        </div>
+
+        <div class="modal-info-side">
+          <h2
+            id="staff-modal-name"
+            class="modal-perk-name"
+            style="margin-bottom: 5px"
+          >
+            NOME
+          </h2>
+          <p
+            id="staff-modal-desc"
+            class="modal-perk-desc"
+            style="font-style: italic; color: #aaa; margin-bottom: 20px"
+          >
+            Descrição do membro.
+          </p>
+
+          <div class="staff-details-horizontal">
+            <div class="detail-item">
+              <strong style="color: var(--accent-red)">Idade:</strong>
+              <span id="staff-age">--</span>
+            </div>
+            <div class="detail-item">
+              <strong style="color: var(--accent-red)">Local:</strong>
+              <span id="staff-loc">--</span>
+            </div>
+            <div class="detail-item">
+              <strong style="color: var(--accent-red)">Tempo de jogo:</strong>
+              <span id="staff-time">--</span>
+            </div>
+            <div class="detail-item">
+              <strong style="color: var(--accent-red)">Main:</strong>
+              <span id="staff-main">--</span>
+            </div>
+          </div>
+          <span
+            style="
+              font-size: 0.7rem;
+              color: #666;
+              font-family: &quot;Arial Black&quot;;
+              text-transform: uppercase;
+              letter-spacing: 1px;
+              margin-bottom: 5px;
+              display: block;
+            "
+          >
+            Redes Sociais
+          </span>
+
+          <div class="staff-socials">
+            <a id="link-insta" href="#" target="_blank"
+              ><i class="fab fa-instagram"></i
+            ></a>
+            <a id="link-tiktok" href="#" target="_blank"
+              ><i class="fab fa-tiktok"></i
+            ></a>
+            <a id="link-steam" href="#" target="_blank"
+              ><i class="fab fa-steam"></i
+            ></a>
+            <a id="link-twitch" href="#" target="_blank"
+              ><i class="fab fa-twitch"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+      import {
+        getAuth,
+        signOut,
+        onAuthStateChanged,
+      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+      import {
+        getFirestore,
+        doc,
+        onSnapshot,
+        setDoc,
+      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+      const DISCORD_SERVER_ID = "1452420184236363939";
+      const DISCORD_INVITE_CODE = "TXwAStCxWp";
+      const ADMIN_EMAILS = [
+        "anthonnybalbino2017@gmail.com",
+        "gabrielxz.j@gmail.com",
+        "til.nickolas@gmail.com",
+        "Eduarda.soares7656@gmail.com",
+      ];
+      const firebaseConfig = {
+        apiKey: "AIzaSyARpVKfzOMm-v0pv9-7w9xahvhItosrI2Q",
+        authDomain: "dbd-camp.firebaseapp.com",
+        projectId: "dbd-camp",
+        storageBucket: "dbd-camp.firebasestorage.app",
+        messagingSenderId: "357760091556",
+        appId: "1:357760091556:web:4d9191b487baf240e92d31",
+        measurementId: "G-THBBGJTTMJ",
+      };
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      const db = getFirestore(app);
+
+      window.staffData = {
+        biel: {
+          name: "BIEL",
+          role: "DONO",
+          color: "gold",
+          img: "https://i.ibb.co/ns16ByFk/Whats-App-Image-2026-02-07-at-08-40-33.jpg",
+          desc: "O criador da comunidade. Melhor main killer Myers do mundo.",
+          age: "20 Anos",
+          loc: "Minas Gerais",
+          time: "5 Anos",
+          main: "Killer (MYERS)",
+          links: {
+            insta: "https://www.instagram.com/bielxz.j/",
+            tiktok: "https://www.tiktok.com/@bielzghost?lang=pt-BR",
+            steam: "#",
+            twitch: "#",
+          },
+        },
+        anthonny: {
+          name: "ANTHONNY",
+          role: "ADMINISTRADOR",
+          color: "#00ff00",
+          img: "https://i.ibb.co/VYKvgG8F/Whats-App-Image-2026-02-07-at-00-25-22.jpg",
+          desc: "Desenvolvedor Full Stack e Designer. Cuida da parte técnica do servidor.",
+          age: "22 Anos",
+          loc: "Alagoas",
+          time: "8 Anos",
+          main: "Killer (Kaneki)",
+          links: {
+            insta: "https://www.instagram.com/_ofcanthonny_santos__/",
+            tiktok: "https://www.tiktok.com/@anthonny473",
+            steam: "https://steamcommunity.com/profiles/76561199746557480/",
+            twitch: "https://www.twitch.tv/sh4dow_sec",
+          },
+        },
+        riven: {
+          name: "RIVEN",
+          role: "ADMINISTRADOR",
+          color: "#00ff00",
+          img: "https://i.ibb.co/HT6ZC13S/584556983-17918106219237476-7930827916909993787-n.jpg",
+          desc: "Administrador. Mantém a comunidade saudável.",
+          age: "18 Anos",
+          loc: "Goiania",
+          time: "1,5 Anos",
+          main: "Survivor (Leon)",
+          links: {
+            insta: "https://www.instagram.com/nic_carpinteiro/",
+            tiktok: "#",
+            steam: "#",
+            twitch: "#",
+          },
+        },
+        kimmy: {
+          name: "KIMMY",
+          role: "ADMINISTRADORA",
+          color: "#00ff00",
+          img: "https://i.ibb.co/TSdrxPq/kimmy.jpg",
+          desc: "A que mais interage com os membros e garante interação de todos, a Feng Min salva vidas.",
+          age: "17 Anos",
+          loc: "Rio de Janeiro",
+          time: "259 horas",
+          main: "Survivor (Feng)",
+          links: { insta: "#", tiktok: "#", steam: "#", twitch: "#" },
+        },
+      };
+
+      window.openStaffModal = (id) => {
+        const data = window.staffData[id];
+        if (!data) return;
+
+        document.getElementById("staff-modal-img").src = data.img;
+        document.getElementById("staff-modal-name").innerText = data.name;
+        document.getElementById("staff-modal-role").innerText = data.role;
+        document.getElementById("staff-modal-role").style.color = data.color;
+        document.getElementById("staff-modal-role").style.borderColor =
+          data.color;
+        document.getElementById("staff-modal-desc").innerText =
+          `"${data.desc}"`;
+
+        document.getElementById("staff-age").innerText = data.age;
+        document.getElementById("staff-loc").innerText = data.loc;
+        document.getElementById("staff-time").innerText = data.time;
+        document.getElementById("staff-main").innerText = data.main;
+
+        const socialMapping = {
+          "link-insta": data.links.insta,
+          "link-tiktok": data.links.tiktok,
+          "link-steam": data.links.steam,
+          "link-twitch": data.links.twitch,
+        };
+
+        Object.entries(socialMapping).forEach(([id, url]) => {
+          const el = document.getElementById(id);
+          if (el) {
+            el.href = url;
+            if (url === "#") {
+              el.classList.add("disabled-social");
+            } else {
+              el.classList.remove("disabled-social");
+            }
+          }
+        });
+
+        document.getElementById("staff-modal").classList.add("open");
+      };
+
+      window.closeStaffModal = () => {
+        document.getElementById("staff-modal").classList.remove("open");
+      };
+      window.closeStaffModalOut = (e) => {
+        if (e.target.id === "staff-modal") window.closeStaffModal();
+      };
+
+      onAuthStateChanged(auth, (user) => {
+        if (!user) {
+          window.location.href = "login.html";
+        } else {
+          const userName = user.displayName || user.email.split("@")[0];
+          document.getElementById("display-name").innerText =
+            userName.toUpperCase();
+          const isAdmin = ADMIN_EMAILS.some(
+            (adminEmail) =>
+              adminEmail.toLowerCase() === user.email.toLowerCase(),
+          );
+          if (isAdmin) {
+            const btnEdit = document.getElementById("edit-boost-btn");
+            if (btnEdit) btnEdit.classList.remove("hidden");
+          }
+        }
+      });
+      document.getElementById("user-profile-trigger").onclick = (e) => {
+        e.stopPropagation();
+        document.getElementById("user-submenu").classList.toggle("hidden");
+      };
+      window.onclick = () =>
+        document.getElementById("user-submenu").classList.add("hidden");
+      document.getElementById("logout-btn").onclick = () => signOut(auth);
+      window.addEventListener("scroll", reveal);
+      function reveal() {
+        var reveals = document.querySelectorAll(".reveal");
+        for (var i = 0; i < reveals.length; i++) {
+          var windowHeight = window.innerHeight;
+          var elementTop = reveals[i].getBoundingClientRect().top;
+          var elementVisible = 150;
+          if (elementTop < windowHeight - elementVisible) {
+            reveals[i].classList.add("active");
+          }
+        }
+      }
+      reveal();
+      function animateValue(id, start, end, duration) {
+        const obj = document.getElementById(id);
+        if (!obj) return;
+        if (end === 0 || end === undefined) {
+          obj.innerText = "0";
+          return;
+        }
+        let startTimestamp = null;
+        const step = (timestamp) => {
+          if (!startTimestamp) startTimestamp = timestamp;
+          const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+          obj.innerHTML = Math.floor(progress * (end - start) + start);
+          if (progress < 1) {
+            window.requestAnimationFrame(step);
+          } else {
+            obj.innerHTML = end;
+          }
+        };
+        window.requestAnimationFrame(step);
+      }
+      async function fetchDiscordStats() {
+        let onlineCount = 0;
+        let totalMembers = 0;
+        try {
+          const widgetRes = await fetch(
+            `https://discord.com/api/guilds/${DISCORD_SERVER_ID}/widget.json`,
+          );
+          if (widgetRes.ok) {
+            const widgetData = await widgetRes.json();
+            onlineCount = widgetData.presence_count || 0;
+          }
+        } catch (e) {
+          console.warn("Erro Widget:", e);
+        }
+        try {
+          const inviteRes = await fetch(
+            `https://discord.com/api/v9/invites/${DISCORD_INVITE_CODE}?with_counts=true`,
+          );
+          if (inviteRes.ok) {
+            const inviteData = await inviteRes.json();
+            totalMembers = inviteData.approximate_member_count || 0;
+          }
+        } catch (e) {
+          console.warn("Erro Invite:", e);
+        }
+        const btn = document.getElementById("btn-invite");
+        if (btn) btn.href = `https://discord.gg/${DISCORD_INVITE_CODE}`;
+        setTimeout(() => {
+          animateValue("stat-members", 0, totalMembers, 2000);
+          animateValue("stat-online", 0, onlineCount, 2000);
+        }, 500);
+      }
+      onSnapshot(doc(db, "sistema", "discord_stats"), (docSnapshot) => {
+        if (docSnapshot.exists()) {
+          const data = docSnapshot.data();
+          animateValue("stat-boosts", 0, data.boosts || 0, 2000);
+        } else {
+          animateValue("stat-boosts", 0, 0, 1000);
+        }
+      });
+      document.getElementById("edit-boost-btn").onclick = async () => {
+        const currentVal = document.getElementById("stat-boosts").innerText;
+        const newVal = prompt(
+          "Digite a quantidade atual de Boosts:",
+          currentVal,
+        );
+        if (newVal !== null && newVal !== "") {
+          const num = parseInt(newVal);
+          if (!isNaN(num)) {
+            await setDoc(
+              doc(db, "sistema", "discord_stats"),
+              { boosts: num },
+              { merge: true },
+            );
+          } else {
+            alert("Por favor, digite apenas números.");
+          }
+        }
+      };
+      fetchDiscordStats();
+    </script>
+  </body>
+</html>

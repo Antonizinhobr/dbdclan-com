@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DbD - Entrar na Névoa</title>
+    <link rel="stylesheet" href="../assets/css/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="../assets/icon.jpg" type="image/jpg">
+</head>
+<body class="auth-body">
+
+    <div id="error-popup" class="popup">
+        <div class="popup-content">
+            <i class="fas fa-skull" style="font-size: 3rem; color: #ff0000; margin-bottom: 20px;"></i>
+            <p id="error-message" style="margin-bottom: 20px;"></p>
+            <button class="dbd-btn" onclick="document.getElementById('error-popup').style.display='none'">FECHAR</button>
+        </div>
+    </div>
+
+    <div class="main-login-container">
+        
+        <div class="left-panel">
+            <div class="panel-header">
+                <div class="brand-logo">
+                    <i class="fas fa-fire-alt" style="color: var(--accent-red); margin-right: 10px;"></i> Dead by Daylight
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2 id="auth-title">Bem-vindo!</h2>
+                <p class="subtitle">Entre para continuar sua jornada na Névoa.</p>
+
+                <div class="social-buttons">
+                    <button type="button" id="google-btn" class="social-btn">
+                        <i class="fab fa-google"></i> Entrar com Google
+                    </button>
+                </div>
+
+                <div class="divider-container">
+                    <div class="line"></div>
+                    <span class="divider-text">OU</span>
+                    <div class="line"></div>
+                </div>
+
+                <form id="auth-form">
+                    <div class="input-group">
+                        <label for="email">E-mail</label>
+                        <input type="email" id="email" placeholder="Seu endereço de e-mail" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="password">Senha</label>
+                        <a href="#" class="forgot-password" id="forgot-pass-link">Esqueceu a senha?</a>
+                        <div style="position: relative;">
+                            <input type="password" id="password" placeholder="Sua senha" required>
+                            <i class="fas fa-eye toggle-password" id="eye-pass"></i>
+                        </div>
+                    </div>
+
+                    <div id="confirm-group" class="input-group hidden">
+                        <label for="confirm-password">Repetir Senha</label>
+                        <div style="position: relative;">
+                            <input type="password" id="confirm-password" placeholder="Repita sua senha">
+                            <i class="fas fa-eye toggle-password" id="eye-confirm"></i>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="main-btn" id="submit-btn">Entrar</button>
+                </form>
+
+                <p id="toggle-link" class="register-link">
+                    Não tem uma conta? <span class="accent-text">Cadastre-se</span>
+                </p>
+            </div>
+        </div>
+
+        <div class="right-panel">
+            <div class="content-wrapper">
+                <div class="text-content">
+                    <h1>A morte não é o refúgio.</h1>
+                </div>
+                
+                <div class="graphic-3d-container">
+                    <img src="https://deadbydaylight.com/static/46fd87ede14695260195ddbc2691f431/5bd17/DBD_POUTINE_WEBPAGE_Character_Page_THEFIRST_ONLY_58ed00b1f5.webp" alt="The Trapper" class="killer-image">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { 
+            getAuth, 
+            signInWithEmailAndPassword, 
+            createUserWithEmailAndPassword, 
+            updateProfile,
+            GoogleAuthProvider,
+            signInWithPopup,
+            onAuthStateChanged
+        } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyARpVKfzOMm-v0pv9-7w9xahvhItosrI2Q",
+            authDomain: "dbd-camp.firebaseapp.com",
+            projectId: "dbd-camp",
+            storageBucket: "dbd-camp.firebasestorage.app",
+            messagingSenderId: "357760091556",
+            appId: "1:357760091556:web:4d9191b487baf240e92d31",
+            measurementId: "G-THBBGJTTMJ"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const googleProvider = new GoogleAuthProvider();
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                console.log("Login confirmado: " + user.email);
+                window.location.href = "dashboard.html";
+            }
+        });
+
+        document.getElementById('google-btn').onclick = async () => {
+            try {
+                const result = await signInWithPopup(auth, googleProvider);
+                window.location.href = "dashboard.html";
+            } catch (error) {
+                console.error("Erro no Popup:", error);
+                if (error.code !== 'auth/popup-closed-by-user' && error.code !== 'auth/cancelled-popup-request') {
+                    showError("Erro no login: " + error.message);
+                }
+            }
+        };
+
+        const setupEye = (eyeId, inputId) => {
+            const eye = document.getElementById(eyeId);
+            const input = document.getElementById(inputId);
+            eye.onclick = () => {
+                const isPass = input.type === "password";
+                input.type = isPass ? "text" : "password";
+                eye.classList.toggle('fa-eye', !isPass);
+                eye.classList.toggle('fa-eye-slash', isPass);
+            };
+        };
+        setupEye('eye-pass', 'password');
+        setupEye('eye-confirm', 'confirm-password');
+
+        let isLogin = true;
+        
+        document.getElementById('toggle-link').onclick = () => {
+            isLogin = !isLogin;
+            
+            const title = document.getElementById('auth-title');
+            const confirmGroup = document.getElementById('confirm-group');
+            const submitBtn = document.getElementById('submit-btn');
+            const toggleLink = document.getElementById('toggle-link');
+            const forgotPassLink = document.getElementById('forgot-pass-link');
+
+            if (isLogin) {
+                title.innerText = 'Bem-vindo!';
+                confirmGroup.classList.add('hidden');
+                submitBtn.innerText = 'Entrar';
+                forgotPassLink.style.display = 'block';
+                toggleLink.innerHTML = 'Não tem uma conta? <span class="accent-text">Cadastre-se</span>';
+            } else {
+                title.innerText = 'Criar Conta';
+                confirmGroup.classList.remove('hidden');
+                submitBtn.innerText = 'Cadastrar';
+                forgotPassLink.style.display = 'none';
+                toggleLink.innerHTML = 'Já tem uma conta? <span class="accent-text">Voltar para Login</span>';
+            }
+            
+            const card = document.querySelector('.left-panel');
+            card.style.animation = 'none';
+            card.offsetHeight;
+            card.style.animation = 'softAppear 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards';
+        };
+
+        document.getElementById('auth-form').onsubmit = async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const pass = document.getElementById('password').value;
+            const confirm = document.getElementById('confirm-password').value;
+
+            if(!isLogin && pass !== confirm) { showError("As senhas não coincidem!"); return; }
+
+            try {
+                if(isLogin) {
+                    await signInWithEmailAndPassword(auth, email, pass);
+                } else {
+                    const res = await createUserWithEmailAndPassword(auth, email, pass);
+                    await updateProfile(res.user, { displayName: email.split('@')[0].toUpperCase() });
+                }
+            } catch (err) { showError("Verifique suas credenciais."); }
+        };
+
+        function showError(m) {
+            document.getElementById('error-message').innerText = m;
+            document.getElementById('error-popup').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

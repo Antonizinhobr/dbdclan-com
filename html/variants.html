@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Dead by Daylight - Variações</title>
+    <link rel="stylesheet" href="../assets/css/index.css">
+    <style>
+        body.dynamic-bg {
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        body.dynamic-bg::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: -1;
+        }
+
+        .info-section {
+            background: transparent !important;
+            padding-top: 20px;
+            text-shadow: 2px 2px 8px #000;
+        }
+
+        #finish-var-btn, #reset-all-btn {
+            background: rgba(0, 0, 0, 0.6) !important;
+            backdrop-filter: blur(5px);
+            border: 1px solid #ff0000;
+        }
+        
+        #reset-all-btn {
+            border-color: #fff;
+        }
+
+        #finish-var-btn:hover, #reset-all-btn:hover {
+            background: #000 !important;
+            transform: scale(1.05);
+        }
+
+        .map-grid {
+            position: relative;
+            z-index: 5;
+        }
+    </style>
+</head>
+<body class="fade-in dynamic-bg" id="body-layout">
+    <header>
+        <div class="logo">DEAD BY DAYLIGHT</div>
+        <nav><a href="home.html" style="color:#666; text-decoration:none;">← VOLTAR</a></nav>
+    </header>
+    <main>
+        <div class="info-section">
+            <h1 id="map-title">REINO</h1>
+            <p id="var-status" style="color: #ddd;">Vote na variação estratégica:</p>
+            <div style="display: flex; justify-content: center; gap: 10px; margin-top: 20px;">
+                <button id="finish-var-btn" style="display:none; color:#ff0000; padding:12px 24px; cursor:pointer; font-family: 'Arial Black'; text-transform: uppercase;">FINALIZAR PARTIDA</button>
+                <button id="reset-all-btn" style="display:none; color:#fff; padding:12px 24px; cursor:pointer; font-family: 'Arial Black'; text-transform: uppercase;">REINICIAR TUDO</button>
+            </div>
+        </div>
+        <div class="map-grid" id="var-grid"></div>
+    </main>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, doc, updateDoc, increment, collection, getDocs, onSnapshot, setDoc, writeBatch } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyARpVKfzOMm-v0pv9-7w9xahvhItosrI2Q",
+            authDomain: "dbd-camp.firebaseapp.com",
+            projectId: "dbd-camp",
+            storageBucket: "dbd-camp.firebasestorage.app",
+            messagingSenderId: "357760091556",
+            appId: "1:357760091556:web:4d9191b487baf240e92d31"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+        
+        const mapData = JSON.parse(localStorage.getItem('selectedMap')); 
+        
+        const ADMIN_EMAILS = [
+            "anthonnybalbino2017@gmail.com", 
+            "gabrielxz.j@gmail.com",
+            "tilnickolas@gmail.com",
+            "eduarda.soares7656@gmail.com"
+        ];
+
+        if(mapData) {
+            document.getElementById('map-title').innerText = mapData.name;
+            document.getElementById('body-layout').style.backgroundImage = `url('${mapData.img}')`; 
+        } else {
+            window.location.href = 'home.html';
+        }
+
+        onAuthStateChanged(auth, (u) => { 
+            if(u) {
+                const isAdmin = ADMIN_EMAILS.some(admin => admin.toLowerCase() === u.email.toLowerCase());
+                
+                if (isAdmin) {
+                    document.getElementById('finish-var-btn').style.display='block';
+                    document.getElementById('reset-all-btn').style.display='block';
+                } 
+            }
+        });
+
+        let rendered = false;
+        function render(aberta) {
+            if(rendered) return;
+            rendered = true;
+            const grid = document.getElementById('var-grid');
+            const jaVotouVariante = localStorage.getItem('jaVotouVariante');
+            
+            mapData.variants.forEach(v => {
+                const card = document.createElement('div');
+                card.className = 'map-card variant-card map-card-anim';
+                card.style.backgroundColor = "rgba(0,0,0,0.85)"; 
+                
+                if(jaVotouVariante || !aberta) card.style.opacity = "0.5";
+                
+                card.innerHTML = `<div class="vote-badge" id="v-voto-${v.name}">0</div><img src="${v.img}"><div class="map-name">${v.name}</div>`;
+                
+                if(aberta && !jaVotouVariante) {
+                    card.style.cursor = "pointer";
+                    card.onclick = async () => {
+                        if(localStorage.getItem('jaVotouVariante')) return;
+                        localStorage.setItem('jaVotouVariante', 'true');
+                        await setDoc(doc(db, "VOTOS_VARIANTES", v.name), { quantidade: increment(1) }, { merge: true });
+                        document.querySelectorAll('.map-card').forEach(c => c.style.opacity = "0.5");
+                    };
+                }
+                grid.appendChild(card);
+            });
+        }
+
+        onSnapshot(collection(db, "VOTOS_VARIANTES"), (s) => {
+            s.forEach(d => {
+                const b = document.getElementById(`v-voto-${d.id}`);
+                if(b) b.innerText = d.data().quantidade || 0;
+            });
+        });
+
+        onSnapshot(doc(db, "sistema", "status_variante"), (s) => {
+            const aberta = s.data()?.votacaoAberta;
+            if(aberta === false) document.getElementById('var-status').innerText = "VOTAÇÃO ENCERRADA!";
+            render(aberta);
+        });
+
+        document.getElementById('finish-var-btn').onclick = async () => {
+            const snap = await getDocs(collection(db, "VOTOS_VARIANTES"));
+            let max = -1; let pool = [];
+            snap.forEach(d => {
+                const q = d.data().quantidade || 0;
+                if(q > max) { max = q; pool = [d.id]; }
+                else if(q === max) pool.push(d.id);
+            });
+            const win = pool[Math.floor(Math.random() * pool.length)] || "Ninguém";
+            await updateDoc(doc(db, "sistema", "status_variante"), { votacaoAberta: false });
+            alert("Vencedor sorteado: " + win);
+        };
+
+        document.getElementById('reset-all-btn').onclick = async () => {
+            if(!confirm("Reiniciar todo o sistema?")) return;
+            const batch = writeBatch(db);
+            
+            batch.set(doc(db, "sistema", "status"), { 
+                votacaoIniciada: false, 
+                mapasAtivos: [], 
+                totalVotos: 0,
+                vencedorNome: null
+            }, { merge: true });
+
+            batch.set(doc(db, "sistema", "status_variante"), { votacaoAberta: true }, { merge: true });
+            
+            const reinosSnap = await getDocs(collection(db, "VOTOS"));
+            reinosSnap.forEach(d => batch.set(d.ref, { quantidade: 0 }, { merge: true }));
+            
+            const varSnap = await getDocs(collection(db, "VOTOS_VARIANTES"));
+            varSnap.forEach(d => batch.delete(d.ref));
+            
+            await batch.commit();
+            
+            localStorage.removeItem('jaVotou');
+            localStorage.removeItem('jaVotouVariante');
+            localStorage.removeItem('selectedMap');
+            window.location.href = 'home.html';
+        };
+    </script>
+</body>
+</html>

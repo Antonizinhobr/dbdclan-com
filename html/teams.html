@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DbD - Times do Torneio</title>
+    <link rel="stylesheet" href="../assets/css/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="icon" href="../assets/icon.jpg" type="image/jpg">
+</head>
+<body class="fade-in">
+
+    <header>
+        <div class="logo">DEAD BY DAYLIGHT</div>
+        
+        <nav class="nav-menu">
+            <a href="home.html" class="nav-link">Votação</a>
+            
+            <div class="nav-dropdown">
+                <a href="#" class="nav-link active">Times <i class="fas fa-chevron-down" style="font-size: 0.6rem; margin-left: 5px;"></i></a>
+                <div class="dropdown-content">
+                    <a href="teams.html?camp=1">Campeonato 1</a>
+                </div>
+            </div>
+
+            <a href="perks.html" class="nav-link">Perks Banidas</a>
+        </nav>
+
+        <div class="user-container">
+            <a href="dashboard.html" style="color: #666; text-decoration: none; font-size: 0.8rem; font-family: var(--font-game);">
+                <i class="fas fa-arrow-left"></i> VOLTAR AO HUB
+            </a>
+        </div>
+    </header>
+
+    <div class="video-bg-container">
+        <div class="video-overlay"></div>
+        <video autoplay muted loop playsinline>
+            <source src="https://assets.deadbydaylight.com/DBD_CHAPTER_Ice_Cream_Web_Screenshots_Video_Beauty_04_8d864790b8.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <main>
+        <div class="info-section transparent-bg">
+            <h1>EQUIPES DO TORNEIO</h1>
+            <p>Selecione uma equipe para ver os membros.</p>
+        </div>
+
+        <div class="perks-container">
+            <div class="perk-grid" id="teams-grid" style="gap: 20px;">
+                </div>
+        </div>
+    </main>
+
+    <div id="team-modal" class="perk-modal" onclick="closeModal(event)">
+        <div class="perk-modal-content">
+            <button class="close-modal-btn" onclick="closeModal(event)">×</button>
+            
+            <div class="modal-image-side" style="flex-direction: column; border-right: 1px solid #333;">
+                <img id="m-team-logo" src="" alt="Team Logo" style="width: 150px; height: 150px; margin-bottom: 20px;">
+                <div style="text-align: center;">
+                    <div style="color: #666; font-size: 0.8rem;">LÍDER DA EQUIPE</div>
+                    <div id="m-team-leader" style="color: #ff0000; font-weight: bold; font-size: 1.1rem; text-transform: uppercase;">NOME LIDER</div>
+                </div>
+            </div>
+            
+            <div class="modal-info-side">
+                <div class="modal-perk-type">DETALHES DA EQUIPE</div>
+                <div class="modal-perk-name" id="m-team-name">NOME DO TIME</div>
+                
+                <div style="margin-top: 20px; border-top: 1px solid #333; padding-top: 15px;">
+                    <div style="color: #888; margin-bottom: 15px; font-size: 0.8rem;">MEMBROS CONFIRMADOS</div>
+                    <div class="team-members-grid" id="m-members-grid">
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const allTeamsData = [
+            // ============ CAMPEONATO 1 ============
+            {
+                id: 1,
+                campId: 1, 
+                name: "HEAD-ON BABY",
+                leader: "BIEL",
+                logo: "https://i.ibb.co/BVVXYF9B/Head-On.png", 
+                members: [
+                    { name: "BIEL", img: "https://deadbydaylight.com/static/f3af49802c920a2a20a8c5ab9ba81a0c/17f75/felix_built_to_last_0393cb04b5.webp" },
+                    { name: "MADARA", img: "https://deadbydaylight.com/static/ae52d67e590bf950cc8aad7b49772d2f/5cdd8/DBD_CHAPTER_Donut_Perk_Power_Icon_Web_V1a_Lara_Croft_Specialist_16d3ebb91a.png" },
+                    { name: "PECLIST", img: "https://deadbydaylight.com/static/c1817cfeb86693dca0a7891d06938142/17f75/ash_mettle_of_man_b309993082.webp" },
+                    { name: "MK9", img: "https://deadbydaylight.com/static/476157bfaf17c877c5dc3625d86932c8/eb71d/AM_3607_DBD_CH_25_Perk_Icons_WEB_ADA_Wiretap_d495f59290.webp" },
+                    { name: "LOHAN", img: "https://deadbydaylight.com/static/476157bfaf17c877c5dc3625d86932c8/eb71d/AM_3607_DBD_CH_25_Perk_Icons_WEB_ADA_Wiretap_d495f59290.webp" }
+                ]
+            },
+            {
+                id: 2,
+                campId: 1,
+                name: "XERECUDAS DO ADOPT ME",
+                leader: "ENVYOUS",
+                logo: "https://i.ibb.co/TDzXhX6B/XEXECUDAS.png",
+                members: [
+                    { name: "ENVYOUS", img: "https://deadbydaylight.com/static/15784ce523232550dbe82f11822c4f66/17f75/trickster_no_way_out_f031ae648a.webp" },
+                    { name: "RIVEN", img: "https://deadbydaylight.com/static/15784ce523232550dbe82f11822c4f66/17f75/trickster_no_way_out_f031ae648a.webp" },
+                    { name: "JAUM", img: "https://deadbydaylight.com/static/15784ce523232550dbe82f11822c4f66/17f75/trickster_no_way_out_f031ae648a.webp" },
+                    { name: "CJ", img: "https://deadbydaylight.com/static/15784ce523232550dbe82f11822c4f66/17f75/trickster_no_way_out_f031ae648a.webp" },
+                    { name: "AETERNUM", img: "https://deadbydaylight.com/static/a9485074af79e9e6b4435cfc51843a93/17f75/trickster_hex_crowd_control_548bc70e3c.webp" }
+                ]
+            },  
+            {
+                id: 3,
+                campId: 1,
+                name: "MOTOSSERREIROS",
+                leader: "SKIBID BUBBA",
+                logo: "https://i.ibb.co/d0vdNMHc/bubba.png",
+                members: [
+                    { name: "SKIBID BUBBA", img: "https://deadbydaylight.com/static/15784ce523232550dbe82f11822c4f66/17f75/trickster_no_way_out_f031ae648a.webp" },
+                    { name: "POLAR", img: "https://deadbydaylight.com/static/15784ce523232550dbe82f11822c4f66/17f75/trickster_no_way_out_f031ae648a.webp" },
+                    { name: "MD10", img: "https://deadbydaylight.com/static/15784ce523232550dbe82f11822c4f66/17f75/trickster_no_way_out_f031ae648a.webp" },
+                    { name: "WUNSC", img: "https://deadbydaylight.com/static/15784ce523232550dbe82f11822c4f66/17f75/trickster_no_way_out_f031ae648a.webp" }
+                ]
+            },
+            {
+                id: 4,
+                campId: 1,
+                name: "FÚRIA",
+                leader: "BLACK INSN",
+                logo: "https://i.ibb.co/rGW73PfC/Furia-sem-fundo-2.png",
+                members: [
+                    { name: "BLACK INSN", img: "https://deadbydaylight.com/static/15784ce523232550dbe82f11822c4f66/17f75/trickster_no_way_out_f031ae648a.webp" },
+                    { name: "MAKASHE", img: "https://deadbydaylight.com/static/15784ce523232550dbe82f11822c4f66/17f75/trickster_no_way_out_f031ae648a.webp" },
+                    { name: "MD10", img: "https://deadbydaylight.com/static/15784ce523232550dbe82f11822c4f66/17f75/trickster_no_way_out_f031ae648a.webp" },
+                    { name: "WUNSC", img: "https://deadbydaylight.com/static/15784ce523232550dbe82f11822c4f66/17f75/trickster_no_way_out_f031ae648a.webp" }
+                ]
+            }, 
+            {
+                id: 4,
+                campId: 1,
+                name: "BATUTINHA",
+                leader: "CRISTIANINHO",
+                logo: "https://i.ibb.co/ds7hn376/Batutinha.png",
+                members: [
+                    { name: "CRISTIANO", img: "https://deadbydaylight.com/static/15784ce523232550dbe82f11822c4f66/17f75/trickster_no_way_out_f031ae648a.webp" },
+                    { name: "ANTHONNY", img: "https://deadbydaylight.com/static/15784ce523232550dbe82f11822c4f66/17f75/trickster_no_way_out_f031ae648a.webp" },
+                    { name: "KIMMY", img: "https://deadbydaylight.com/static/15784ce523232550dbe82f11822c4f66/17f75/trickster_no_way_out_f031ae648a.webp" },
+                    { name: "LEO", img: "https://deadbydaylight.com/static/15784ce523232550dbe82f11822c4f66/17f75/trickster_no_way_out_f031ae648a.webp" },
+                    { name: "FELIPE", img: "https://deadbydaylight.com/static/15784ce523232550dbe82f11822c4f66/17f75/trickster_no_way_out_f031ae648a.webp" }
+                ]
+            },  
+        ];
+
+        const grid = document.getElementById('teams-grid');
+        const modal = document.getElementById('team-modal');
+        
+        const mLogo = document.getElementById('m-team-logo');
+        const mLeader = document.getElementById('m-team-leader');
+        const mName = document.getElementById('m-team-name');
+        const mMembersGrid = document.getElementById('m-members-grid');
+        const pageTitle = document.querySelector('.info-section h1');
+
+        function renderTeams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const currentCamp = urlParams.get('camp') || '1'; 
+
+            pageTitle.innerText = `EQUIPES DO TORNEIO ${currentCamp}`;
+
+            const filteredTeams = allTeamsData.filter(team => team.campId == currentCamp);
+
+            grid.innerHTML = '';
+
+            if (filteredTeams.length === 0) {
+                grid.innerHTML = '<div style="width:100%; text-align:center; color:#888; margin-top:50px;">Nenhuma equipe cadastrada para este campeonato ainda.</div>';
+                return;
+            }
+
+            filteredTeams.forEach(team => {
+                const card = document.createElement('div');
+                card.className = 'team-card'; 
+                
+                card.innerHTML = `
+                    <img src="${team.logo}" alt="${team.name}">
+                    <div class="team-info">
+                        <div class="team-name-card">${team.name}</div>
+                        <div class="team-leader-card">Líder: ${team.leader}</div>
+                    </div>
+                `;
+                
+                card.onclick = () => openModal(team);
+                grid.appendChild(card);
+            });
+        }
+
+        function openModal(team) {
+            mLogo.src = team.logo;
+            mLeader.innerText = team.leader;
+            mName.innerText = team.name;
+            
+            mMembersGrid.innerHTML = '';
+
+            // Se o time não tiver membros cadastrados, cria placeholders visuais
+            const membersList = team.members && team.members.length > 0 ? team.members : [
+                {name: team.leader, img: 'https://deadbydaylight.com/static/476157bfaf17c877c5dc3625d86932c8/eb71d/AM_3607_DBD_CH_25_Perk_Icons_WEB_ADA_Wiretap_d495f59290.webp'},
+                {name: "Membro", img: 'https://deadbydaylight.com/static/f3af49802c920a2a20a8c5ab9ba81a0c/17f75/felix_built_to_last_0393cb04b5.webp'},
+                {name: "Membro", img: 'https://deadbydaylight.com/static/ae52d67e590bf950cc8aad7b49772d2f/5cdd8/DBD_CHAPTER_Donut_Perk_Power_Icon_Web_V1a_Lara_Croft_Specialist_16d3ebb91a.png'},
+                {name: "Membro", img: 'https://deadbydaylight.com/static/c1817cfeb86693dca0a7891d06938142/17f75/ash_mettle_of_man_b309993082.webp'}
+            ];
+
+            membersList.forEach(member => {
+                const mCard = document.createElement('div');
+                mCard.className = 'member-card';
+                mCard.innerHTML = `
+                    <img src="${member.img}" class="member-avatar">
+                    <div class="member-name">${member.name}</div>
+                `;
+                mMembersGrid.appendChild(mCard);
+            });
+
+            modal.classList.add('open');
+        }
+
+        function closeModal(event) {
+            if (event.target === modal || event.target.classList.contains('close-modal-btn')) {
+                modal.classList.remove('open');
+            }
+        }
+
+        renderTeams();
+    </script>
+</body>
+</html>

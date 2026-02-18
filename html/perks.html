@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DbD - Perks Banidas</title>
+    <link rel="stylesheet" href="../assets/css/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="icon" href="../assets/icon.jpg" type="image/jpg">
+</head>
+<body class="fade-in">
+
+    <header>
+        <div class="logo">DEAD BY DAYLIGHT</div>
+        
+        <nav class="nav-menu">
+            <a href="home.html" class="nav-link">Votação</a>
+            
+            <div class="nav-dropdown">
+                <a href="teams.html" class="nav-link">Times <i class="fas fa-chevron-down" style="font-size: 0.6rem; margin-left: 5px;"></i></a>
+                <div class="dropdown-content">
+                    <a href="teams.html?camp=1">Campeonato 1</a>
+                </div>
+            </div>
+
+            <a href="#" class="nav-link active">Perks Banidas</a>
+        </nav>
+
+        <div class="user-container">
+            <a href="dashboard.html" style="color: #666; text-decoration: none; font-size: 0.8rem; font-family: var(--font-game);">
+                <i class="fas fa-arrow-left"></i> VOLTAR AO HUB
+            </a>
+        </div>
+    </header>
+
+    <div class="video-bg-container">
+        <div class="video-overlay"></div>
+        <video autoplay muted loop playsinline>
+            <source src="https://assets.deadbydaylight.com/DBD_CHAPTER_Ice_Cream_Web_Screenshots_Video_Beauty_04_8d864790b8.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <main>
+        <div class="info-section transparent-bg" style="padding-bottom: 0;">
+            <h1>REGRAS DO CAMPEONATO</h1>
+            <p>Selecione uma Perk para ver os detalhes da proibição.</p>
+        </div>
+
+        <div class="perks-container">
+            
+            <div class="section-title"><i class="fas fa-skull"></i> ASSASSINOS</div>
+            <div class="perk-grid" id="killer-grid">
+                </div>
+
+            <div class="section-title" style="margin-top: 20px;"><i class="fas fa-running"></i> SOBREVIVENTES</div>
+            <div class="perk-grid" id="survivor-grid">
+                </div>
+
+        </div>
+    </main>
+
+    <div id="perk-modal" class="perk-modal" onclick="closeModal(event)">
+        <div class="perk-modal-content">
+            <button class="close-modal-btn" onclick="closeModal(event)">×</button>
+            
+            <div class="modal-image-side">
+                <img id="m-img" src="" alt="Perk Image">
+            </div>
+            
+            <div class="modal-info-side">
+                <div class="modal-perk-type" id="m-type">TIPO</div>
+                <div class="modal-perk-name" id="m-name">NOME DA PERK</div>
+                <div class="modal-perk-desc" id="m-desc">Descrição...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const perksData = [
+            {
+                id: 'k1',
+                type: 'killer',
+                name: 'SEM SAÍDA',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/15784ce523232550dbe82f11822c4f66/17f75/trickster_no_way_out_f031ae648a.webp',
+                description: 'Cada sobrevivente diferente que você pendura no gancho adiciona um token à perk. Quando o último gerador é concluído, os portões de saída ficam bloqueados por um período adicional para cada token acumulado, atrasando significativamente o endgame.'
+            },
+            {
+                id: 'k2',
+                type: 'killer',
+                name: 'CONTROLE DE PLATEIA',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/a9485074af79e9e6b4435cfc51843a93/17f75/trickster_hex_crowd_control_548bc70e3c.webp',
+                description: 'Sempre que um sobrevivente realiza um vault rápido em uma janela durante uma perseguição, essa janela é bloqueada temporariamente, impedindo novos vaults e reduzindo opções de loop.'
+            },
+            {
+                id: 'k3',
+                type: 'killer',
+                name: 'INSTINTO ALIENÍGENA',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/d156b9b2404b517af289563b417072ff/eb71d/DBD_CH_29_Xeno_Perk3_Alien_Instinct_1397f8d80e.webp',
+                description: 'Quando você engancha um Sobrevivente, a aura do Sobrevivente ferido mais distante é revelada por 5 segundos. Além disso, esse sobrevivente ferido sofre do efeito de estado Alheio.'
+            },
+            {
+                id: 'k4',
+                type: 'killer',
+                name: 'SINTONIA TECIDA',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/0f28dbccb0026e040f88ed4d5e479475/eb71d/DBD_Churros_Perk_Icons_Web_Killer_Weave_Attunement_FINAL_ba8666c4ec.webp',
+                description: 'Quando o item de um sobrevivente acaba pela primeira vez, ele cai, revelando a aura do item e de sobreviventes próximos (até 12m). Além disso, quem pegar o item derrubado fica com o efeito Alheio por até 30 segundos.'
+            },
+            {
+                id: 'k5',
+                type: 'killer',
+                name: 'A MORTE DE FRANKLIN',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/26384b6a9885aadcd4c1eac08e245ad7/17f75/leatherface_franklins_demise_e01bfae06c.webp',
+                description: 'Quando você atinge um sobrevivente com um ataque básico, ele derruba automaticamente o item que estiver segurando. O item começa a perder carga no chão até desaparecer completamente.'
+            },
+            {
+                id: 'k6',
+                type: 'killer',
+                name: 'GRAÇA DO SANGUE',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/6d1b102061914e6d72aa24bdee4828bf/17f75/blight_hex_blood_favor_8bd2a1f609.webp',
+                description: 'Quando você acerta um sobrevivente com um ataque básico, pallets próximos àquele sobrevivente ficam temporariamente bloqueados pela Entidade, impedindo que sejam derrubados.'
+            },
+            {
+                id: 'k7',
+                type: 'killer',
+                name: 'DEVORAR ESPERANÇA',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/a074e634e2a01575b065d76a2dadd9c0/17f75/hex_devour_hope_90f77302a5.webp',
+                description: 'Sempre que um sobrevivente é desenganchado longe de você, você ganha tokens. Com tokens suficientes, você recebe bônus extremamente fortes, como insta kill e a habilidade de matar sobreviventes com suas próprias mãos. A perk é desativada se o totem for destruído.'
+            },
+            {
+                id: 'k8',
+                type: 'killer',
+                name: 'NASCIDO DA LUZ',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/e9b0e7aec605bc7786917e8c60f5bf85/c4129/hillbilly_lightborn_7a5e526c98.webp',
+                description: 'Concede imunidade total a cegueiras causadas por lanternas, fogos de artifício ou efeitos similares, além de revelar brevemente a aura do sobrevivente que tentou cegar você.'
+            },
+            {
+                id: 'k9',
+                type: 'killer',
+                name: 'DISSOLUÇÃO',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/dc60810aeee8691686e8fd04a045e00d/eb71d/DBD_CH_24_Perks_DREDGE_Dissolution_a1664d573a.webp',
+                description: 'Após ferir um sobrevivente, essa perk ativa por um tempo limitado. Se um sobrevivente vaultar rapidamente um pallet durante esse período, o pallet é automaticamente quebrado pela Entidade.'
+            },
+            {
+                id: 'k10',
+                type: 'killer',
+                name: 'NINGUÉM ESCAPA DA MORTE',
+                label: 'Vantagem',
+                img: 'https://preview.redd.it/no-ed-is-an-anti-boon-perk-if-you-hate-boons-use-this-perk-v0-n106wky900n81.jpg?auto=webp&s=7e2a482e9c98ac29e5d8070e7ea0fadf98972c4d',
+                description: 'Após o último gerador ser concluído, se ainda existir ao menos um totem apagado no mapa, um deles se torna um Hex Totem amaldiçoado. Enquanto esse totem permanecer ativo, o Killer recebe aumento de velocidade de movimento e passa a aplicar o efeito Exposed em todos os sobreviventes, fazendo com que eles possam ser derrubados com apenas um ataque básico.'
+            },
+            {
+                id: 'k11',
+                type: 'killer',
+                name: 'GUARDIÃO SANGUINÁRIO',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/90246eed252fd7006ab73559f61bfdda/17f75/nightmare_blood_warden_6e52ee4aac.webp',
+                description: 'Guardião Sanguinário transforma o momento final da partida em uma armadilha mortal. Quando os sobreviventes acham que a fuga está garantida, essa perk permite selar os portões de saída, prendendo todos dentro do mapa e criando uma oportunidade devastadora para virar o jogo. Os portões de saída ficam bloqueados por 1 minuto, após realizar um gancho de qualquer sobrevivente com os portões já abertos.'
+            },
+            {
+                id: 's1',
+                type: 'survivor',
+                name: 'CONSTRUÍDO PARA DURAR',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/f3af49802c920a2a20a8c5ab9ba81a0c/17f75/felix_built_to_last_0393cb04b5.webp',
+                description: 'Ao entrar em um armário enquanto estiver segurando um item esgotado, você pode recuperar uma porcentagem da durabilidade desse item. Cada item só pode ser restaurado um número limitado de vezes por partida. Essa perk incentiva o uso prolongado de itens fortes, como caixas de ferramentas e lanternas.'
+            },
+            {
+                id: 's2',
+                type: 'survivor',
+                name: 'MANIFESTO RESIDUAL',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/2c6e68646cadd7d5901f2c4fa5ed9b84/5cdd8/DBD_CH_24_Perks_HADDIE_Residual_Manifest_38872e5da7.png',
+                description: 'Após esgotar completamente um item, você ganha a habilidade de encontrar lanternas adicionais em baús. Além disso, quando você cega o Killer, qualquer gerador que ele quebrar fica temporariamente bloqueado e aplica o efeito de cegueira ao Killer, dificultando sua visão.'
+            },
+            {
+                id: 's3',
+                type: 'survivor',
+                name: 'PARCEIRO DE CENA',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/68cf2f773dee5502dd52c9820b6b79fa/eb71d/DBD_Perk2_NC_Scene_Partner_d03b910607.webp',
+                description: 'Sempre que você olhar diretamente para o Killer dentro do raio de terror, você grita automaticamente, revelando sua posição. Em troca, a aura do Killer é revelada para você por alguns segundos. Pode ativar várias vezes durante a partida.'
+            },
+            {
+                id: 's4',
+                type: 'survivor',
+                name: 'ESPECIALISTA',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/ae52d67e590bf950cc8aad7b49772d2f/5cdd8/DBD_CHAPTER_Donut_Perk_Power_Icon_Web_V1a_Lara_Croft_Specialist_16d3ebb91a.png',
+                description: 'Reduz o consumo de carga de itens para você e para sobreviventes aliados dentro de um determinado raio. Essa perk aumenta significativamente a eficiência coletiva de itens durante a partida.'
+            },
+            {
+                id: 's5',
+                type: 'survivor',
+                name: 'ARANHAS TECELÃS',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/7a97f0f849507ff20f64e2f74643f87d/eb71d/Apple_Pie_Perk_Icons_Web_Sable_Ward_Invocation_P1_4bd291d02e.webp',
+                description: 'Você pode se ajoelhar no porão para ativar um ritual que concede um grande bônus permanente na velocidade de reparo de geradores para todos os sobreviventes. Em contrapartida, você fica permanentemente ferido e quebrado pelo resto da partida, não podendo mais ser curado.'
+            },
+            {
+                id: 's6',
+                type: 'survivor',
+                name: 'CORVOS TRAIÇOEIROS',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/23311b696c793c39f14cee80b8f8fa65/5cdd8/DBD_Gelato_Taurie_Cain_P01_Invocation_Treacherous_Crows_final_6934490268.png',
+                description: 'Você não grita ao ser atingido, colocado no gancho ou afetado por efeitos que causariam gritos. Além disso, você não assusta corvos ao passar por eles, reduzindo drasticamente a chance de revelar sua posição ao Killer'
+            },
+            {
+                id: 's7',
+                type: 'survivor',
+                name: 'OBJETO DE OBSESSÃO',
+                label: 'Vantagem',
+                img: 'https://i.ibb.co/chQfpGdq/images-Photoroom.png',
+                description: 'Enquanto você for a obsessão, sempre que o Killer puder ver sua aura, você também poderá ver a aura dele. Além disso, a cada intervalo de tempo, a aura do Killer é revelada para você, enquanto sua aura também pode ser revelada para ele, criando um jogo constante de informação mútua.'
+            },
+            {
+                id: 's8',
+                type: 'survivor',
+                name: 'EXULTAÇÃO',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/9e775b69f3d85cc6dc6221b144dca125/eb71d/DBD_Perk_Icon2_Trevor_Belmont_Exultation_FINAL_89e2199c58.webp',
+                description: 'Quando você atordoa o Killer com um pallet, a raridade do item que você está segurando aumenta automaticamente. Se o item já estiver no nível máximo de raridade, ele recupera parte da durabilidade.'
+            },
+            {
+                id: 's10',
+                type: 'survivor',
+                name: 'FERVOR HUMANO',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/c1817cfeb86693dca0a7891d06938142/17f75/ash_mettle_of_man_b309993082.webp',
+                description: 'Sempre que você protege um sobrevivente recebendo um ataque básico do Killer, você ganha um token. Após acumular 3 tokens, a próxima vez que você sofreria o estado MORRENDO, esse efeito é ignorado, permitindo que você permaneça em pé.'
+            },
+            {
+                id: 's11',
+                type: 'survivor',
+                name: 'ESCUTA',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/476157bfaf17c877c5dc3625d86932c8/eb71d/AM_3607_DBD_CH_25_Perk_Icons_WEB_ADA_Wiretap_d495f59290.webp',
+                description: 'Após reparar um gerador por um tempo determinado, você pode instalar um dispositivo nele. Enquanto o gerador não for danificado, a aura do Killer é revelada para todos os sobreviventes próximos sempre que ele estiver dentro de um certo alcance do gerador.'
+            },
+            {
+                id: 's12',
+                type: 'survivor',
+                name: 'TRABALHO EM EQUIPE: VOZ SUAVE',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/b950c71ef4072b9ec27277c13ea5e767/eb71d/Db_D_ST_Perk_Icons_Teamwork_Soft_Spoken_3c51d66063.webp',
+                description: 'Quando você está reparando um gerador, os ruídos dos reparos são diminuídos em 25%, além de reparar 5% mais rápido ao reparar com outro sobrevivente.'
+            },
+            {
+                id: 's13',
+                type: 'survivor',
+                name: 'TRABALHO EM EQUIPE: VOZ SUAVE',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/3224c0938e319049524416ace3c976cf/eb71d/Db_D_ST_Perk_Icons_Teamwork_Full_Circuit_27851afee8.webp',
+                description: 'Quando você está reparando um gerador, as skillchecks ficam 25% maiores do Bom Teste de Perícia, além de reparar 5% mais rápido ao reparar com outro sobrevivente.'
+            },
+        ];
+
+        const killerGrid = document.getElementById('killer-grid');
+        const survivorGrid = document.getElementById('survivor-grid');
+        const modal = document.getElementById('perk-modal');
+        
+        const mImg = document.getElementById('m-img');
+        const mType = document.getElementById('m-type');
+        const mName = document.getElementById('m-name');
+        const mDesc = document.getElementById('m-desc');
+
+        function renderPerks() {
+            perksData.forEach(perk => {
+                const el = document.createElement('div');
+                el.className = 'perk-icon-wrapper';
+                el.onclick = () => openModal(perk);
+                el.innerHTML = `<img src="${perk.img}" alt="${perk.name}">`;
+
+                if (perk.type === 'killer') {
+                    killerGrid.appendChild(el);
+                } else {
+                    survivorGrid.appendChild(el);
+                }
+            });
+        }
+
+        function openModal(data) {
+            mImg.src = data.img;
+            mType.innerText = data.label;
+            mName.innerText = data.name;
+            mDesc.innerText = data.description;
+
+            modal.classList.add('open');
+        }
+
+        function closeModal(event) {
+            if (event.target === modal || event.target.classList.contains('close-modal-btn')) {
+                modal.classList.remove('open');
+            }
+        }
+
+        renderPerks();
+    </script>
+</body>
+</html>

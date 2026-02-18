@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dead by Daylight - Carregando...</title>
+    <style>
+        body {
+            background-color: #000;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            
+            opacity: 1;
+            transition: opacity 1.5s ease-out;
+        }
+
+        body.fade-out {
+            opacity: 0; 
+        }
+
+        img {
+            width: 300px;
+            height: auto;
+        }
+        
+    </style>
+</head>
+<body>
+
+    <img src="https://deadbydaylight.com/static/dbd_loading-dadb8d519bed5649bef19b21711640ef.gif" alt="Loading...">
+
+    <script>
+        setTimeout(() => {
+            
+            document.body.classList.add('fade-out');
+
+            setTimeout(() => {
+                window.location.replace("./html/login.html");
+            }, 1500);
+        }, 3000);
+    </script>
+
+</body>
+</html>

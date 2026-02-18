@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DbD - Diretrizes da Comunidade</title>
+    <link rel="stylesheet" href="../assets/css/index.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link rel="icon" href="../assets/icon.jpg" type="image/jpg" />
+  </head>
+  <body class="fade-in">
+    <header class="rules-header">
+      <div class="logo">DBD COMMUNITY</div>
+      <nav class="nav-menu">
+        <a href="dashboard.html" class="nav-link">Home</a>
+        <a href="#" class="nav-link active">Regras do Servidor</a>
+      </nav>
+
+      <div style="position: relative">
+        <div class="user-container" id="user-profile-trigger">
+          <span id="display-name">ANTHONNY MICHAEL</span>
+          <div class="avatar-circle">
+            <img src="../assets/icon.jpg" alt="User Profile" />
+          </div>
+        </div>
+
+        <div
+          id="user-submenu"
+          class="hidden"
+          style="
+            position: absolute;
+            top: 60px;
+            right: 0;
+            background: rgba(0, 0, 0, 0.95);
+            border: 1px solid #333;
+            padding: 15px;
+            z-index: 1001;
+            min-width: 180px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+          "
+        >
+          <button
+            id="logout-btn"
+            style="
+              background: none;
+              border: none;
+              color: #ff0000;
+              cursor: pointer;
+              width: 100%;
+              text-align: left;
+              font-family: &quot;Arial Black&quot;;
+              font-size: 0.7rem;
+              text-transform: uppercase;
+              display: flex;
+              align-items: center;
+              gap: 10px;
+            "
+          >
+            <i class="fas fa-sign-out-alt"></i> SAIR DA NÉVOA
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="rules-main-content">
+      <section class="container">
+        <h2 class="section-title reveal active">DIRETRIZES DA COMUNIDADE</h2>
+
+        <div class="server-rules-grid">
+          <div class="rule-card reveal active">
+            <div class="rule-icon"><i class="fas fa-handshake"></i></div>
+            <div class="rule-text">
+              <h3>RESPEITO MÚTUO</h3>
+              <p>
+                Respeite todos os membros. Sem toxicidade, brigas ou provocações
+                desnecessárias. Mantenha o ambiente saudável.
+              </p>
+            </div>
+          </div>
+
+          <div class="rule-card reveal active" style="border-left-color: red">
+            <div class="rule-icon">
+              <i class="fas fa-ban" style="color: red"></i>
+            </div>
+            <div class="rule-text">
+              <h3>TOLERÂNCIA ZERO</h3>
+              <p>
+                Proibido spam, conteúdo NSFW (+18), uso de hacks ou cheats. A
+                quebra desta regra resulta em banimento imediato.
+              </p>
+            </div>
+          </div>
+
+          <div class="rule-card reveal active">
+            <div class="rule-icon"><i class="fas fa-hashtag"></i></div>
+            <div class="rule-text">
+              <h3>ORGANIZAÇÃO</h3>
+              <p>
+                Use os canais corretamente. Não mande memes no geral ou dúvidas
+                na sala de música.
+              </p>
+            </div>
+          </div>
+
+          <div class="rule-card reveal active" style="border-left-color: gold">
+            <div class="rule-icon">
+              <i class="fas fa-crown" style="color: gold"></i>
+            </div>
+            <div class="rule-text">
+              <h3>A PALAVRA DA ENTIDADE</h3>
+              <p>
+                Respeite a staff e suas decisões. Discutir punições publicamente
+                não será tolerado.
+              </p>
+            </div>
+          </div>
+
+          <div class="rule-card reveal active">
+            <div class="rule-icon"><i class="fas fa-bullhorn"></i></div>
+            <div class="rule-text">
+              <h3>SEM DIVULGAÇÃO</h3>
+              <p>
+                Não divulgue outros servidores ou comunidades sem a permissão
+                explícita da administração.
+              </p>
+            </div>
+          </div>
+
+          <div
+            class="rule-card reveal active"
+            style="border-left-color: #ff0050"
+          >
+            <div class="rule-icon">
+              <i class="fas fa-exclamation-triangle" style="color: #ff0050"></i>
+            </div>
+            <div class="rule-text">
+              <h3>CONTEÚDO SENSÍVEL</h3>
+              <p>
+                Não envie figurinhas ou GIFs remetentes a estupro, discriminação
+                racial, homofobia ou qualquer crime de ódio.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div
+        class="container reveal active"
+        style="margin-top: 50px; text-align: center"
+      >
+        <div
+          class="glass-card"
+          style="
+            width: 100%;
+            height: auto;
+            padding: 30px;
+            flex-direction: column;
+            border: 1px solid var(--accent-red);
+            margin: 0;
+          "
+        >
+          <i
+            class="fas fa-check-double"
+            style="
+              font-size: 3rem;
+              color: var(--accent-red);
+              margin-bottom: 20px;
+            "
+          ></i>
+          <h3 style="margin-bottom: 10px">ESTÁ DE ACORDO?</h3>
+          <p style="color: #ccc">
+            Ao permanecer no servidor, você concorda automaticamente com todas
+            as regras listadas acima.
+          </p>
+        </div>
+      </div>
+    </main>
+
+    <footer
+      style="text-align: center; padding: 20px; color: #444; font-size: 0.7rem"
+    >
+      &copy; 2026 COMUNIDADE DBD TTKBIEL
+    </footer>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+      import {
+        getAuth,
+        signOut,
+        onAuthStateChanged,
+      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyARpVKfzOMm-v0pv9-7w9xahvhItosrI2Q",
+        authDomain: "dbd-camp.firebaseapp.com",
+        projectId: "dbd-camp",
+        storageBucket: "dbd-camp.firebasestorage.app",
+        messagingSenderId: "357760091556",
+        appId: "1:357760091556:web:4d9191b487baf240e92d31",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+
+      const profileTrigger = document.getElementById("user-profile-trigger");
+      const userSubmenu = document.getElementById("user-submenu");
+      const logoutBtn = document.getElementById("logout-btn");
+
+      if (profileTrigger) {
+        profileTrigger.onclick = (e) => {
+          e.stopPropagation();
+          userSubmenu.classList.toggle("hidden");
+        };
+      }
+
+      window.onclick = () => {
+        if (userSubmenu && !userSubmenu.classList.contains("hidden")) {
+          userSubmenu.classList.add("hidden");
+        }
+      };
+
+      if (logoutBtn) {
+        logoutBtn.onclick = () => {
+          signOut(auth)
+            .then(() => {
+              window.location.href = "login.html";
+            })
+            .catch((error) => {
+              console.error("Erro ao sair:", error);
+            });
+        };
+      }
+
+      onAuthStateChanged(auth, (user) => {
+        if (!user) {
+          window.location.href = "login.html";
+        } else {
+          const userName = user.displayName || user.email.split("@")[0];
+          document.getElementById("display-name").innerText =
+            userName.toUpperCase();
+        }
+      });
+
+      window.addEventListener("scroll", () => {
+        var reveals = document.querySelectorAll(".reveal");
+        for (var i = 0; i < reveals.length; i++) {
+          var windowHeight = window.innerHeight;
+          var elementTop = reveals[i].getBoundingClientRect().top;
+          if (elementTop < windowHeight - 100) {
+            reveals[i].classList.add("active");
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
