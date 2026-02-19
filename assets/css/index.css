@@ -2253,3 +2253,134 @@ h2#auth-title {
     border-color: var(--accent-red);
     box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
 }
+
+/* =========================================
+   📱 RESPONSIVIDADE PARA CELULAR (MOBILE)
+   ========================================= */
+@media (max-width: 768px) {
+  header, .dashboard-header {
+    flex-direction: column;
+    height: auto !important;
+    padding: 15px 20px !important;
+    gap: 15px;
+    position: relative !important;
+  }
+
+  .nav-menu {
+    position: relative;
+    transform: none;
+    left: 0;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    width: 100%;
+  }
+
+  .user-container {
+    margin-top: 5px;
+  }
+
+  .hero-section {
+    height: auto;
+    min-height: 100vh;
+    padding: 40px 0;
+    align-items: flex-start;
+  }
+
+  .hero-content {
+    padding: 20px;
+    margin-top: 20px;
+  }
+
+  .hero-content h1 {
+    font-size: 2.2rem;
+    line-height: 1.2;
+  }
+
+  .hero-content p {
+    font-size: 1rem;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    padding: 0 10px;
+  }
+
+  .glass-led-btn {
+    width: 100%;
+    padding: 20px 15px;
+    font-size: 1.1rem;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .glass-led-btn i {
+    font-size: 2rem;
+  }
+
+  .perk-modal-content, #create-modal .perk-modal-content {
+    width: 95%;
+    padding: 15px;
+    margin-top: 20px;
+  }
+
+  .slot-box {
+    width: 50px;
+    height: 50px;
+  }
+
+  .selectable-item {
+    width: 55px;
+    height: 55px;
+  }
+
+  .selection-grid {
+    grid-template-columns: repeat(auto-fill, minmax(55px, 1fr));
+    gap: 8px;
+    padding: 10px;
+  }
+
+  .builds-grid {
+    grid-template-columns: 1fr;
+    padding: 15px;
+  }
+
+  .tool-card {
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .glass-card {
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .info-section h1 {
+    font-size: 1.6rem;
+  }
+
+  .left-panel {
+    padding: 30px 20px;
+  }
+  
+  h2#auth-title {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .hero-content h1 {
+    font-size: 1.8rem;
+  }
+  .glass-led-btn {
+    font-size: 0.95rem;
+  }
+  .slot-box {
+    width: 45px;
+    height: 45px;
+  }
+}
