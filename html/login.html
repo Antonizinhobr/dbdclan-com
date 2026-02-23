@@ -36,6 +36,10 @@
                     <button type="button" id="google-btn" class="social-btn">
                         <i class="fab fa-google"></i> Entrar com Google
                     </button>
+
+                    <a href="https://discord.com/api/oauth2/authorize?client_id=1474404959075176488&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fapi%2Fcallback&response_type=code&scope=identify%20email" class="social-btn" style="background-color: #5865F2; color: white; text-decoration: none; border: none;">
+                        <i class="fab fa-discord"></i> Entrar com Discord
+                    </a>
                 </div>
 
                 <div class="divider-container">
@@ -98,7 +102,8 @@
             updateProfile,
             GoogleAuthProvider,
             signInWithPopup,
-            onAuthStateChanged
+            onAuthStateChanged,
+            signInWithCustomToken // IMPORTANTE AQUI!
         } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
         const firebaseConfig = {
@@ -114,6 +119,22 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const googleProvider = new GoogleAuthProvider();
+
+        // === MÁGICA DO LOGIN VIA DISCORD ===
+        const urlParams = new URLSearchParams(window.location.search);
+        const customToken = urlParams.get('token');
+
+        if (customToken) {
+            signInWithCustomToken(auth, customToken)
+                .then(() => {
+                    // Limpa o token gigantesco da barra de endereço
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                })
+                .catch((error) => {
+                    showError("Erro no passe VIP do Discord: " + error.message);
+                });
+        }
+        // ===================================
 
         onAuthStateChanged(auth, (user) => {
             if (user) {
