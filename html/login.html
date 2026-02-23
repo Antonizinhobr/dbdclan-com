@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,22 +10,25 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="icon" href="../assets/icon.jpg" type="image/jpg">
 </head>
+
 <body class="auth-body">
 
     <div id="error-popup" class="popup">
         <div class="popup-content">
             <i class="fas fa-skull" style="font-size: 3rem; color: #ff0000; margin-bottom: 20px;"></i>
             <p id="error-message" style="margin-bottom: 20px;"></p>
-            <button class="dbd-btn" onclick="document.getElementById('error-popup').style.display='none'">FECHAR</button>
+            <button class="dbd-btn"
+                onclick="document.getElementById('error-popup').style.display='none'">FECHAR</button>
         </div>
     </div>
 
     <div class="main-login-container">
-        
+
         <div class="left-panel">
             <div class="panel-header">
                 <div class="brand-logo">
-                    <i class="fas fa-fire-alt" style="color: var(--accent-red); margin-right: 10px;"></i> Dead by Daylight
+                    <i class="fas fa-fire-alt" style="color: var(--accent-red); margin-right: 10px;"></i> Dead by
+                    Daylight
                 </div>
             </div>
 
@@ -37,7 +41,9 @@
                         <i class="fab fa-google"></i> Entrar com Google
                     </button>
 
-                    <a href="https://discord.com/api/oauth2/authorize?client_id=1474404959075176488&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fapi%2Fcallback&response_type=code&scope=identify%20email" class="social-btn" style="background-color: #5865F2; color: white; text-decoration: none; border: none;">
+                    <a href="https://discord.com/api/oauth2/authorize?client_id=1474404959075176488&redirect_uri=https%3A%2F%2Fdbdclan-com.vercel.app%2Fapi%2Fcallback&response_type=code&scope=identify%20email"
+                        class="social-btn"
+                        style="background-color: #5865F2; color: white; text-decoration: none; border: none;">
                         <i class="fab fa-discord"></i> Entrar com Discord
                     </a>
                 </div>
@@ -53,7 +59,7 @@
                         <label for="email">E-mail</label>
                         <input type="email" id="email" placeholder="Seu endereço de e-mail" required>
                     </div>
-                    
+
                     <div class="input-group">
                         <label for="password">Senha</label>
                         <a href="#" class="forgot-password" id="forgot-pass-link">Esqueceu a senha?</a>
@@ -85,9 +91,10 @@
                 <div class="text-content">
                     <h1>A morte não é o refúgio.</h1>
                 </div>
-                
+
                 <div class="graphic-3d-container">
-                    <img src="https://deadbydaylight.com/static/46fd87ede14695260195ddbc2691f431/5bd17/DBD_POUTINE_WEBPAGE_Character_Page_THEFIRST_ONLY_58ed00b1f5.webp" alt="The Trapper" class="killer-image">
+                    <img src="https://deadbydaylight.com/static/46fd87ede14695260195ddbc2691f431/5bd17/DBD_POUTINE_WEBPAGE_Character_Page_THEFIRST_ONLY_58ed00b1f5.webp"
+                        alt="The Trapper" class="killer-image">
                 </div>
             </div>
         </div>
@@ -95,10 +102,10 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { 
-            getAuth, 
-            signInWithEmailAndPassword, 
-            createUserWithEmailAndPassword, 
+        import {
+            getAuth,
+            signInWithEmailAndPassword,
+            createUserWithEmailAndPassword,
             updateProfile,
             GoogleAuthProvider,
             signInWithPopup,
@@ -169,10 +176,10 @@
         setupEye('eye-confirm', 'confirm-password');
 
         let isLogin = true;
-        
+
         document.getElementById('toggle-link').onclick = () => {
             isLogin = !isLogin;
-            
+
             const title = document.getElementById('auth-title');
             const confirmGroup = document.getElementById('confirm-group');
             const submitBtn = document.getElementById('submit-btn');
@@ -192,7 +199,7 @@
                 forgotPassLink.style.display = 'none';
                 toggleLink.innerHTML = 'Já tem uma conta? <span class="accent-text">Voltar para Login</span>';
             }
-            
+
             const card = document.querySelector('.left-panel');
             card.style.animation = 'none';
             card.offsetHeight;
@@ -205,10 +212,10 @@
             const pass = document.getElementById('password').value;
             const confirm = document.getElementById('confirm-password').value;
 
-            if(!isLogin && pass !== confirm) { showError("As senhas não coincidem!"); return; }
+            if (!isLogin && pass !== confirm) { showError("As senhas não coincidem!"); return; }
 
             try {
-                if(isLogin) {
+                if (isLogin) {
                     await signInWithEmailAndPassword(auth, email, pass);
                 } else {
                     const res = await createUserWithEmailAndPassword(auth, email, pass);
@@ -223,4 +230,5 @@
         }
     </script>
 </body>
+
 </html>
