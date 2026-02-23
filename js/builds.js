@@ -4389,7 +4389,7 @@ window.openCreateModal = (role) => {
     modalTitle.innerText = "NOVA BUILD DE ASSASSINO";
     modalTitle.style.color = "#ff0000";
     document.getElementById("addon-step-title").innerText =
-      "4. SELEC OS ADD-ONS DO PODER (Max 2)";
+      "4. SELECIONE OS ADD-ONS DO PODER (Max 2)";
     renderGrid("char-grid", killerFiles, "killers", "character", 1);
     renderGrid(
       "perk-grid-selection",
