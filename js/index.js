@@ -1,5 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getFirestore, doc, updateDoc, increment, collection, getDocs, onSnapshot, writeBatch, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+// Importação necessária para o motor reconhecer quem está logado
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyARpVKfzOMm-v0pv9-7w9xahvhItosrI2Q",
@@ -11,8 +13,18 @@ const firebaseConfig = {
     measurementId: "G-THBBGJTTMJ"
 };
 
+// Inicialização dos serviços
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
+
+// Lista de UIDs autorizados como Admin
+const ADMIN_UIDS = [
+    "discord:1400218900284571689", // Seu ID confirmado
+    "discord:1317150383193198643",
+    "discord:1231288814966669452",
+    "discord:1299544304674537583"
+];
 
 const mapList = [
     { 
@@ -76,7 +88,7 @@ const mapList = [
     },
     { 
         name: "JARDIM DA ALEGRIA", 
-        img: "https://deadbydaylight.com/static/f28d1adf92a2ca532e867fbfa2dd48b3/54ac6/DBD_CH_24_Garden_Of_Joy_House_Truck_1920x1080_afc4470f70.webp",
+        img: "https://deadbydaylight.com/static/f28d1adf92a2ca532e867fbfa2dd48b3/54ac6/DBD_CH_24_Garden_Of_Joy_House_Truck_1920x1080_afc4470f70_afc4470f70.webp",
         variants: [{ name: "JARDIM DA ALEGRIA", img: "../assets/img/Jardim Da Alegria/Jardim Da Alegria.png" }]
     },
     { 
@@ -92,6 +104,7 @@ onSnapshot(doc(db, "sistema", "status"), (snapshot) => {
     const data = snapshot.data();
     if (!data) return;
 
+    // Redirecionamento automático se houver vencedor
     if (data.vencedorNome && !data.votacaoIniciada) {
         const mapaCompleto = mapList.find(m => m.name === data.vencedorNome);
         if (mapaCompleto) {
@@ -100,18 +113,33 @@ onSnapshot(doc(db, "sistema", "status"), (snapshot) => {
         }
     }
 
-    const startBtn = document.getElementById('start-btn');
-    if (data.votacaoIniciada) {
-        if(startBtn) startBtn.classList.add('hidden');
-        document.getElementById('status-text').innerText = "VOTAÇÃO EM ANDAMENTO: Escolha um Reino!";
-        renderizarMapas(data.mapasAtivos, true);
-    } else {
-        if(startBtn) startBtn.classList.remove('hidden');
-        document.getElementById('status-text').innerText = "Analise os Reinos. Aguarde o Admin.";
-        if (!data.vencedorNome) {
-            renderizarMapas(mapList.map(m => m.name), false);
+    // Gerenciamento de visibilidade baseado em Admin e Status
+    onAuthStateChanged(auth, (user) => {
+        const startBtn = document.getElementById('start-btn');
+        const adminControls = document.getElementById('admin-controls');
+        const statusText = document.getElementById('status-text');
+        
+        const isAdmin = user && ADMIN_UIDS.includes(user.uid);
+
+        if (data.votacaoIniciada) {
+            if(startBtn) startBtn.classList.add('hidden');
+            if(statusText) statusText.innerText = "VOTAÇÃO EM ANDAMENTO: Escolha um Reino!";
+            renderizarMapas(data.mapasAtivos, true);
+        } else {
+            // Se for admin, libera os controles de votação
+            if (isAdmin) {
+                if(startBtn) startBtn.classList.remove('hidden');
+                if(adminControls) adminControls.classList.remove('hidden');
+                if(statusText) statusText.innerText = "PAINEL ADMIN: Inicie a votação quando pronto.";
+            } else {
+                if(statusText) statusText.innerText = "Analise os Reinos. Aguarde o Admin.";
+            }
+
+            if (!data.vencedorNome) {
+                renderizarMapas(mapList.map(m => m.name), false);
+            }
         }
-    }
+    });
 });
 
 onSnapshot(collection(db, "VOTOS"), (snapshot) => {
@@ -214,7 +242,6 @@ document.getElementById('reset-btn')?.addEventListener('click', async () => {
     if(!confirm("Deseja resetar tudo?")) return;
     const batch = writeBatch(db);
     
-    // Reseta tudo e remove vencedor
     batch.set(doc(db, "sistema", "status"), { 
         votacaoIniciada: false, 
         mapasAtivos: [], 
