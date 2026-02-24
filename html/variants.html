@@ -89,11 +89,11 @@
         
         const mapData = JSON.parse(localStorage.getItem('selectedMap')); 
         
-        const ADMIN_EMAILS = [
-            "anthonnybalbino2017@gmail.com", 
-            "gabrielxz.j@gmail.com",
-            "tilnickolas@gmail.com",
-            "eduarda.soares7656@gmail.com"
+        const ADMIN_UIDS = [
+            "discord:1400218900284571689",
+            "discord:1317150383193198643",
+            "discord:1231288814966669452",
+            "discord:1299544304674537583",
         ];
 
         if(mapData) {
@@ -105,7 +105,7 @@
 
         onAuthStateChanged(auth, (u) => { 
             if(u) {
-                const isAdmin = ADMIN_EMAILS.some(admin => admin.toLowerCase() === u.email.toLowerCase());
+                const isAdmin = ADMIN_UIDS.includes(u.uid);
                 
                 if (isAdmin) {
                     document.getElementById('finish-var-btn').style.display='block';

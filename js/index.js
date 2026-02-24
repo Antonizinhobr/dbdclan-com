@@ -1,6 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getFirestore, doc, updateDoc, increment, collection, getDocs, onSnapshot, writeBatch, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-// Importação necessária para o motor reconhecer quem está logado
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
 const firebaseConfig = {
@@ -13,14 +12,12 @@ const firebaseConfig = {
     measurementId: "G-THBBGJTTMJ"
 };
 
-// Inicialização dos serviços
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-// Lista de UIDs autorizados como Admin
 const ADMIN_UIDS = [
-    "discord:1400218900284571689", // Seu ID confirmado
+    "discord:1400218900284571689",
     "discord:1317150383193198643",
     "discord:1231288814966669452",
     "discord:1299544304674537583"
@@ -88,7 +85,7 @@ const mapList = [
     },
     { 
         name: "JARDIM DA ALEGRIA", 
-        img: "https://deadbydaylight.com/static/f28d1adf92a2ca532e867fbfa2dd48b3/54ac6/DBD_CH_24_Garden_Of_Joy_House_Truck_1920x1080_afc4470f70_afc4470f70.webp",
+        img: "https://deadbydaylight.com/static/f28d1adf92a2ca532e867fbfa2dd48b3/54ac6/DBD_CH_24_Garden_Of_Joy_House_Truck_1920x1080_afc4470f70.webp",
         variants: [{ name: "JARDIM DA ALEGRIA", img: "../assets/img/Jardim Da Alegria/Jardim Da Alegria.png" }]
     },
     { 
