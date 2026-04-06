@@ -28,16 +28,15 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
-const ADMIN_UIDS = [
-    "discord:1400218900284571689",
-    "discord:1317150383193198643",
-    "discord:1231288814966669452",
-    "discord:1299544304674537583"
+const ADMIN_EMAILS = [
+  "anthonnybalbino2017@gmail.com",
+  "gabrielxz.j@gmail.com",
+  "tilnickolas@gmail.com",
+  "eduarda.soares7656@gmail.com",
 ];
 
 let currentUser = null;
 let allBuildsData = [];
-let isAdmin = false;
 
 // ==========================================
 // 1. DICIONÁRIO DE DESCRIÇÕES COMPLETO
@@ -4069,76 +4068,12 @@ const itemFiles = [
 onAuthStateChanged(auth, (user) => {
   if (user) {
     currentUser = user;
-    // Verifica se o UID do usuário logado está na lista de Admins
-    isAdmin = ADMIN_UIDS.includes(user.uid);
-    
-    document.getElementById("display-name").innerText = (user.displayName || "Sobrevivente").toUpperCase();
-    console.log("Usuário logado:", user.uid, "Admin:", isAdmin);
-    
-    // Recarrega as builds para mostrar/esconder botões de delete com base no novo status
-    carregarBuilds(); 
+    const userName = user.displayName || user.email.split("@")[0];
+    document.getElementById("display-name").innerText = userName.toUpperCase();
   } else {
     window.location.href = "login.html";
   }
 });
-
-function carregarBuilds() {
-  const q = query(collection(db, "builds"), orderBy("createdAt", "desc"));
-  
-  onSnapshot(q, (snapshot) => {
-    const container = document.getElementById("builds-container");
-    if (!container) return;
-    container.innerHTML = "";
-
-    snapshot.forEach((docSnap) => {
-      const b = docSnap.data();
-      const id = docSnap.id;
-
-      const card = document.createElement("div");
-      card.className = "build-card";
-
-      // Lógica do Botão de Delete: Só renderiza o HTML se for Admin
-      const deleteBtnHtml = isAdmin 
-        ? `<button class="delete-btn" onclick="window.deletarBuild('${id}')">
-             <i class="fas fa-trash"></i>
-           </button>` 
-        : "";
-
-      card.innerHTML = `
-        ${deleteBtnHtml}
-        <div class="build-header">
-            <img src="${b.authorPhoto || '../assets/icon.jpg'}" class="author-img">
-            <div class="author-info">
-                <strong>${b.authorName || "Anônimo"}</strong>
-                <span>${b.createdAt ? new Date(b.createdAt.toDate()).toLocaleDateString() : "Agora"}</span>
-            </div>
-        </div>
-        <div class="build-content">
-            <h3>${b.title}</h3>
-            <p>${b.description}</p>
-            <div class="perks-display">
-                ${b.loadout.perks.map(p => `<div class="perk-slot"><img src="${p.img}" title="${p.name}"></div>`).join('')}
-            </div>
-        </div>
-      `;
-      container.appendChild(card);
-    });
-  });
-}
-
-// 3. Função para Deletar (Exclusiva para Admins)
-window.deletarBuild = async (id) => {
-    if (!isAdmin) return alert("Ação não autorizada.");
-    if (confirm("Deseja excluir esta build permanentemente?")) {
-        try {
-            await deleteDoc(doc(db, "builds", id));
-            console.log("Build deletada:", id);
-        } catch (error) {
-            console.error("Erro ao deletar:", error);
-            alert("Erro ao excluir build.");
-        }
-    }
-};
 
 const profileTrigger = document.getElementById("user-profile-trigger");
 const userSubmenu = document.getElementById("user-submenu");
