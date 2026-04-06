@@ -239,7 +239,7 @@
         <div class="container">
           <h2 class="section-title reveal">A ENTIDADE (STAFF)</h2>
           <div class="staff-grid">
-            <div class="staff-card reveal" onclick="openStaffModal('biel')">
+            <div class="staff-card reveal" onclick="openStaffModal('gabriel')">
               <div class="staff-img-container">
                 <img
                   src="https://i.ibb.co/Rpv025bN/Gabriel.jpg"
@@ -249,7 +249,7 @@
               <h3>GABRIEL</h3>
               <span class="role owner">DONO</span>
             </div>
-            <div class="staff-card reveal" onclick="openStaffModal('anthonny')">
+            <div class="staff-card reveal" onclick="openStaffModal('rebeca')">
               <div class="staff-img-container">
                 <img
                   src="https://i.ibb.co/q3b0DStn/Rebeca.jpg"
@@ -259,7 +259,7 @@
               <h3>REBECA</h3>
               <span class="role mod">ADMINISTRADORA</span>
             </div>
-            <div class="staff-card reveal" onclick="openStaffModal('riven')">
+            <div class="staff-card reveal" onclick="openStaffModal('vinicius')">
               <div class="staff-img-container">
                 <img
                   src="https://i.ibb.co/nqB8dYK4/Vinicius.jpg"
@@ -431,6 +431,7 @@
         "til.nickolas@gmail.com",
         "Eduarda.soares7656@gmail.com",
       ];
+
       const firebaseConfig = {
         apiKey: "AIzaSyARpVKfzOMm-v0pv9-7w9xahvhItosrI2Q",
         authDomain: "dbd-camp.firebaseapp.com",
@@ -440,6 +441,7 @@
         appId: "1:357760091556:web:4d9191b487baf240e92d31",
         measurementId: "G-THBBGJTTMJ",
       };
+
       const app = initializeApp(firebaseConfig);
       const auth = getAuth(app);
       const db = getFirestore(app);
