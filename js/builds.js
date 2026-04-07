@@ -31,10 +31,11 @@ const db = getFirestore(app);
 
 // LISTAS DE ADMINISTRAÇÃO UNIFICADA
 const ADMIN_UIDS = [
-  "discord:1400218900284571689", // Seu ID
-  "discord:1317150383193198643",
-  "discord:1231288814966669452",
-  "discord:1299544304674537583"
+    "discord:1400218900284571689",
+    "discord:392062765323255828",
+    "discord:644323555462479892",
+    "discord:804843307568988180",
+    "discord:361362105363857408"
 ];
 
 const ADMIN_EMAILS = [
