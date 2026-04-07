@@ -28,6 +28,15 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+
+// LISTAS DE ADMINISTRAÇÃO UNIFICADA
+const ADMIN_UIDS = [
+  "discord:1400218900284571689", // Seu ID
+  "discord:1317150383193198643",
+  "discord:1231288814966669452",
+  "discord:1299544304674537583"
+];
+
 const ADMIN_EMAILS = [
   "anthonnybalbino2017@gmail.com",
   "gabrielxz.j@gmail.com",
@@ -37,6 +46,7 @@ const ADMIN_EMAILS = [
 
 let currentUser = null;
 let allBuildsData = [];
+let isAdmin = false; // Controle global de permissão
 
 // ==========================================
 // 1. DICIONÁRIO DE DESCRIÇÕES COMPLETO
@@ -4062,649 +4072,7 @@ const itemFiles = [
   "Key.png",
 ];
 
-// ==========================================
-// AUTENTICAÇÃO E LOGOUT
-// ==========================================
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    currentUser = user;
-    const userName = user.displayName || user.email.split("@")[0];
-    document.getElementById("display-name").innerText = userName.toUpperCase();
-  } else {
-    window.location.href = "login.html";
-  }
-});
-
-const profileTrigger = document.getElementById("user-profile-trigger");
-const userSubmenu = document.getElementById("user-submenu");
-const logoutBtn = document.getElementById("logout-btn");
-
-if (profileTrigger)
-  profileTrigger.onclick = (e) => {
-    e.stopPropagation();
-    userSubmenu.classList.toggle("hidden");
-  };
-window.addEventListener("click", () => {
-  if (userSubmenu && !userSubmenu.classList.contains("hidden"))
-    userSubmenu.classList.add("hidden");
-});
-if (logoutBtn)
-  logoutBtn.onclick = () =>
-    signOut(auth).then(() => (window.location.href = "login.html"));
-
-// ==========================================
-// SISTEMA DE BUSCA
-// ==========================================
-window.searchGrid = (gridId, searchTerm) => {
-  const grid = document.getElementById(gridId);
-  if (!grid) return;
-  const term = searchTerm.toLowerCase();
-  const items = grid.querySelectorAll(".selectable-item");
-  items.forEach((item) => {
-    const title = item.querySelector(".tooltip-title").innerText.toLowerCase();
-    item.style.display = title.includes(term) ? "block" : "none";
-  });
-};
-
-// ==========================================
-// LÓGICA DE FORMATAÇÃO E DESCRIÇÃO
-// ==========================================
-function formatDbdFilename(filename) {
-  if (!filename) return "";
-  let clean = filename.split("/").pop();
-  clean = clean.replace(".png", "");
-  if (clean.includes("_")) clean = clean.split("_").pop();
-  return clean.replace(/([A-Z])/g, " $1").trim();
-}
-
-function getGenericDescription(name, type) {
-  if (descricoesCustomizadas[name]) {
-    return descricoesCustomizadas[name];
-  }
-  if (type === "perks")
-    return `Esta é uma vantagem estratégica chamada ${name}. Use-a para ganhar vantagem na partida.`;
-  if (type === "item")
-    return `Um item essencial para sobrevivência: ${name}. Use com sabedoria.`;
-  if (type === "addons")
-    return `Melhoria para seu equipamento: ${name}. Altera a funcionalidade básica.`;
-  return "";
-}
-
-// ==========================================
-// RENDERIZAÇÃO DE GRIDS
-// ==========================================
-function renderGrid(containerId, fileList, pathPrefix, type, maxSelect) {
-  const container = document.getElementById(containerId);
-  container.innerHTML = "";
-
-  if (!fileList || (Array.isArray(fileList) && fileList.length === 0)) {
-    container.innerHTML =
-      '<p style="color:#666; font-size:0.8rem; grid-column:1/-1; text-align:center;">Selecione o item primeiro.</p>';
-    return;
-  }
-
-  fileList.forEach((file) => {
-    const cleanName = formatDbdFilename(file);
-    const fullPath = `../assets/img/dbd/${pathPrefix}/${file}`;
-    const el = document.createElement("div");
-    el.className = "selectable-item";
-    el.innerHTML = `<img src="${fullPath}"><div class="tooltip-title" style="display:none;">${cleanName}</div>`;
-    el.onclick = () =>
-      openSelectionDetailsModal(el, fullPath, cleanName, type, maxSelect);
-    container.appendChild(el);
-  });
-}
-
-// ==========================================
-// GERENCIAMENTO DE MODAIS (CRIAÇÃO E VISUALIZAÇÃO)
-// ==========================================
-let currentRoleMode = "";
-let selectedData = { character: null, perks: [], item: null, addons: [] };
-let currentStep = 1;
-let pendingSelection = null;
-
-function openSelectionDetailsModal(
-  element,
-  fullPath,
-  cleanName,
-  type,
-  maxSelect,
-) {
-  pendingSelection = { element, fullPath, cleanName, type, maxSelect };
-  document.getElementById("sd-img").src = fullPath;
-
-  let displayTitle = cleanName;
-  let displayDesc = "";
-  const customText = descricoesCustomizadas[cleanName];
-
-  if (currentRoleMode === "killer" && type === "addons" && customText) {
-    const pontoIndex = customText.indexOf(".");
-    if (pontoIndex > -1 && pontoIndex < 50) {
-      displayTitle = customText.substring(0, pontoIndex).trim();
-      displayDesc = customText.substring(pontoIndex + 1).trim();
-    } else {
-      displayDesc = customText;
-    }
-  } else {
-    if (customText) {
-      displayDesc = customText;
-    } else {
-      displayDesc = getGenericDescription(cleanName, type);
-    }
-  }
-
-  document.getElementById("sd-title").innerText = displayTitle;
-  const descEl = document.getElementById("sd-desc");
-  descEl.innerText = displayDesc;
-
-  const typeLabel = document.getElementById("sd-type-label");
-  if (type === "character") {
-    typeLabel.innerText =
-      currentRoleMode === "survivor" ? "SOBREVIVENTE" : "ASSASSINO";
-    descEl.style.display = "none";
-  } else {
-    typeLabel.innerText =
-      type === "perks" ? "PERK" : type === "item" ? "ITEM" : "ADD-ON";
-    descEl.style.display = "block";
-  }
-
-  document.getElementById("sd-confirm-btn").style.display = "block";
-  const cancelBtn = document.querySelector("#selection-details-modal .outline");
-  cancelBtn.innerText = "CANCELAR";
-  cancelBtn.style.flex = "1";
-  cancelBtn.style.width = "auto";
-  document.getElementById("selection-details-modal").classList.add("open");
-}
-
-window.openItemDetails = (fullPath, type, roleMode) => {
-  if (!fullPath) return;
-  const cleanName = formatDbdFilename(fullPath);
-  document.getElementById("sd-img").src = fullPath;
-
-  let displayTitle = cleanName;
-  let displayDesc = "";
-  const customText = descricoesCustomizadas[cleanName];
-
-  if (roleMode === "killer" && type === "addons" && customText) {
-    const pontoIndex = customText.indexOf(".");
-    if (pontoIndex > -1 && pontoIndex < 50) {
-      displayTitle = customText.substring(0, pontoIndex).trim();
-      displayDesc = customText.substring(pontoIndex + 1).trim();
-    } else {
-      displayDesc = customText;
-    }
-  } else {
-    if (customText) {
-      displayDesc = customText;
-    } else {
-      displayDesc = getGenericDescription(cleanName, type);
-    }
-  }
-
-  document.getElementById("sd-title").innerText = displayTitle;
-  const descEl = document.getElementById("sd-desc");
-  descEl.innerText = displayDesc;
-
-  const typeLabel = document.getElementById("sd-type-label");
-  if (type === "character") {
-    typeLabel.innerText =
-      roleMode === "survivor" ? "SOBREVIVENTE" : "ASSASSINO";
-    descEl.style.display = "none";
-  } else {
-    typeLabel.innerText =
-      type === "perks" ? "PERK" : type === "item" ? "ITEM" : "ADD-ON";
-    descEl.style.display = "block";
-  }
-
-  document.getElementById("sd-confirm-btn").style.display = "none";
-  const cancelBtn = document.querySelector("#selection-details-modal .outline");
-  cancelBtn.innerText = "FECHAR";
-  cancelBtn.style.flex = "none";
-  cancelBtn.style.width = "100%";
-  document.getElementById("selection-details-modal").classList.add("open");
-};
-
-window.closeSelectionModal = () => {
-  document.getElementById("selection-details-modal").classList.remove("open");
-  pendingSelection = null;
-};
-
-document.getElementById("sd-confirm-btn").onclick = () => {
-  if (!pendingSelection) return;
-  const { element, fullPath, cleanName, type, maxSelect } = pendingSelection;
-  executeSelection(element, fullPath, type, maxSelect, cleanName);
-  window.closeSelectionModal();
-};
-
-function executeSelection(element, path, type, maxSelect, name) {
-  if (maxSelect === 1) {
-    const currentSelected = element.parentElement.querySelector(".selected");
-    if (currentSelected) currentSelected.classList.remove("selected");
-    element.classList.add("selected");
-    selectedData[type] = path;
-
-    if (type === "item" && currentRoleMode === "survivor") {
-      updateSlot("selected-item-slot", path);
-
-      let folder = name.toLowerCase().replace(/\s/g, "") + "s";
-      if (name === "Toolbox") folder = "toolboxes";
-
-      const addons = survivorAddonFiles[name] || [];
-      renderGrid(
-        "addon-grid",
-        addons,
-        `addons/survivor/${folder}`,
-        "addons",
-        2,
-      );
-    }
-
-    if (type === "character") {
-      updateSlot("selected-char-slot", path);
-
-      if (currentRoleMode === "killer") {
-        const folderName = name.replace(/\s/g, "");
-
-        const addons = killerAddonFiles[name] || [];
-
-        console.log(
-          `Carregando ${addons.length} addons para ${name} na pasta ${folderName}`,
-        );
-
-        renderGrid(
-          "addon-grid",
-          addons,
-          `addons/killer/${folderName}`,
-          "addons",
-          2,
-        );
-      }
-    }
-  } else {
-    const index = selectedData[type].indexOf(path);
-    if (index > -1) {
-      selectedData[type].splice(index, 1);
-      element.classList.remove("selected");
-    } else {
-      if (selectedData[type].length < maxSelect) {
-        selectedData[type].push(path);
-        element.classList.add("selected");
-      } else {
-        alert(`Máximo de ${maxSelect} seleções permitidas.`);
-        return;
-      }
-    }
-    updateMultiSlots(type);
-  }
-}
-
-function updateSlot(slotId, imgPath) {
-  document.getElementById(slotId).innerHTML = imgPath
-    ? `<img src="${imgPath}">`
-    : "";
-}
-
-function updateMultiSlots(type) {
-  const containerId = type === "perks" ? "perk-slots" : "addon-slots";
-  const slots = document
-    .getElementById(containerId)
-    .querySelectorAll(".slot-box");
-  slots.forEach((slot, i) => {
-    slot.innerHTML = selectedData[type][i]
-      ? `<img src="${selectedData[type][i]}">`
-      : "";
-  });
-}
-
-window.openCreateModal = (role) => {
-  currentRoleMode = role;
-  currentStep = 1;
-  selectedData = { character: null, perks: [], item: null, addons: [] };
-  document
-    .querySelectorAll("#create-modal .selectable-item")
-    .forEach((el) => el.classList.remove("selected"));
-  document
-    .querySelectorAll("#create-modal .slot-box")
-    .forEach((slot) => (slot.innerHTML = ""));
-  document.getElementById("b-title").value = "";
-  document.getElementById("b-desc").value = "";
-
-  const modalTitle = document.getElementById("modal-role-title");
-  if (role === "survivor") {
-    modalTitle.innerText = "NOVA BUILD DE SOBREVIVENTE";
-    modalTitle.style.color = "#00ff00";
-    document.getElementById("addon-step-title").innerText =
-      "5. SELEC OS ADD-ONS DO ITEM (Max 2)";
-    renderGrid("char-grid", survivorFiles, "survivors", "character", 1);
-    renderGrid(
-      "perk-grid-selection",
-      survivorPerkFiles,
-      "perks/survivor",
-      "perks",
-      4,
-    );
-    renderGrid("item-grid", itemFiles, "items", "item", 1);
-    renderGrid("addon-grid", [], "", "addons", 2);
-  } else {
-    modalTitle.innerText = "NOVA BUILD DE ASSASSINO";
-    modalTitle.style.color = "#ff0000";
-    document.getElementById("addon-step-title").innerText =
-      "4. SELECIONE OS ADD-ONS DO PODER (Max 2)";
-    renderGrid("char-grid", killerFiles, "killers", "character", 1);
-    renderGrid(
-      "perk-grid-selection",
-      killerPerkFiles,
-      "perks/killer",
-      "perks",
-      4,
-    );
-    renderGrid("addon-grid", [], "addons/killer", "addons", 2);
-  }
-  updateWizardUI();
-  document.getElementById("create-modal").classList.add("open");
-};
-
-function updateWizardUI() {
-  document
-    .querySelectorAll(".wizard-step")
-    .forEach((el) => el.classList.add("hidden"));
-  document.getElementById(`step-${currentStep}`).classList.remove("hidden");
-  document.getElementById("btn-prev").style.display =
-    currentStep === 1 ? "none" : "block";
-
-  const isLastStep = currentStep === 5;
-  document.getElementById("btn-next").innerText = isLastStep
-    ? "PUBLICAR NA NÉVOA"
-    : "AVANÇAR";
-
-  let displayStep = currentStep;
-  let total = currentRoleMode === "killer" ? 4 : 5;
-  if (currentRoleMode === "killer" && currentStep === 5) displayStep = 4;
-  document.getElementById("step-indicator").innerText =
-    `Passo ${displayStep} de ${total}`;
-
-  document
-    .querySelectorAll(".search-input")
-    .forEach((input) => (input.value = ""));
-  document
-    .querySelectorAll(".selectable-item")
-    .forEach((item) => (item.style.display = "block"));
-}
-
-window.nextStep = () => {
-  if (currentStep === 1 && !selectedData.character) {
-    alert("Selecione um personagem primeiro.");
-    return;
-  }
-  if (currentStep === 2) {
-    if (!document.getElementById("b-title").value.trim()) {
-      alert("Dê um nome para a build.");
-      return;
-    }
-    if (!document.getElementById("b-desc").value.trim()) {
-      alert("Escreva uma descrição.");
-      return;
-    }
-  }
-  if (currentStep === 3 && selectedData.perks.length < 4) {
-    alert("Selecione 4 perks.");
-    return;
-  }
-  if (
-    currentStep === 4 &&
-    currentRoleMode === "survivor" &&
-    !selectedData.item
-  ) {
-    alert("Selecione um item.");
-    return;
-  }
-
-  if (currentRoleMode === "killer" && currentStep === 3) currentStep = 5;
-  else currentStep++;
-
-  if (currentStep > 5) submitBuild();
-  else updateWizardUI();
-};
-
-window.prevStep = () => {
-  if (currentRoleMode === "killer" && currentStep === 5) currentStep = 3;
-  else currentStep--;
-  updateWizardUI();
-};
-
-// ==========================================
-// FIRESTORE E RENDERIZAÇÃO DE BUILDS
-// ==========================================
-async function submitBuild() {
-  if (!currentUser) return;
-
-  const buildData = {
-    role: currentRoleMode,
-    title: document.getElementById("b-title").value,
-    description: document.getElementById("b-desc").value,
-    loadout: selectedData,
-    authorName: currentUser.displayName || "Anônimo",
-    authorEmail: currentUser.email,
-    authorPhoto: currentUser.photoURL || "../assets/icon.jpg",
-    createdAt: serverTimestamp(),
-  };
-
-  try {
-    await addDoc(collection(db, "comunidade_builds_visual"), buildData);
-
-    sendToDiscordWebhook(buildData);
-
-    document.getElementById("create-modal").classList.remove("open");
-    alert("Build publicada com sucesso e enviada para a Névoa!");
-  } catch (error) {
-    console.error("Erro:", error);
-    alert("Erro ao salvar build.");
-  }
-}
-
-const q = query(
-  collection(db, "comunidade_builds_visual"),
-  orderBy("createdAt", "desc"),
-);
-onSnapshot(q, (snapshot) => {
-  const container = document.getElementById("builds-container");
-  container.innerHTML = "";
-  allBuildsData = [];
-  if (snapshot.empty) {
-    container.innerHTML =
-      '<p style="grid-column: 1/-1; text-align: center; color: #888;">Nenhuma build encontrada.</p>';
-    return;
-  }
-  snapshot.forEach((docSnap) => {
-    const data = docSnap.data();
-    allBuildsData.push({ id: docSnap.id, ...data });
-    createBuildCard(docSnap.id, data, container);
-  });
-});
-
-function createBuildCard(id, data, container) {
-  const isOwner = currentUser && currentUser.email === data.authorEmail;
-  const isAdmin =
-    currentUser &&
-    ADMIN_EMAILS.some(
-      (adm) => adm.toLowerCase() === currentUser.email.toLowerCase(),
-    );
-
-  const card = document.createElement("div");
-  card.className = `build-card ${data.role}`;
-  card.onclick = (e) => {
-    if (!e.target.closest(".delete-btn-card")) openViewModal(data);
-  };
-
-  let deleteHtml =
-    isOwner || isAdmin
-      ? `<div class="delete-btn-card" onclick="window.deleteBuild('${id}')"><i class="fas fa-trash"></i></div>`
-      : "";
-  const loadout = data.loadout || { perks: [], addons: [] };
-  const coverImg =
-    loadout.character || loadout.perks[0] || "../assets/icon.jpg";
-
-  const charName = loadout.character
-    ? formatDbdFilename(loadout.character)
-    : "Desconhecido";
-  const roleColor = data.role === "survivor" ? "#00ff00" : "#ff0000";
-
-  card.innerHTML = `
-        ${deleteHtml}
-        <div class="build-header" style="background-image: url('${coverImg}'); background-size: cover; background-position: center; height: 100px; position: relative;">
-            <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.6);"></div>
-            <span class="role-badge ${data.role === "survivor" ? "surv" : "kill"}" style="position: relative; z-index: 2;">
-                <i class="fas ${data.role === "survivor" ? "fa-running" : "fa-skull"}"></i> ${data.role}
-            </span>
-        </div>
-        <div class="build-body">
-            <div class="build-title">${data.title}</div>
-            
-            <div style="font-size: 0.75rem; color: #ccc; margin-bottom: 10px; font-family: var(--font-game); text-transform: uppercase;">
-                <i class="fas fa-user" style="color: ${roleColor}; margin-right: 5px;"></i> ${charName}
-            </div>
-            
-             <div class="build-author">
-                <img src="${data.authorPhoto}" class="author-img"> <span>${data.authorName}</span>
-            </div>
-        </div>
-    `;
-  container.appendChild(card);
-}
-
-// ==========================================
-// VISUALIZAÇÃO INTERATIVA DA BUILD
-// ==========================================
-window.openViewModal = (data) => {
-  document.getElementById("v-title").innerText = data.title;
-  const rBadge = document.getElementById("v-role");
-  rBadge.innerText = data.role === "survivor" ? "SOBREVIVENTE" : "ASSASSINO";
-  rBadge.className = `role-badge ${data.role === "survivor" ? "surv" : "kill"}`;
-
-  const loadout = data.loadout || {
-    character: "",
-    perks: [],
-    item: "",
-    addons: [],
-  };
-
-  document.getElementById("v-author-img").src =
-    data.authorPhoto || "../assets/icon.jpg";
-  document.getElementById("v-author").innerText =
-    `Criado por: ${data.authorName}`;
-  document.getElementById("v-desc").innerText = `"${data.description}"`;
-
-  const charImg = document.getElementById("v-character-loadout-img");
-  const charBox = charImg.parentElement;
-  charImg.src = loadout.character || "../assets/icon.jpg";
-  document.getElementById("v-character-name").innerText = loadout.character
-    ? formatDbdFilename(loadout.character)
-    : "Desconhecido";
-
-  if (loadout.character) {
-    charBox.classList.add("clickable");
-    charBox.onclick = () =>
-      window.openItemDetails(loadout.character, "character", data.role);
-  } else {
-    charBox.classList.remove("clickable");
-    charBox.onclick = null;
-  }
-
-  // Perks Loadout Setup (Clickable)
-  for (let i = 1; i <= 4; i++) {
-    const pPath = loadout.perks[i - 1];
-    const pImg = document.getElementById(`v-p${i}`);
-    const pBox = pImg.parentElement;
-    pImg.src = pPath || "";
-
-    if (pPath) {
-      pBox.classList.add("clickable");
-      pBox.onclick = () => window.openItemDetails(pPath, "perks", data.role);
-    } else {
-      pBox.classList.remove("clickable");
-      pBox.onclick = null;
-    }
-  }
-
-  const itemAddonSection = document.getElementById("v-item-addon-section");
-  itemAddonSection.innerHTML = "";
-
-  const itemHtml = loadout.item
-    ? `<div class="slot-box clickable" onclick="window.openItemDetails('${loadout.item}', 'item', '${data.role}')"><img src="${loadout.item}"></div>`
-    : `<div class="slot-box"></div>`;
-  const addon1Html =
-    loadout.addons && loadout.addons[0]
-      ? `<div class="slot-box clickable" style="transform: scale(0.9);" onclick="window.openItemDetails('${loadout.addons[0]}', 'addons', '${data.role}')"><img src="${loadout.addons[0]}"></div>`
-      : `<div class="slot-box" style="transform: scale(0.9);"></div>`;
-  const addon2Html =
-    loadout.addons && loadout.addons[1]
-      ? `<div class="slot-box clickable" style="transform: scale(0.9);" onclick="window.openItemDetails('${loadout.addons[1]}', 'addons', '${data.role}')"><img src="${loadout.addons[1]}"></div>`
-      : `<div class="slot-box" style="transform: scale(0.9);"></div>`;
-
-  if (data.role === "survivor") {
-    itemAddonSection.innerHTML = `
-            <div style="display: flex; justify-content: center; gap: 40px;">
-                <div style="text-align: center;">
-                    <span style="color: #888; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 8px; font-weight: bold;">Item</span>
-                    ${itemHtml}
-                </div>
-                <div style="text-align: center;">
-                    <span style="color: #888; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 8px; font-weight: bold;">Add-ons</span>
-                    <div style="display: flex; gap: 10px;">
-                        ${addon1Html}
-                        ${addon2Html}
-                    </div>
-                </div>
-            </div>
-        `;
-  } else {
-    itemAddonSection.innerHTML = `
-            <div style="text-align: center;">
-                <span style="color: #888; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 8px; font-weight: bold;">Add-ons do Poder</span>
-                <div style="display: flex; gap: 10px; justify-content: center;">
-                    ${addon1Html}
-                    ${addon2Html}
-                </div>
-            </div>
-        `;
-  }
-
-  document.getElementById("view-modal").classList.add("open");
-};
-
-window.deleteBuild = async (id) => {
-  if (!confirm("Tem certeza que deseja apagar esta build permanentemente?"))
-    return;
-  await deleteDoc(doc(db, "comunidade_builds_visual", id));
-};
-
-window.closeModalOut = (e, id) => {
-  if (e.target.id === id) document.getElementById(id).classList.remove("open");
-};
-
-window.filterBuilds = (type) => {
-  const container = document.getElementById("builds-container");
-  container.innerHTML = "";
-  const filtered =
-    type === "all"
-      ? allBuildsData
-      : allBuildsData.filter((b) => b.role === type);
-  if (filtered.length === 0) {
-    container.innerHTML =
-      '<p style="grid-column: 1/-1; text-align: center; color: #888;">Nenhuma build nesta categoria.</p>';
-    return;
-  }
-  filtered.forEach((data) => createBuildCard(data.id, data, container));
-};
-
-async function sendToDiscordWebhook(buildData) {
-  const WEBHOOK_URL =
-    "https://discord.com/api/webhooks/1490736592535420948/Kr4ttIOAJKz-fj8oYmoxlQ6WdDip0vm2oq-yBndc0dWpCCvzAmc1YukyaGi1FkSPIVCv";
-
-  const BASE_GITHUB_URL =
-    "https://raw.githubusercontent.com/Antonizinhobr/dbdclan-com/SH4DOW/assets/img/dbd";
-
-  const ADDONS_DB = {
+const ADDONS_DB = {
     automaticdrawing:
       "Automatic Drawing. Reduz o tempo de recarga dos Corvos em 1.5s.",
     charcoalstick:
@@ -6442,14 +5810,665 @@ async function sendToDiscordWebhook(buildData) {
       "Victor's Razor Blade. Ao final do Quebra-Mundos, Sobreviventes feridos ganham o status Quebrado (Broken) por 20 segundos.",
   };
 
-// --- FUNÇÃO 1: NOME PARA EXIBIÇÃO (TEXTO) ---
-    function getOfficialName(path) {
+
+// ==========================================
+// AUTENTICAÇÃO E LOGOUT
+// ==========================================
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    currentUser = user;
+    
+    // Verifica Permissão Master
+    isAdmin = ADMIN_UIDS.includes(user.uid) || 
+              (user.email && ADMIN_EMAILS.includes(user.email.toLowerCase()));
+
+    const userName = user.displayName || (user.email ? user.email.split("@")[0] : "SOBREVIVENTE");
+    document.getElementById("display-name").innerText = userName.toUpperCase();
+
+    // Carrega builds após verificar usuário
+    ouvirBuilds();
+  } else {
+    window.location.href = "login.html";
+  }
+});
+
+const profileTrigger = document.getElementById("user-profile-trigger");
+const userSubmenu = document.getElementById("user-submenu");
+const logoutBtn = document.getElementById("logout-btn");
+
+if (profileTrigger)
+  profileTrigger.onclick = (e) => {
+    e.stopPropagation();
+    userSubmenu.classList.toggle("hidden");
+  };
+window.addEventListener("click", () => {
+  if (userSubmenu && !userSubmenu.classList.contains("hidden"))
+    userSubmenu.classList.add("hidden");
+});
+if (logoutBtn)
+  logoutBtn.onclick = () =>
+    signOut(auth).then(() => (window.location.href = "login.html"));
+
+// ==========================================
+// SISTEMA DE BUSCA
+// ==========================================
+window.searchGrid = (gridId, searchTerm) => {
+  const grid = document.getElementById(gridId);
+  if (!grid) return;
+  const term = searchTerm.toLowerCase();
+  const items = grid.querySelectorAll(".selectable-item");
+  items.forEach((item) => {
+    const title = item.querySelector(".tooltip-title").innerText.toLowerCase();
+    item.style.display = title.includes(term) ? "block" : "none";
+  });
+};
+
+// ==========================================
+// LÓGICA DE FORMATAÇÃO E DESCRIÇÃO
+// ==========================================
+function formatDbdFilename(filename) {
+  if (!filename) return "";
+  let clean = filename.split("/").pop();
+  clean = clean.replace(".png", "");
+  if (clean.includes("_")) clean = clean.split("_").pop();
+  return clean.replace(/([A-Z])/g, " $1").trim();
+}
+
+function getGenericDescription(name, type) {
+  if (descricoesCustomizadas[name]) {
+    return descricoesCustomizadas[name];
+  }
+  if (type === "perks")
+    return `Esta é uma vantagem estratégica chamada ${name}. Use-a para ganhar vantagem na partida.`;
+  if (type === "item")
+    return `Um item essencial para sobrevivência: ${name}. Use com sabedoria.`;
+  if (type === "addons")
+    return `Melhoria para seu equipamento: ${name}. Altera a funcionalidade básica.`;
+  return "";
+}
+
+// ==========================================
+// RENDERIZAÇÃO DE GRIDS
+// ==========================================
+function renderGrid(containerId, fileList, pathPrefix, type, maxSelect) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = "";
+
+  if (!fileList || (Array.isArray(fileList) && fileList.length === 0)) {
+    container.innerHTML =
+      '<p style="color:#666; font-size:0.8rem; grid-column:1/-1; text-align:center;">Selecione o item primeiro.</p>';
+    return;
+  }
+
+  fileList.forEach((file) => {
+    const cleanName = formatDbdFilename(file);
+    const fullPath = `../assets/img/dbd/${pathPrefix}/${file}`;
+    const el = document.createElement("div");
+    el.className = "selectable-item";
+    el.innerHTML = `<img src="${fullPath}"><div class="tooltip-title" style="display:none;">${cleanName}</div>`;
+    el.onclick = () =>
+      openSelectionDetailsModal(el, fullPath, cleanName, type, maxSelect);
+    container.appendChild(el);
+  });
+}
+
+// ==========================================
+// GERENCIAMENTO DE MODAIS (CRIAÇÃO E VISUALIZAÇÃO)
+// ==========================================
+let currentRoleMode = "";
+let selectedData = { character: null, perks: [], item: null, addons: [] };
+let currentStep = 1;
+let pendingSelection = null;
+
+function openSelectionDetailsModal(
+  element,
+  fullPath,
+  cleanName,
+  type,
+  maxSelect,
+) {
+  pendingSelection = { element, fullPath, cleanName, type, maxSelect };
+  document.getElementById("sd-img").src = fullPath;
+
+  let displayTitle = cleanName;
+  let displayDesc = "";
+  const customText = descricoesCustomizadas[cleanName];
+
+  if (currentRoleMode === "killer" && type === "addons" && customText) {
+    const pontoIndex = customText.indexOf(".");
+    if (pontoIndex > -1 && pontoIndex < 50) {
+      displayTitle = customText.substring(0, pontoIndex).trim();
+      displayDesc = customText.substring(pontoIndex + 1).trim();
+    } else {
+      displayDesc = customText;
+    }
+  } else {
+    if (customText) {
+      displayDesc = customText;
+    } else {
+      displayDesc = getGenericDescription(cleanName, type);
+    }
+  }
+
+  document.getElementById("sd-title").innerText = displayTitle;
+  const descEl = document.getElementById("sd-desc");
+  descEl.innerText = displayDesc;
+
+  const typeLabel = document.getElementById("sd-type-label");
+  if (type === "character") {
+    typeLabel.innerText =
+      currentRoleMode === "survivor" ? "SOBREVIVENTE" : "ASSASSINO";
+    descEl.style.display = "none";
+  } else {
+    typeLabel.innerText =
+      type === "perks" ? "PERK" : type === "item" ? "ITEM" : "ADD-ON";
+    descEl.style.display = "block";
+  }
+
+  document.getElementById("sd-confirm-btn").style.display = "block";
+  const cancelBtn = document.querySelector("#selection-details-modal .outline");
+  cancelBtn.innerText = "CANCELAR";
+  cancelBtn.style.flex = "1";
+  cancelBtn.style.width = "auto";
+  document.getElementById("selection-details-modal").classList.add("open");
+}
+
+window.openItemDetails = (fullPath, type, roleMode) => {
+  if (!fullPath) return;
+  const cleanName = formatDbdFilename(fullPath);
+  document.getElementById("sd-img").src = fullPath;
+
+  let displayTitle = cleanName;
+  let displayDesc = "";
+  const customText = descricoesCustomizadas[cleanName];
+
+  if (roleMode === "killer" && type === "addons" && customText) {
+    const pontoIndex = customText.indexOf(".");
+    if (pontoIndex > -1 && pontoIndex < 50) {
+      displayTitle = customText.substring(0, pontoIndex).trim();
+      displayDesc = customText.substring(pontoIndex + 1).trim();
+    } else {
+      displayDesc = customText;
+    }
+  } else {
+    if (customText) {
+      displayDesc = customText;
+    } else {
+      displayDesc = getGenericDescription(cleanName, type);
+    }
+  }
+
+  document.getElementById("sd-title").innerText = displayTitle;
+  const descEl = document.getElementById("sd-desc");
+  descEl.innerText = displayDesc;
+
+  const typeLabel = document.getElementById("sd-type-label");
+  if (type === "character") {
+    typeLabel.innerText =
+      roleMode === "survivor" ? "SOBREVIVENTE" : "ASSASSINO";
+    descEl.style.display = "none";
+  } else {
+    typeLabel.innerText =
+      type === "perks" ? "PERK" : type === "item" ? "ITEM" : "ADD-ON";
+    descEl.style.display = "block";
+  }
+
+  document.getElementById("sd-confirm-btn").style.display = "none";
+  const cancelBtn = document.querySelector("#selection-details-modal .outline");
+  cancelBtn.innerText = "FECHAR";
+  cancelBtn.style.flex = "none";
+  cancelBtn.style.width = "100%";
+  document.getElementById("selection-details-modal").classList.add("open");
+};
+
+window.closeSelectionModal = () => {
+  document.getElementById("selection-details-modal").classList.remove("open");
+  pendingSelection = null;
+};
+
+document.getElementById("sd-confirm-btn").onclick = () => {
+  if (!pendingSelection) return;
+  const { element, fullPath, cleanName, type, maxSelect } = pendingSelection;
+  executeSelection(element, fullPath, type, maxSelect, cleanName);
+  window.closeSelectionModal();
+};
+
+function executeSelection(element, path, type, maxSelect, name) {
+  if (maxSelect === 1) {
+    const currentSelected = element.parentElement.querySelector(".selected");
+    if (currentSelected) currentSelected.classList.remove("selected");
+    element.classList.add("selected");
+    selectedData[type] = path;
+
+    if (type === "item" && currentRoleMode === "survivor") {
+      updateSlot("selected-item-slot", path);
+
+      let folder = name.toLowerCase().replace(/\s/g, "") + "s";
+      if (name === "Toolbox") folder = "toolboxes";
+
+      const addons = survivorAddonFiles[name] || [];
+      renderGrid(
+        "addon-grid",
+        addons,
+        `addons/survivor/${folder}`,
+        "addons",
+        2,
+      );
+    }
+
+    if (type === "character") {
+      updateSlot("selected-char-slot", path);
+
+      if (currentRoleMode === "killer") {
+        const folderName = name.replace(/\s/g, "");
+
+        const addons = killerAddonFiles[name] || [];
+
+        console.log(
+          `Carregando ${addons.length} addons para ${name} na pasta ${folderName}`,
+        );
+
+        renderGrid(
+          "addon-grid",
+          addons,
+          `addons/killer/${folderName}`,
+          "addons",
+          2,
+        );
+      }
+    }
+  } else {
+    const index = selectedData[type].indexOf(path);
+    if (index > -1) {
+      selectedData[type].splice(index, 1);
+      element.classList.remove("selected");
+    } else {
+      if (selectedData[type].length < maxSelect) {
+        selectedData[type].push(path);
+        element.classList.add("selected");
+      } else {
+        alert(`Máximo de ${maxSelect} seleções permitidas.`);
+        return;
+      }
+    }
+    updateMultiSlots(type);
+  }
+}
+
+function updateSlot(slotId, imgPath) {
+  document.getElementById(slotId).innerHTML = imgPath
+    ? `<img src="${imgPath}">`
+    : "";
+}
+
+function updateMultiSlots(type) {
+  const containerId = type === "perks" ? "perk-slots" : "addon-slots";
+  const slots = document
+    .getElementById(containerId)
+    .querySelectorAll(".slot-box");
+  slots.forEach((slot, i) => {
+    slot.innerHTML = selectedData[type][i]
+      ? `<img src="${selectedData[type][i]}">`
+      : "";
+  });
+}
+
+window.openCreateModal = (role) => {
+  currentRoleMode = role;
+  currentStep = 1;
+  selectedData = { character: null, perks: [], item: null, addons: [] };
+  document
+    .querySelectorAll("#create-modal .selectable-item")
+    .forEach((el) => el.classList.remove("selected"));
+  document
+    .querySelectorAll("#create-modal .slot-box")
+    .forEach((slot) => (slot.innerHTML = ""));
+  document.getElementById("b-title").value = "";
+  document.getElementById("b-desc").value = "";
+
+  const modalTitle = document.getElementById("modal-role-title");
+  if (role === "survivor") {
+    modalTitle.innerText = "NOVA BUILD DE SOBREVIVENTE";
+    modalTitle.style.color = "#00ff00";
+    document.getElementById("addon-step-title").innerText =
+      "5. SELEC OS ADD-ONS DO ITEM (Max 2)";
+    renderGrid("char-grid", survivorFiles, "survivors", "character", 1);
+    renderGrid(
+      "perk-grid-selection",
+      survivorPerkFiles,
+      "perks/survivor",
+      "perks",
+      4,
+    );
+    renderGrid("item-grid", itemFiles, "items", "item", 1);
+    renderGrid("addon-grid", [], "", "addons", 2);
+  } else {
+    modalTitle.innerText = "NOVA BUILD DE ASSASSINO";
+    modalTitle.style.color = "#ff0000";
+    document.getElementById("addon-step-title").innerText =
+      "4. SELECIONE OS ADD-ONS DO PODER (Max 2)";
+    renderGrid("char-grid", killerFiles, "killers", "character", 1);
+    renderGrid(
+      "perk-grid-selection",
+      killerPerkFiles,
+      "perks/killer",
+      "perks",
+      4,
+    );
+    renderGrid("addon-grid", [], "addons/killer", "addons", 2);
+  }
+  updateWizardUI();
+  document.getElementById("create-modal").classList.add("open");
+};
+
+function updateWizardUI() {
+  document
+    .querySelectorAll(".wizard-step")
+    .forEach((el) => el.classList.add("hidden"));
+  document.getElementById(`step-${currentStep}`).classList.remove("hidden");
+  document.getElementById("btn-prev").style.display =
+    currentStep === 1 ? "none" : "block";
+
+  const isLastStep = currentStep === 5;
+  document.getElementById("btn-next").innerText = isLastStep
+    ? "PUBLICAR NA NÉVOA"
+    : "AVANÇAR";
+
+  let displayStep = currentStep;
+  let total = currentRoleMode === "killer" ? 4 : 5;
+  if (currentRoleMode === "killer" && currentStep === 5) displayStep = 4;
+  document.getElementById("step-indicator").innerText =
+    `Passo ${displayStep} de ${total}`;
+
+  document
+    .querySelectorAll(".search-input")
+    .forEach((input) => (input.value = ""));
+  document
+    .querySelectorAll(".selectable-item")
+    .forEach((item) => (item.style.display = "block"));
+}
+
+window.nextStep = () => {
+  if (currentStep === 1 && !selectedData.character) {
+    alert("Selecione um personagem primeiro.");
+    return;
+  }
+  if (currentStep === 2) {
+    if (!document.getElementById("b-title").value.trim()) {
+      alert("Dê um nome para a build.");
+      return;
+    }
+    if (!document.getElementById("b-desc").value.trim()) {
+      alert("Escreva uma descrição.");
+      return;
+    }
+  }
+  if (currentStep === 3 && selectedData.perks.length < 4) {
+    alert("Selecione 4 perks.");
+    return;
+  }
+  if (
+    currentStep === 4 &&
+    currentRoleMode === "survivor" &&
+    !selectedData.item
+  ) {
+    alert("Selecione um item.");
+    return;
+  }
+
+  if (currentRoleMode === "killer" && currentStep === 3) currentStep = 5;
+  else currentStep++;
+
+  if (currentStep > 5) submitBuild();
+  else updateWizardUI();
+};
+
+window.prevStep = () => {
+  if (currentRoleMode === "killer" && currentStep === 5) currentStep = 3;
+  else currentStep--;
+  updateWizardUI();
+};
+
+// ==========================================
+// FIRESTORE E RENDERIZAÇÃO DE BUILDS (FIXED)
+// ==========================================
+async function submitBuild() {
+  if (!currentUser) return;
+
+  const buildData = {
+    role: currentRoleMode,
+    title: document.getElementById("b-title").value,
+    description: document.getElementById("b-desc").value,
+    loadout: selectedData,
+    authorName: currentUser.displayName || "Anônimo",
+    authorEmail: currentUser.email || "Discord User",
+    authorUid: currentUser.uid, // Registra o UID do autor
+    authorPhoto: currentUser.photoURL || "../assets/icon.jpg",
+    createdAt: serverTimestamp(),
+  };
+
+  try {
+    await addDoc(collection(db, "comunidade_builds_visual"), buildData);
+    sendToDiscordWebhook(buildData);
+    document.getElementById("create-modal").classList.remove("open");
+    alert("Build publicada com sucesso e enviada para a Névoa!");
+  } catch (error) {
+    console.error("Erro:", error);
+    alert("Erro ao salvar build.");
+  }
+}
+
+function ouvirBuilds() {
+  const container = document.getElementById("builds-container");
+  const q = query(
+    collection(db, "comunidade_builds_visual"),
+    orderBy("createdAt", "desc")
+  );
+
+  onSnapshot(q, (snapshot) => {
+    container.innerHTML = "";
+    allBuildsData = [];
+    if (snapshot.empty) {
+      container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #888;">Nenhuma build encontrada.</p>';
+      return;
+    }
+    snapshot.forEach((docSnap) => {
+      const data = docSnap.data();
+      allBuildsData.push({ id: docSnap.id, ...data });
+      createBuildCard(docSnap.id, data, container);
+    });
+  });
+}
+
+function createBuildCard(id, data, container) {
+  // Lógica de Lixeira: Verifica Email OU UID
+  const isOwner = currentUser && (
+    (data.authorUid === currentUser.uid) || 
+    (data.authorEmail && currentUser.email === data.authorEmail)
+  );
+
+  const canDelete = isOwner || isAdmin;
+
+  const card = document.createElement("div");
+  card.className = `build-card ${data.role}`;
+  card.onclick = (e) => {
+    if (!e.target.closest(".delete-btn-card")) openViewModal(data);
+  };
+
+  let deleteHtml = canDelete
+      ? `<div class="delete-btn-card" onclick="window.deleteBuild('${id}')"><i class="fas fa-trash"></i></div>`
+      : "";
+      
+  const loadout = data.loadout || { perks: [], addons: [] };
+  const coverImg =
+    loadout.character || loadout.perks[0] || "../assets/icon.jpg";
+
+  const charName = loadout.character
+    ? formatDbdFilename(loadout.character)
+    : "Desconhecido";
+  const roleColor = data.role === "survivor" ? "#00ff00" : "#ff0000";
+
+  card.innerHTML = `
+        ${deleteHtml}
+        <div class="build-header" style="background-image: url('${coverImg}'); background-size: cover; background-position: center; height: 100px; position: relative;">
+            <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.6);"></div>
+            <span class="role-badge ${data.role === "survivor" ? "surv" : "kill"}" style="position: relative; z-index: 2;">
+                <i class="fas ${data.role === "survivor" ? "fa-running" : "fa-skull"}"></i> ${data.role}
+            </span>
+        </div>
+        <div class="build-body">
+            <div class="build-title">${data.title}</div>
+            
+            <div style="font-size: 0.75rem; color: #ccc; margin-bottom: 10px; font-family: var(--font-game); text-transform: uppercase;">
+                <i class="fas fa-user" style="color: ${roleColor}; margin-right: 5px;"></i> ${charName}
+            </div>
+            
+             <div class="build-author">
+                <img src="${data.authorPhoto}" class="author-img"> <span>${data.authorName}</span>
+            </div>
+        </div>
+    `;
+  container.appendChild(card);
+}
+
+// ==========================================
+// VISUALIZAÇÃO INTERATIVA DA BUILD
+// ==========================================
+window.openViewModal = (data) => {
+  document.getElementById("v-title").innerText = data.title;
+  const rBadge = document.getElementById("v-role");
+  rBadge.innerText = data.role === "survivor" ? "SOBREVIVENTE" : "ASSASSINO";
+  rBadge.className = `role-badge ${data.role === "survivor" ? "surv" : "kill"}`;
+
+  const loadout = data.loadout || {
+    character: "",
+    perks: [],
+    item: "",
+    addons: [],
+  };
+
+  document.getElementById("v-author-img").src =
+    data.authorPhoto || "../assets/icon.jpg";
+  document.getElementById("v-author").innerText =
+    `Criado por: ${data.authorName}`;
+  document.getElementById("v-desc").innerText = `"${data.description}"`;
+
+  const charImg = document.getElementById("v-character-loadout-img");
+  const charBox = charImg.parentElement;
+  charImg.src = loadout.character || "../assets/icon.jpg";
+  document.getElementById("v-character-name").innerText = loadout.character
+    ? formatDbdFilename(loadout.character)
+    : "Desconhecido";
+
+  if (loadout.character) {
+    charBox.classList.add("clickable");
+    charBox.onclick = () =>
+      window.openItemDetails(loadout.character, "character", data.role);
+  } else {
+    charBox.classList.remove("clickable");
+    charBox.onclick = null;
+  }
+
+  // Perks Loadout Setup (Clickable)
+  for (let i = 1; i <= 4; i++) {
+    const pPath = loadout.perks[i - 1];
+    const pImg = document.getElementById(`v-p${i}`);
+    const pBox = pImg.parentElement;
+    pImg.src = pPath || "";
+
+    if (pPath) {
+      pBox.classList.add("clickable");
+      pBox.onclick = () => window.openItemDetails(pPath, "perks", data.role);
+    } else {
+      pBox.classList.remove("clickable");
+      pBox.onclick = null;
+    }
+  }
+
+  const itemAddonSection = document.getElementById("v-item-addon-section");
+  itemAddonSection.innerHTML = "";
+
+  const itemHtml = loadout.item
+    ? `<div class="slot-box clickable" onclick="window.openItemDetails('${loadout.item}', 'item', '${data.role}')"><img src="${loadout.item}"></div>`
+    : `<div class="slot-box"></div>`;
+  const addon1Html =
+    loadout.addons && loadout.addons[0]
+      ? `<div class="slot-box clickable" style="transform: scale(0.9);" onclick="window.openItemDetails('${loadout.addons[0]}', 'addons', '${data.role}')"><img src="${loadout.addons[0]}"></div>`
+      : `<div class="slot-box" style="transform: scale(0.9);"></div>`;
+  const addon2Html =
+    loadout.addons && loadout.addons[1]
+      ? `<div class="slot-box clickable" style="transform: scale(0.9);" onclick="window.openItemDetails('${loadout.addons[1]}', 'addons', '${data.role}')"><img src="${loadout.addons[1]}"></div>`
+      : `<div class="slot-box" style="transform: scale(0.9);"></div>`;
+
+  if (data.role === "survivor") {
+    itemAddonSection.innerHTML = `
+            <div style="display: flex; justify-content: center; gap: 40px;">
+                <div style="text-align: center;">
+                    <span style="color: #888; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 8px; font-weight: bold;">Item</span>
+                    ${itemHtml}
+                </div>
+                <div style="text-align: center;">
+                    <span style="color: #888; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 8px; font-weight: bold;">Add-ons</span>
+                    <div style="display: flex; gap: 10px;">
+                        ${addon1Html}
+                        ${addon2Html}
+                    </div>
+                </div>
+            </div>
+        `;
+  } else {
+    itemAddonSection.innerHTML = `
+            <div style="text-align: center;">
+                <span style="color: #888; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 8px; font-weight: bold;">Add-ons do Poder</span>
+                <div style="display: flex; gap: 10px; justify-content: center;">
+                    ${addon1Html}
+                    ${addon2Html}
+                </div>
+            </div>
+        `;
+  }
+
+  document.getElementById("view-modal").classList.add("open");
+};
+
+window.deleteBuild = async (id) => {
+  if (!confirm("Tem certeza que deseja apagar esta build permanentemente?"))
+    return;
+  await deleteDoc(doc(db, "comunidade_builds_visual", id));
+};
+
+window.closeModalOut = (e, id) => {
+  if (e.target.id === id) document.getElementById(id).classList.remove("open");
+};
+
+// Filtro Corrigido
+window.filterBuilds = (type) => {
+  const container = document.getElementById("builds-container");
+  container.innerHTML = "";
+  const filtered = type === "all" ? allBuildsData : allBuildsData.filter((b) => b.role === type);
+  
+  if (filtered.length === 0) {
+    container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #888;">Nenhuma build nesta categoria.</p>';
+    return;
+  }
+  
+  filtered.forEach((data) => createBuildCard(data.id, data, container));
+};
+
+// ==========================================
+// WEBHOOK PARA O DISCORD
+// ==========================================
+async function sendToDiscordWebhook(buildData) {
+  const WEBHOOK_URL =
+    "https://discord.com/api/webhooks/1490736592535420948/Kr4ttIOAJKz-fj8oYmoxlQ6WdDip0vm2oq-yBndc0dWpCCvzAmc1YukyaGi1FkSPIVCv";
+
+  const BASE_GITHUB_URL =
+    "https://raw.githubusercontent.com/Antonizinhobr/dbdclan-com/SH4DOW/assets/img/dbd";
+
+  function getOfficialName(path) {
         if (!path || path === "empty") return "Indefinido";
-        
         let rawKey = path.split('/').pop().replace(/\.png|\.jpg/gi, '');
-        
         rawKey = rawKey.replace(/^(?:t_ui_|t_|icon|charportrait|perk|addon|item)s?[_\s\-]*(?:perks?|items?|addons?)?[_\s\-]*/i, '');
-        
         let dictKey = rawKey.toLowerCase().replace(/[\s_]+/g, '');
 
         if (ADDONS_DB[dictKey]) {
@@ -6462,79 +6481,53 @@ async function sendToDiscordWebhook(buildData) {
         if (name.length > 0) name = name.charAt(0).toUpperCase() + name.slice(1);
         
         return name.replace(/\s+/g, ' '); 
-    }
+  }
 
-  // --- FUNÇÃO 2: URL PARA O GITHUB ---
   function getMyGithubUrl(localPath) {
-    if (!localPath || typeof localPath !== "string" || localPath === "empty")
-      return null;
-
+    if (!localPath || typeof localPath !== "string" || localPath === "empty") return null;
     const marker = "/dbd/";
     const index = localPath.indexOf(marker);
-
     if (index === -1) return null;
-
     let relativePath = localPath.substring(index + marker.length);
-
     let parts = relativePath.split("/");
-
-    if (parts[0] && parts[0].match(/^survivor/i)) {
-      parts[0] = "survivors";
-    }
-    if (parts[0] && parts[0].match(/^killer/i)) {
-      parts[0] = "killers";
-    }
-
+    if (parts[0] && parts[0].match(/^survivor/i)) parts[0] = "survivors";
+    if (parts[0] && parts[0].match(/^killer/i)) parts[0] = "killers";
     let fileName = parts.pop();
     let safeFileName = encodeURIComponent(fileName);
-
     let finalPath = [...parts, safeFileName].join("/");
-
     return `${BASE_GITHUB_URL}/${finalPath}`;
   }
 
-  // 1. Definições
   const isSurv = buildData.role === "survivor";
   const colorInt = isSurv ? 65280 : 16711680;
 
-  // 2. URLs
   let charUrl = getMyGithubUrl(buildData.loadout.character);
   let mainItemUrl = null;
   if (isSurv && buildData.loadout.item && buildData.loadout.item !== "empty") {
     mainItemUrl = getMyGithubUrl(buildData.loadout.item);
   }
 
-  // 3. Perks
   let perksText = "Nenhuma perk selecionada";
   if (buildData.loadout.perks && buildData.loadout.perks.length > 0) {
-    const validPerks = buildData.loadout.perks.filter(
-      (p) => p && p !== "empty",
-    );
+    const validPerks = buildData.loadout.perks.filter((p) => p && p !== "empty");
     if (validPerks.length > 0) {
-      perksText = validPerks
-        .map((p) => {
+      perksText = validPerks.map((p) => {
           const name = getOfficialName(p);
           const url = getMyGithubUrl(p);
           return url ? `💎 [${name}](${url})` : `💎 ${name}`;
-        })
-        .join("\n");
+        }).join("\n");
     }
   }
 
-  // 4. Addons
   let addonsText = "";
   if (buildData.loadout.addons && buildData.loadout.addons.length > 0) {
-    const validAddons = buildData.loadout.addons.filter(
-      (a) => a && a !== "empty",
-    );
+    const validAddons = buildData.loadout.addons.filter((a) => a && a !== "empty");
     if (validAddons.length > 0) {
-      addonsText = validAddons
-        .map((a) => {
+      addonsText = validAddons.map((a) => {
           const name = getOfficialName(a);
           const url = getMyGithubUrl(a);
           return url ? `🔧 [${name}](${url})` : `🔧 ${name}`;
-        })
-        .join("\n");
+        }).join("\n");
     } else {
       addonsText = "Sem add-ons";
     }
@@ -6542,16 +6535,12 @@ async function sendToDiscordWebhook(buildData) {
     addonsText = "Sem add-ons";
   }
 
-  // 5. Equipamento
   let equipmentTitle = "";
   let equipmentValue = "";
 
   if (isSurv) {
     equipmentTitle = "🎒 EQUIPAMENTO";
-    const nomeItem =
-      buildData.loadout.item && buildData.loadout.item !== "empty"
-        ? getOfficialName(buildData.loadout.item)
-        : "Nenhum";
+    const nomeItem = buildData.loadout.item && buildData.loadout.item !== "empty" ? getOfficialName(buildData.loadout.item) : "Nenhum";
     const itemLink = mainItemUrl ? `[${nomeItem}](${mainItemUrl})` : nomeItem;
     equipmentValue = `**Item:** ${itemLink}\n**Add-ons:**\n${addonsText}`;
   } else {
@@ -6559,54 +6548,34 @@ async function sendToDiscordWebhook(buildData) {
     equipmentValue = `**Melhorias:**\n${addonsText}`;
   }
 
-  // 6. Embed
   const embed = {
     title: "DETALHES DA ESTRATÉGIA",
     description: `>>> *${buildData.description || "Sem descrição tática."}*`,
     url: "https://deadbydaylight.com",
     color: colorInt,
     fields: [
-      {
-        name: "👤 Criador",
-        value: buildData.authorName || "Anônimo",
-        inline: true,
-      },
-      {
-        name: isSurv ? "🏃 Sobrevivente" : "🔪 Assassino",
-        value: getOfficialName(buildData.loadout.character || "Desconhecido"),
-        inline: true,
-      },
+      { name: "👤 Criador", value: buildData.authorName || "Anônimo", inline: true },
+      { name: isSurv ? "🏃 Sobrevivente" : "🔪 Assassino", value: getOfficialName(buildData.loadout.character || "Desconhecido"), inline: true },
       { name: "\u200b", value: "\u200b", inline: false },
       { name: "PERKS", value: perksText, inline: true },
       { name: equipmentTitle, value: equipmentValue, inline: true },
     ],
-    footer: {
-      text: "DbD Builder • Arsenal da Névoa",
-      icon_url: "https://cdn-icons-png.flaticon.com/512/5968/5968756.png",
-    },
+    footer: { text: "DbD Builder • Arsenal da Névoa", icon_url: "https://cdn-icons-png.flaticon.com/512/5968/5968756.png" },
     timestamp: new Date().toISOString(),
   };
 
-  if (charUrl) {
-    embed.image = { url: charUrl };
-  }
+  if (charUrl) embed.image = { url: charUrl };
 
-  // 7. Payload
   const payload = {
     username: "A Entidade",
-    avatar_url:
-      "https://i.ibb.co/KYsR2S1/20620020-estrangeiro-logotipo-icone-criatura-face-do-desconhecido-entidade-vetor.jpg",
+    avatar_url: "https://i.ibb.co/KYsR2S1/20620020-estrangeiro-logotipo-icone-criatura-face-do-desconhecido-entidade-vetor.jpg",
     thread_name: `Build de ${buildData.authorName}: ${buildData.title.toUpperCase()}`,
     content: `🔔 **NOVA ESTRATÉGIA FORJADA!** @here`,
     embeds: [embed],
   };
 
   try {
-    await fetch(WEBHOOK_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
+    await fetch(WEBHOOK_URL, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
     console.log("Enviado para o Discord!");
   } catch (error) {
     console.error("Erro:", error);
