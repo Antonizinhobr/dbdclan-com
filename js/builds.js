@@ -6571,7 +6571,7 @@ async function sendToDiscordWebhook(buildData) {
     username: "A Entidade",
     avatar_url: "https://i.ibb.co/KYsR2S1/20620020-estrangeiro-logotipo-icone-criatura-face-do-desconhecido-entidade-vetor.jpg",
     thread_name: `Build de ${buildData.authorName}: ${buildData.title.toUpperCase()}`,
-    content: `🔔 **NOVA ESTRATÉGIA FORJADA!** @here`,
+    content: `🔔 **NOVA ESTRATÉGIA FORJADA!** @everyone`,
     embeds: [embed],
   };
 
