@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DbD - Times do Torneio</title>
     <link rel="stylesheet" href="../assets/css/index.css">
+    <link rel="stylesheet" href="../assets/css/teams.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="icon" href="../assets/icon.jpg" type="image/jpg">
 </head>
@@ -15,21 +16,27 @@
         
         <nav class="nav-menu">
             <a href="home.html" class="nav-link">Votação</a>
-            
             <div class="nav-dropdown">
-                <a href="#" class="nav-link active">Times <i class="fas fa-chevron-down" style="font-size: 0.6rem; margin-left: 5px;"></i></a>
-                <div class="dropdown-content">
+                <a href="#" class="nav-link active">Times <i class="fas fa-chevron-down nav-chevron"></i></a>
+                <div class="dropdown-content" id="camp-dropdown-list">
                     <a href="teams.html?camp=1">Campeonato 1</a>
                 </div>
             </div>
-
             <a href="perks.html" class="nav-link">Perks Banidas</a>
         </nav>
 
-        <div class="user-container">
-            <a href="dashboard.html" style="color: #666; text-decoration: none; font-size: 0.8rem; font-family: var(--font-game);">
-                <i class="fas fa-arrow-left"></i> VOLTAR AO HUB
-            </a>
+        <div class="header-user-wrapper">
+            <div class="user-container" id="user-profile-trigger">
+                <span id="display-name">...</span>
+                <div class="avatar-circle">
+                    <img src="../assets/icon.jpg" id="header-avatar" alt="User">
+                </div>
+            </div>
+            <div id="user-submenu" class="hidden user-submenu-box">
+                <button id="logout-btn" class="btn-logout">
+                    <i class="fas fa-sign-out-alt"></i> SAIR DA NÉVOA
+                </button>
+            </div>
         </div>
     </header>
 
@@ -40,27 +47,51 @@
         </video>
     </div>
 
-    <main>
+    <main class="main-padding">
         <div class="info-section transparent-bg">
-            <h1>EQUIPES DO TORNEIO</h1>
-            <p>Selecione uma equipe para ver os membros.</p>
+            <h1 id="page-main-title">EQUIPES DO TORNEIO</h1>
+            <p>Selecione uma equipe para ver os membros ou inscreva o seu time.</p>
         </div>
 
-        <div class="perks-container">
-            <div class="perk-grid" id="teams-grid" style="gap: 20px;">
-                </div>
+        <div id="admin-camp-controls" class="hidden admin-camp-controls">
+            <span class="admin-title">👑 ADMIN:</span>
+            <button id="btn-toggle-lock" class="cta-btn outline admin-btn-action" onclick="window.toggleLockCamp()">
+                <i class="fas fa-lock"></i> ENCERRAR INSCRIÇÕES
+            </button>
+            <button id="btn-delete-camp" class="cta-btn outline admin-btn-action admin-btn-delete" onclick="window.deleteCamp()">
+                <i class="fas fa-trash-alt"></i> EXCLUIR CAMPEONATO
+            </button>
+        </div>
+
+        <div id="camp-status-banner" class="hidden camp-status-banner">
+            <i class="fas fa-exclamation-triangle icon-warning"></i> ESTE CAMPEONATO FOI ENCERRADO. INSCRIÇÕES E ALTERAÇÕES ESTÃO BLOQUEADAS.
+        </div>
+
+        <div class="center-box-spaced">
+            <button id="btn-create-team-main" class="glass-led-btn btn-kill btn-large-center" onclick="window.openCreateTeamModal()">
+                <i class="fas fa-shield-alt"></i> REGISTRAR MINHA EQUIPE
+            </button>
+        </div>
+
+        <div class="perks-container pt-0">
+            <div class="perk-grid grid-gap-20" id="teams-grid">
+                <p class="empty-msg">Carregando equipes da Névoa...</p>
+            </div>
         </div>
     </main>
 
-    <div id="team-modal" class="perk-modal" onclick="closeModal(event)">
-        <div class="perk-modal-content">
-            <button class="close-modal-btn" onclick="closeModal(event)">×</button>
+    <div id="team-modal" class="perk-modal" onclick="window.closeModalOut(event, 'team-modal')">
+        <div class="perk-modal-content modal-max-800">
+            <button class="close-modal-btn" onclick="window.closeModal('team-modal')">×</button>
             
-            <div class="modal-image-side" style="flex-direction: column; border-right: 1px solid #333;">
-                <img id="m-team-logo" src="" alt="Team Logo" style="width: 150px; height: 150px; margin-bottom: 20px;">
-                <div style="text-align: center;">
-                    <div style="color: #666; font-size: 0.8rem;">LÍDER DA EQUIPE</div>
-                    <div id="m-team-leader" style="color: #ff0000; font-weight: bold; font-size: 1.1rem; text-transform: uppercase;">NOME LIDER</div>
+            <div class="modal-image-side modal-img-col">
+                <img id="m-team-logo" src="" alt="Team Logo" class="team-logo-display">
+                <div class="text-center">
+                    <div class="subtitle-small">CAPITÃO DA EQUIPE <i class="fas fa-crown icon-gold"></i></div>
+                    <div id="m-team-leader" class="leader-name-highlight">NOME LIDER</div>
+                    <button id="delete-team-btn" class="cta-btn outline btn-delete-team hidden" onclick="window.deleteTeam(currentViewedTeamId)">
+                        <i class="fas fa-trash"></i> EXCLUIR EQUIPE
+                    </button>
                 </div>
             </div>
             
@@ -68,154 +99,67 @@
                 <div class="modal-perk-type">DETALHES DA EQUIPE</div>
                 <div class="modal-perk-name" id="m-team-name">NOME DO TIME</div>
                 
-                <div style="margin-top: 20px; border-top: 1px solid #333; padding-top: 15px;">
-                    <div style="color: #888; margin-bottom: 15px; font-size: 0.8rem;">MEMBROS CONFIRMADOS</div>
-                    <div class="team-members-grid" id="m-members-grid">
-                        </div>
+                <div class="modal-section-divider">
+                    <div class="roster-title">ELENCO CONFIRMADO (Capitão pode marcar o Assassino)</div>
+                    <div class="team-members-grid members-grid-4" id="m-members-grid"></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script>
-        /*
-        const allTeamsData = [
-            // ============ CAMPEONATO 1 ============
-            {
-                id: 1,
-                campId: 1, 
-                name: "HEAD-ON BABY",
-                leader: "BIEL",
-                logo: "https://i.ibb.co/BVVXYF9B/Head-On.png", 
-                members: [
-                    { name: "BIEL", img: "https://deadbydaylight.com/static/f3af49802c920a2a20a8c5ab9ba81a0c/17f75/felix_built_to_last_0393cb04b5.webp" },
-                    { name: "MADARA", img: "https://deadbydaylight.com/static/ae52d67e590bf950cc8aad7b49772d2f/5cdd8/DBD_CHAPTER_Donut_Perk_Power_Icon_Web_V1a_Lara_Croft_Specialist_16d3ebb91a.png" },
-                    { name: "PECLIST", img: "https://deadbydaylight.com/static/c1817cfeb86693dca0a7891d06938142/17f75/ash_mettle_of_man_b309993082.webp" },
-                    { name: "MK9", img: "https://deadbydaylight.com/static/476157bfaf17c877c5dc3625d86932c8/eb71d/AM_3607_DBD_CH_25_Perk_Icons_WEB_ADA_Wiretap_d495f59290.webp" },
-                    { name: "LOHAN", img: "https://deadbydaylight.com/static/476157bfaf17c877c5dc3625d86932c8/eb71d/AM_3607_DBD_CH_25_Perk_Icons_WEB_ADA_Wiretap_d495f59290.webp" }
-                ]
-            },
-            {
-                id: 2,
-                campId: 1,
-                name: "XERECUDAS DO ADOPT ME",
-                leader: "ENVYOUS",
-                logo: "https://i.ibb.co/TDzXhX6B/XEXECUDAS.png",
-                members: [
-                    { name: "ENVYOUS", img: "https://deadbydaylight.com/static/15784ce523232550dbe82f11822c4f66/17f75/trickster_no_way_out_f031ae648a.webp" },
-                    { name: "RIVEN", img: "https://deadbydaylight.com/static/15784ce523232550dbe82f11822c4f66/17f75/trickster_no_way_out_f031ae648a.webp" },
-                    { name: "JAUM", img: "https://deadbydaylight.com/static/15784ce523232550dbe82f11822c4f66/17f75/trickster_no_way_out_f031ae648a.webp" },
-                    { name: "CJ", img: "https://deadbydaylight.com/static/15784ce523232550dbe82f11822c4f66/17f75/trickster_no_way_out_f031ae648a.webp" },
-                    { name: "AETERNUM", img: "https://deadbydaylight.com/static/a9485074af79e9e6b4435cfc51843a93/17f75/trickster_hex_crowd_control_548bc70e3c.webp" }
-                ]
-            },  
-            {
-                id: 3,
-                campId: 1,
-                name: "FÚRIA",
-                leader: "BLACK INSN",
-                logo: "https://i.ibb.co/rGW73PfC/Furia-sem-fundo-2.png",
-                members: [
-                    { name: "BLACK INSN", img: "https://deadbydaylight.com/static/15784ce523232550dbe82f11822c4f66/17f75/trickster_no_way_out_f031ae648a.webp" },
-                    { name: "MAKASHE", img: "https://deadbydaylight.com/static/15784ce523232550dbe82f11822c4f66/17f75/trickster_no_way_out_f031ae648a.webp" },
-                    { name: "DRACMA", img: "https://deadbydaylight.com/static/15784ce523232550dbe82f11822c4f66/17f75/trickster_no_way_out_f031ae648a.webp" },
-                    { name: "WUNSC", img: "https://deadbydaylight.com/static/15784ce523232550dbe82f11822c4f66/17f75/trickster_no_way_out_f031ae648a.webp" },
-                    { name: "KODASHI", img: "https://deadbydaylight.com/static/15784ce523232550dbe82f11822c4f66/17f75/trickster_no_way_out_f031ae648a.webp" }
-                ]
-            }, 
-            {
-                id: 4,
-                campId: 1,
-                name: "BATUTINHA",
-                leader: "CRISTIANINHO",
-                logo: "https://i.ibb.co/ds7hn376/Batutinha.png",
-                members: [
-                    { name: "CRISTIANO", img: "https://deadbydaylight.com/static/15784ce523232550dbe82f11822c4f66/17f75/trickster_no_way_out_f031ae648a.webp" },
-                    { name: "ANTHONNY", img: "https://deadbydaylight.com/static/15784ce523232550dbe82f11822c4f66/17f75/trickster_no_way_out_f031ae648a.webp" },
-                    { name: "KIMMY", img: "https://deadbydaylight.com/static/15784ce523232550dbe82f11822c4f66/17f75/trickster_no_way_out_f031ae648a.webp" },
-                    { name: "LEO", img: "https://deadbydaylight.com/static/15784ce523232550dbe82f11822c4f66/17f75/trickster_no_way_out_f031ae648a.webp" },
-                    { name: "FELIPE", img: "https://deadbydaylight.com/static/15784ce523232550dbe82f11822c4f66/17f75/trickster_no_way_out_f031ae648a.webp" }
-                ]
-            },  
-        ];
-        */
+    <div id="create-team-modal" class="perk-modal" onclick="window.closeModalOut(event, 'create-team-modal')">
+        <div class="perk-modal-content modal-wizard-box">
+            <button class="close-modal-btn" onclick="window.closeModal('create-team-modal')">×</button>
+            <h2 id="modal-title-camp" class="wizard-title">INSCRIÇÃO DE EQUIPE</h2>
+            <div id="t-step-indicator" class="step-indicator">Passo 1 de 2</div>
 
-        const grid = document.getElementById('teams-grid');
-        const modal = document.getElementById('team-modal');
-        
-        const mLogo = document.getElementById('m-team-logo');
-        const mLeader = document.getElementById('m-team-leader');
-        const mName = document.getElementById('m-team-name');
-        const mMembersGrid = document.getElementById('m-members-grid');
-        const pageTitle = document.querySelector('.info-section h1');
+            <div id="t-step-1" class="wizard-step">
+                <div class="form-group">
+                    <label>Nome da Equipe</label>
+                    <input type="text" id="t-name" placeholder="Ex: Os Sobreviventes">
+                </div>
+                <div class="form-group">
+                    <label>Logo da Equipe (Opcional - Max 2MB - JPG/PNG)</label>
+                    <input type="file" id="t-logo" accept="image/png, image/jpeg" class="input-file-custom">
+                </div>
+                <div class="form-group">
+                    <label>Nome do Capitão</label>
+                    <input type="text" id="t-cap-name" placeholder="Seu nome ou Nick">
+                </div>
+                <div class="form-group">
+                    <label>E-mail do Capitão (Obrigatório - Chave Única)</label>
+                    <input type="email" id="t-cap-email" placeholder="seu@email.com">
+                </div>
+                <button class="cta-btn btn-full mt-15" onclick="window.nextTeamStep()">AVANÇAR PARA ELENCO</button>
+            </div>
 
-        function renderTeams() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const currentCamp = urlParams.get('camp') || '1'; 
-
-            pageTitle.innerText = `EQUIPES DO TORNEIO ${currentCamp}`;
-
-            const filteredTeams = allTeamsData.filter(team => team.campId == currentCamp);
-
-            grid.innerHTML = '';
-
-            if (filteredTeams.length === 0) {
-                grid.innerHTML = '<div style="width:100%; text-align:center; color:#888; margin-top:50px;">Nenhuma equipe cadastrada para este campeonato ainda.</div>';
-                return;
-            }
-
-            filteredTeams.forEach(team => {
-                const card = document.createElement('div');
-                card.className = 'team-card'; 
+            <div id="t-step-2" class="wizard-step hidden">
+                <label class="step-label">ELENCO DA EQUIPE (Max 3 Membros)</label>
                 
-                card.innerHTML = `
-                    <img src="${team.logo}" alt="${team.name}">
-                    <div class="team-info">
-                        <div class="team-name-card">${team.name}</div>
-                        <div class="team-leader-card">Líder: ${team.leader}</div>
+                <div id="draft-members-list" class="draft-list-box">
+                    <p class="empty-draft-text">Nenhum membro adicionado ainda.</p>
+                </div>
+
+                <div class="add-member-form">
+                    <div class="form-group mb-10">
+                        <label>Nome do Membro</label>
+                        <input type="text" id="m-name" placeholder="Nick do jogador">
                     </div>
-                `;
-                
-                card.onclick = () => openModal(team);
-                grid.appendChild(card);
-            });
-        }
+                    <div class="form-group mb-10">
+                        <label>E-mail do Membro</label>
+                        <input type="email" id="m-email" placeholder="email@jogador.com">
+                    </div>
+                    <button class="cta-btn outline btn-full btn-small" onclick="window.addDraftMember()">+ ADICIONAR AO ELENCO</button>
+                </div>
 
-        function openModal(team) {
-            mLogo.src = team.logo;
-            mLeader.innerText = team.leader;
-            mName.innerText = team.name;
-            
-            mMembersGrid.innerHTML = '';
+                <div class="wizard-nav-btns">
+                    <button class="cta-btn outline btn-medium" onclick="window.prevTeamStep()">VOLTAR</button>
+                    <button id="submit-team-btn" class="cta-btn btn-medium" onclick="window.submitTeam()">FINALIZAR INSCRIÇÃO</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-            // Se o time não tiver membros cadastrados, cria placeholders visuais
-            const membersList = team.members && team.members.length > 0 ? team.members : [
-                {name: team.leader, img: 'https://deadbydaylight.com/static/476157bfaf17c877c5dc3625d86932c8/eb71d/AM_3607_DBD_CH_25_Perk_Icons_WEB_ADA_Wiretap_d495f59290.webp'},
-                {name: "Membro", img: 'https://deadbydaylight.com/static/f3af49802c920a2a20a8c5ab9ba81a0c/17f75/felix_built_to_last_0393cb04b5.webp'},
-                {name: "Membro", img: 'https://deadbydaylight.com/static/ae52d67e590bf950cc8aad7b49772d2f/5cdd8/DBD_CHAPTER_Donut_Perk_Power_Icon_Web_V1a_Lara_Croft_Specialist_16d3ebb91a.png'},
-                {name: "Membro", img: 'https://deadbydaylight.com/static/c1817cfeb86693dca0a7891d06938142/17f75/ash_mettle_of_man_b309993082.webp'}
-            ];
-
-            membersList.forEach(member => {
-                const mCard = document.createElement('div');
-                mCard.className = 'member-card';
-                mCard.innerHTML = `
-                    <img src="${member.img}" class="member-avatar">
-                    <div class="member-name">${member.name}</div>
-                `;
-                mMembersGrid.appendChild(mCard);
-            });
-
-            modal.classList.add('open');
-        }
-
-        function closeModal(event) {
-            if (event.target === modal || event.target.classList.contains('close-modal-btn')) {
-                modal.classList.remove('open');
-            }
-        }
-
-        renderTeams();
-    </script>
+    <script type="module" src="../js/teams.js"></script>
 </body>
 </html>

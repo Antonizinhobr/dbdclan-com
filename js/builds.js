@@ -38,13 +38,6 @@ const ADMIN_UIDS = [
     "discord:361362105363857408"
 ];
 
-const ADMIN_EMAILS = [
-  "anthonnybalbino2017@gmail.com",
-  "gabrielxz.j@gmail.com",
-  "tilnickolas@gmail.com",
-  "eduarda.soares7656@gmail.com",
-];
-
 let currentUser = null;
 let allBuildsData = [];
 let isAdmin = false; // Controle global de permissão

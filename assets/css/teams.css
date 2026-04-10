@@ -1,0 +1,448 @@
+/* ==========================================
+   ESTILOS GERAIS E ESTRUTURAIS
+   ========================================== */
+   
+.main-padding {
+  padding-top: 40px;
+  padding-bottom: 50px;
+}
+
+.pt-0 {
+  padding-top: 0;
+}
+
+.mt-15 {
+  margin-top: 15px;
+}
+
+.mb-10 {
+  margin-bottom: 10px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+
+/* ==========================================
+   CABEÇALHO E LOGIN
+   ========================================== */
+
+.nav-chevron {
+  font-size: 0.6rem;
+  margin-left: 5px;
+}
+.header-user-wrapper {
+  position: relative;
+}
+
+.user-submenu-box {
+  position: absolute;
+  top: 60px;
+  right: 0;
+  background: rgba(0, 0, 0, 0.95);
+  border: 1px solid #333;
+  padding: 15px;
+  z-index: 1001;
+  min-width: 180px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+}
+
+.btn-logout {
+  background: none;
+  border: none;
+  color: #ff0000;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  font-family: var(--font-game);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ==========================================
+   PAINEL DE ADMINISTRAÇÃO E AVISOS
+   ========================================== */
+
+.admin-camp-controls {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin: 20px auto;
+  max-width: 800px;
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px dashed #555;
+  border-radius: 8px;
+}
+
+.admin-title {
+  color: #888;
+  font-family: var(--font-game);
+  font-size: 0.8rem;
+  align-self: center;
+  margin-right: 10px;
+}
+
+.admin-btn-action {
+  font-size: 0.8rem;
+  padding: 8px 15px;
+}
+
+.admin-btn-locked {
+  border-color: #00ff00;
+  color: #00ff00;
+}
+
+.admin-btn-unlocked {
+  border-color: gold;
+  color: gold;
+}
+
+.admin-btn-delete {
+  border-color: red;
+  color: red;
+}
+
+.camp-status-banner {
+  background: rgba(255, 0, 0, 0.2);
+  border: 1px solid red;
+  color: #fff;
+  padding: 15px;
+  text-align: center;
+  border-radius: 8px;
+  margin: 0 auto 30px;
+  max-width: 800px;
+  font-family: var(--font-game);
+  letter-spacing: 1px;
+}
+
+.icon-warning {
+  margin-right: 10px;
+}
+
+.dropdown-create-camp {
+  color: #ff0000;
+  font-weight: bold;
+  border-top: 1px solid #333;
+  margin-top: 5px;
+  padding-top: 10px;
+  display: block;
+  text-decoration: none;
+}
+
+.icon-lock-small {
+  color: red;
+  font-size: 0.6rem;
+}
+
+.camp-deleted-msg {
+  text-align: center;
+  color: red;
+  margin-top: 100px;
+  font-family: var(--font-game);
+}
+
+/* ==========================================
+   GRIDS E CARDS DE EQUIPES
+   ========================================== */
+
+.center-box-spaced {
+  text-align: center;
+  margin-bottom: 40px;
+  margin-top: 20px;
+}
+
+.grid-gap-20 {
+  gap: 20px;
+}
+
+.empty-msg {
+  grid-column: 1/-1;
+  text-align: center;
+  color: #888;
+  margin-top: 50px;
+}
+
+.team-card img {
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+/* ==========================================
+   MODAIS E WIZARD (CRIAR E VER EQUIPE)
+   ========================================== */
+
+.modal-max-800 {
+  max-width: 800px;
+}
+
+.modal-wizard-box {
+  flex-direction: column;
+  padding: 30px;
+  max-width: 500px;
+}
+
+.modal-img-col {
+  flex-direction: column;
+  border-right: 1px solid #333;
+}
+
+.team-logo-display {
+  width: 150px;
+  height: 150px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.subtitle-small {
+  color: #666;
+  font-size: 0.8rem;
+}
+
+.icon-gold {
+  color: gold;
+}
+
+.leader-name-highlight {
+  color: gold;
+  font-weight: bold;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  margin-bottom: 15px;
+}
+
+.modal-section-divider {
+  margin-top: 20px;
+  border-top: 1px solid #333;
+  padding-top: 15px;
+}
+
+.roster-title {
+  color: #888;
+  margin-bottom: 15px;
+  font-size: 0.8rem;
+}
+
+.members-grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.wizard-title {
+  color: #fff;
+  font-family: var(--font-game);
+  margin-bottom: 5px;
+  text-align: center;
+}
+
+.step-indicator {
+  text-align: center;
+  color: #888;
+  margin-bottom: 20px;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.input-file-custom {
+  background: transparent;
+  border: 1px dashed #555;
+  padding: 8px;
+}
+
+.step-label {
+  color: var(--accent-red);
+  font-family: var(--font-game);
+  margin-bottom: 10px;
+  display: block;
+  text-align: center;
+}
+
+.wizard-nav-btns {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+/* ==========================================
+   BOTÕES DIVERSOS
+   ========================================== */
+
+.btn-large-center {
+  margin: 0 auto;
+  padding: 20px 40px;
+  font-size: 1.2rem;
+}
+
+.btn-delete-team {
+  width: 100%;
+  border-color: red;
+  color: red;
+  font-size: 0.7rem;
+  padding: 8px;
+}
+
+.btn-full {
+  width: 100%;
+}
+
+.btn-small {
+  padding: 8px;
+  font-size: 0.8rem;
+}
+
+.btn-medium {
+  padding: 10px 20px;
+}
+
+/* ==========================================
+   ESTILOS DINÂMICOS DE JOGADORES E DRAFTS
+   ========================================== */
+
+.member-card-wrapper {
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+}
+
+.member-avatar-wrapper {
+  position: relative;
+  margin-bottom: 5px;
+}
+
+.icon-crown-cap {
+  color: gold;
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.5rem;
+  filter: drop-shadow(0 0 5px gold);
+  z-index: 10;
+}
+
+.icon-skull-killer {
+  color: red;
+  position: absolute;
+  bottom: -5px;
+  right: -5px;
+  font-size: 1.2rem;
+  filter: drop-shadow(0 0 5px red);
+  z-index: 10;
+}
+
+.member-avatar.is-killer {
+  border-color: red;
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+}
+
+.member-avatar.is-cap {
+  border-color: gold;
+}
+
+.member-avatar.is-normal {
+  border-color: #333;
+}
+
+.member-name {
+  font-family: var(--font-game);
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  margin-top: 5px;
+}
+
+.member-name.is-killer {
+  color: red;
+}
+
+.member-name.is-cap {
+  color: gold;
+}
+
+.member-name.is-normal {
+  color: #ccc;
+}
+
+.btn-toggle-killer {
+  margin-top: 10px;
+  font-size: 0.6rem;
+  font-family: var(--font-game);
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 4px 8px;
+  transition: 0.3s;
+  width: 100%;
+  border: 1px solid;
+}
+
+.btn-toggle-killer.is-killer {
+  border-color: red;
+  background: rgba(255, 0, 0, 0.2);
+  color: red;
+}
+
+.btn-toggle-killer.is-normal {
+  border-color: #555;
+  background: transparent;
+  color: #888;
+}
+
+.draft-list-box {
+  margin-bottom: 15px;
+  background: #111;
+  padding: 10px;
+  border-radius: 5px;
+  min-height: 60px;
+  max-height: 150px;
+  overflow-y: auto;
+  border: 1px solid #333;
+}
+
+.empty-draft-text {
+  color: #666;
+  font-size: 0.8rem;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.add-member-form {
+  border: 1px dashed #555;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  background: #0a0a0a;
+}
+
+.draft-member-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #1a1a1a;
+  padding: 8px 10px;
+  margin-bottom: 5px;
+  border-radius: 4px;
+  border: 1px solid #333;
+}
+
+.draft-member-name {
+  color: #fff;
+  font-size: 0.85rem;
+  display: block;
+  font-weight: bold;
+}
+
+.draft-member-email {
+  color: #888;
+  font-size: 0.7rem;
+}
+
+.btn-draft-delete {
+  color: red;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
