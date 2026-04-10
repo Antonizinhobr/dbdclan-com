@@ -253,8 +253,8 @@
     display: flex !important;
     flex-direction: column !important;
     width: 100%;
-    max-width: 450px;
-    padding: 25px;
+    max-width: 550px;
+    padding: 35px;
     box-sizing: border-box;
 }
 
