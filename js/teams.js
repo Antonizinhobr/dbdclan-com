@@ -30,7 +30,7 @@ let currentTotalCamps = 1;
 let lockedCamps = [];
 let deletedCamps = [];
 let isCurrentCampLocked = false;
-window.nextCampId = 1; // Variável global para controlar a reciclagem de números
+window.nextCampId = 1;
 
 const urlParams = new URLSearchParams(window.location.search);
 const currentCamp = urlParams.get('camp') || '1'; 
@@ -43,7 +43,6 @@ window.currentViewedTeamId = null;
 onAuthStateChanged(auth, (user) => {
     if (user) {
         currentUser = user;
-        // Verifica apenas pelo UID do Discord agora
         isAdmin = ADMIN_UIDS.includes(user.uid);
         
         const userName = user.displayName || (user.email ? user.email.split("@")[0] : "SOBREVIVENTE");
@@ -240,7 +239,7 @@ window.deleteCamp = async () => {
 };
 
 // ==========================================
-// CARREGAR EQUIPES DO BANCO DE DADOS
+// CARREGAR EQUIPES DO BANCO DE DADOS E REGISTRAR EMAILS
 // ==========================================
 const q = query(collection(db, "teams"), orderBy("createdAt", "desc"));
 
@@ -252,6 +251,7 @@ onSnapshot(q, (snapshot) => {
         const data = docSnap.data();
         allTeams.push({ id: docSnap.id, ...data });
         
+        // Cadastra os e-mails apenas do campeonato atual para bloqueio
         if(data.campId == currentCamp) {
             if(data.leaderEmail) registeredEmails.add(data.leaderEmail.toLowerCase());
             if(data.members) data.members.forEach(m => registeredEmails.add(m.email.toLowerCase()));
@@ -391,10 +391,16 @@ window.openViewModal = (team) => {
 // CRIAR EQUIPE E ADICIONAR MEMBROS
 // ==========================================
 window.openCreateTeamModal = () => {
-    if(isCurrentCampLocked) return alert("As inscrições para este campeonato estão encerradas!");
+    if(isCurrentCampLocked && !isAdmin) return alert("As inscrições para este campeonato estão encerradas!");
     
     const user = auth.currentUser || currentUser;
     if (!user) return alert("Sessão inválida. Por favor, aguarde ou recarregue a página.");
+
+    // NOVA REGRA: Verifica se o usuário logado já está em algum time!
+    const userEmail = user.email ? user.email.toLowerCase() : "";
+    if (userEmail && registeredEmails.has(userEmail)) {
+        return alert("Você já está cadastrado em uma equipe neste campeonato! Cada jogador pode participar de apenas um time.");
+    }
 
     document.getElementById('t-name').value = '';
     document.getElementById('t-logo').value = '';
@@ -484,10 +490,15 @@ window.renderDraftMembers = () => {
 };
 
 // ==========================================
-// SUBMETER EQUIPE (COM UPLOAD VIA IMGBB)
+// SUBMETER EQUIPE (COM UPLOAD VIA IMGBB E VALIDAÇÃO)
 // ==========================================
 window.submitTeam = async () => {
     if(isCurrentCampLocked && !isAdmin) return alert("As inscrições para este campeonato estão encerradas!");
+
+    // NOVA REGRA: Obrigar a ter exatamente 3 membros adicionados no elenco (total de 4 no time)
+    if (draftMembers.length < 3) {
+        return alert("Erro: Sua equipe está incompleta! Você precisa adicionar exatamente 3 membros (além do Capitão) para finalizar a inscrição.");
+    }
 
     const user = auth.currentUser || currentUser;
     const tName = document.getElementById('t-name').value.trim();
