@@ -253,8 +253,8 @@
     display: flex !important;
     flex-direction: column !important;
     width: 100%;
-    max-width: 500px;
-    padding: 30px;
+    max-width: 450px;
+    padding: 25px;
     box-sizing: border-box;
 }
 
@@ -263,13 +263,13 @@
     color: #fff;
     font-family: var(--font-game);
     margin-bottom: 5px;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
 }
 
 .step-indicator {
     text-align: center;
     color: #888;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     font-size: 0.85rem;
 }
 
@@ -288,15 +288,17 @@
     grid-template-columns: 1fr;
     gap: 10px;
     margin-top: 15px;
-    max-height: 350px;
+    max-height: 250px;
     overflow-y: auto;
-    padding-right: 0px;
+    padding-right: 0;
     scrollbar-width: none;
     -ms-overflow-style: none;
 }
 
 .modal-team-list::-webkit-scrollbar {
     display: none;
+    width: 0;
+    height: 0;
 }
 
 .modal-team-item {
@@ -314,7 +316,6 @@
 .modal-team-item:hover {
     border-color: var(--accent-red);
     background: #222;
-    transform: scale(1.02);
 }
 
 .modal-team-item img {
