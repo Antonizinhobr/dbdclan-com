@@ -1,14 +1,12 @@
-/* ==========================================
-   ESTILOS DO CHAVEAMENTO (PIRÂMIDE DE TORNEIO)
-   ========================================== */
-   
 .tree-container {
   display: flex;
   justify-content: center;
-  padding: 20px;
-  overflow-x: auto;
-  min-height: 700px;
+  align-items: center;
+  padding: 10px;
+  overflow: hidden;
+  width: 100%;
 }
+
 .tree,
 .tree ul {
   margin: 0;
@@ -20,7 +18,7 @@
 }
 
 .tree ul {
-  padding-top: 30px;
+  padding-top: 15px;
   position: relative;
 }
 
@@ -31,11 +29,10 @@
   text-align: center;
   list-style-type: none;
   position: relative;
-  padding: 30px 10px 0 10px;
+  padding: 15px 4px 0 4px;
   transition: all 0.5s;
 }
 
-/* Linhas de conexão */
 .tree li::before,
 .tree li::after {
   content: "";
@@ -44,7 +41,7 @@
   right: 50%;
   border-top: 2px solid #555;
   width: 50%;
-  height: 30px;
+  height: 15px;
 }
 
 .tree li::after {
@@ -83,13 +80,10 @@
   left: 50%;
   border-left: 2px solid #555;
   width: 0;
-  height: 30px;
+  height: 15px;
   transform: translateX(-1px);
 }
 
-/* ==========================================
-   CARDS DE TIMES (SLOTS BONITOS)
-   ========================================== */
 .match-box {
   display: flex;
   flex-direction: column;
@@ -99,8 +93,8 @@
 }
 
 .team-slot {
-  width: 130px;
-  height: 150px;
+  width: 110px;
+  height: 135px;
   background: #111;
   border: 2px solid #333;
   border-radius: 8px;
@@ -108,69 +102,70 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 10px;
+  padding: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
   transition: 0.3s;
   position: relative;
 }
 
 .team-slot img {
-  width: 70px;
-  height: 70px;
+  width: 85px;
+  height: 85px;
   object-fit: cover;
-  border-radius: 8px;
+  border-radius: 50%;
   background: #000;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
+  border: 2px solid #222;
 }
 
 .team-name {
   font-family: var(--font-game);
-  font-size: 0.75rem;
+  font-size: 0.65rem;
   color: #fff;
   text-transform: uppercase;
   text-align: center;
   word-wrap: break-word;
-  line-height: 1.2;
+  line-height: 1.1;
+  width: 100%;
 }
 
-/* Slot Especial do Campeão */
 .champion-box {
-  margin-bottom: 5px;
+  margin-bottom: 0px;
 }
 
 .champion-slot {
-  width: 160px;
-  height: 180px;
+  width: 130px;
+  height: 155px;
   background: linear-gradient(145deg, #1a0000, #330000);
   border: 3px solid var(--accent-red);
 }
 
 .champion-slot img {
-  width: 90px;
-  height: 90px;
+  width: 100px;
+  height: 100px;
+  border-color: gold;
 }
 
 .champion-slot .team-name {
-  font-size: 1rem;
+  font-size: 0.8rem;
   color: gold;
 }
 
 .trophy-icon {
-  font-size: 3rem;
+  font-size: 2.5rem;
   color: gold;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.6));
 }
 
 .winner-title {
-  margin-top: 10px;
+  margin-top: 5px;
   color: gold;
   font-family: var(--font-game);
-  font-size: 0.9rem;
-  letter-spacing: 2px;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
 }
 
-/* Modo Admin e Estados de Vitória/Derrota */
 .team-slot.admin-mode:not(.is-winner):not(.is-loser) {
   border-style: dashed;
 }
@@ -207,7 +202,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   color: red;
-  font-size: 4rem;
+  font-size: 3.5rem;
   text-shadow: 0 0 15px rgba(0, 0, 0, 0.9);
   z-index: 5;
 }
@@ -217,24 +212,22 @@
   color: #666 !important;
 }
 
-/* Botões do Admin Flutuantes no Card */
-
 .match-admin-controls {
   position: absolute;
   top: 5px;
   right: 5px;
   display: flex;
-  gap: 5px;
-  background: rgba(0, 0, 0, 0.8);
-  padding: 3px;
-  border-radius: 4px;
+  gap: 3px;
+  background: rgba(0, 0, 0, 0.9);
+  padding: 4px;
+  border-radius: 6px;
   z-index: 10;
 }
 
 .btn-control {
   background: none;
   border: none;
-  font-size: 1.1rem;
+  font-size: 1rem;
   cursor: pointer;
   transition: 0.2s;
 }
@@ -253,12 +246,8 @@
 
 .btn-control.reset {
   color: #fff;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
 }
-
-/* ==========================================
-   MODAL DE SELEÇÃO LIMPO E COMPACTO
-   ========================================== */
 
 .modal-wizard-box {
   display: flex !important;
@@ -299,7 +288,9 @@
   grid-template-columns: 1fr;
   gap: 10px;
   margin-top: 15px;
-  overflow: visible;
+  overflow-y: auto;
+  max-height: 300px;
+  padding-right: 5px;
 }
 
 .modal-team-item {
@@ -321,8 +312,8 @@
 }
 
 .modal-team-item img {
-  width: 50px;
-  height: 50px;
-  border-radius: 5px;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
   object-fit: cover;
 }
