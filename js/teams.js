@@ -122,9 +122,11 @@ function updateCampUI() {
 }
 
 function renderCampDropdown() {
-    const dropdown = document.getElementById('camp-dropdown-list');
-    if(!dropdown) return;
-    dropdown.innerHTML = ''; 
+    const menuTeams = document.getElementById('camp-dropdown-teams');
+    const menuBrackets = document.getElementById('camp-dropdown-brackets');
+    
+    if(menuTeams) menuTeams.innerHTML = ''; 
+    if(menuBrackets) menuBrackets.innerHTML = '';
 
     let activeCamps = [];
 
@@ -132,7 +134,9 @@ function renderCampDropdown() {
         if (!deletedCamps.includes(i)) {
             activeCamps.push(i);
             const isLocked = lockedCamps.includes(i) ? ' <i class="fas fa-lock icon-lock-small"></i>' : '';
-            dropdown.innerHTML += `<a href="teams.html?camp=${i}">Campeonato ${i}${isLocked}</a>`;
+            
+            if(menuTeams) menuTeams.innerHTML += `<a href="teams.html?camp=${i}">Campeonato ${i}${isLocked}</a>`;
+            if(menuBrackets) menuBrackets.innerHTML += `<a href="bracket.html?camp=${i}">Chaves ${i}</a>`;
         }
     }
 
@@ -142,11 +146,13 @@ function renderCampDropdown() {
     }
 
     if (isAdmin) {
-        dropdown.innerHTML += `
-            <a href="#" onclick="window.criarCampeonato(event)" class="dropdown-create-camp">
-                <i class="fas fa-plus"></i> CRIAR CAMP ${window.nextCampId}
-            </a>
-        `;
+        if(menuTeams) {
+            menuTeams.innerHTML += `
+                <a href="#" onclick="window.criarCampeonato(event)" class="dropdown-create-camp">
+                    <i class="fas fa-plus"></i> CRIAR CAMP ${window.nextCampId}
+                </a>
+            `;
+        }
     }
 }
 
