@@ -30,6 +30,7 @@ let currentTotalCamps = 1;
 let lockedCamps = [];
 let deletedCamps = [];
 let isCurrentCampLocked = false;
+window.nextCampId = 1; // Variável global para controlar a reciclagem de números
 
 const urlParams = new URLSearchParams(window.location.search);
 const currentCamp = urlParams.get('camp') || '1'; 
@@ -42,7 +43,8 @@ window.currentViewedTeamId = null;
 onAuthStateChanged(auth, (user) => {
     if (user) {
         currentUser = user;
-        isAdmin = ADMIN_UIDS.includes(user.uid) || (user.email && ADMIN_EMAILS.includes(user.email.toLowerCase()));
+        // Verifica apenas pelo UID do Discord agora
+        isAdmin = ADMIN_UIDS.includes(user.uid);
         
         const userName = user.displayName || (user.email ? user.email.split("@")[0] : "SOBREVIVENTE");
         document.getElementById("display-name").innerText = userName.toUpperCase();
@@ -69,7 +71,6 @@ let draftMembers = [];
 // ==========================================
 // LÓGICA DE GERENCIAMENTO DE CAMPEONATOS
 // ==========================================
-
 onSnapshot(doc(db, "sistema", "geral"), (docSnap) => {
     if (docSnap.exists()) {
         const data = docSnap.data();
@@ -126,17 +127,25 @@ function renderCampDropdown() {
     if(!dropdown) return;
     dropdown.innerHTML = ''; 
 
+    let activeCamps = [];
+
     for (let i = 1; i <= currentTotalCamps; i++) {
         if (!deletedCamps.includes(i)) {
+            activeCamps.push(i);
             const isLocked = lockedCamps.includes(i) ? ' <i class="fas fa-lock icon-lock-small"></i>' : '';
             dropdown.innerHTML += `<a href="teams.html?camp=${i}">Campeonato ${i}${isLocked}</a>`;
         }
     }
 
+    window.nextCampId = 1;
+    while (activeCamps.includes(window.nextCampId)) {
+        window.nextCampId++;
+    }
+
     if (isAdmin) {
         dropdown.innerHTML += `
             <a href="#" onclick="window.criarCampeonato(event)" class="dropdown-create-camp">
-                <i class="fas fa-plus"></i> CRIAR CAMP ${currentTotalCamps + 1}
+                <i class="fas fa-plus"></i> CRIAR CAMP ${window.nextCampId}
             </a>
         `;
     }
@@ -144,17 +153,32 @@ function renderCampDropdown() {
 
 window.criarCampeonato = async (e) => {
     e.preventDefault();
-    if (!confirm(`Deseja abrir as inscrições para o Campeonato ${currentTotalCamps + 1}?`)) return;
+    if (!confirm(`Deseja abrir as inscrições para o Campeonato ${window.nextCampId}?`)) return;
     
     const refDoc = doc(db, "sistema", "geral");
     try {
         const snap = await getDoc(refDoc);
-        if (!snap.exists()) await setDoc(refDoc, { totalCampeonatos: 2 }, { merge: true });
-        else await updateDoc(refDoc, { totalCampeonatos: increment(1) });
+        if (!snap.exists()) {
+            await setDoc(refDoc, { totalCampeonatos: window.nextCampId, deletedCamps: [], lockedCamps: [] }, { merge: true });
+        } else {
+            let updates = {};
+            
+            if (window.nextCampId > currentTotalCamps) {
+                updates.totalCampeonatos = window.nextCampId;
+            } 
+            else if (deletedCamps.includes(window.nextCampId)) {
+                updates.deletedCamps = deletedCamps.filter(id => id !== window.nextCampId);
+            }
+            
+            if (Object.keys(updates).length > 0) {
+                await updateDoc(refDoc, updates);
+            }
+        }
         
-        window.location.href = `teams.html?camp=${currentTotalCamps + 1}`;
+        window.location.href = `teams.html?camp=${window.nextCampId}`;
     } catch(err) {
         alert("Erro ao criar campeonato. Permissão Negada.");
+        console.error(err);
     }
 };
 
@@ -194,11 +218,18 @@ window.deleteCamp = async () => {
         let newDeleted = [...deletedCamps];
         if (!newDeleted.includes(campInt)) newDeleted.push(campInt);
         
-        await setDoc(refDoc, { deletedCamps: newDeleted }, { merge: true });
+        let newLocked = lockedCamps.filter(c => c !== campInt);
+        
+        await setDoc(refDoc, { deletedCamps: newDeleted, lockedCamps: newLocked }, { merge: true });
 
         alert("Campeonato e times excluídos permanentemente!");
         
-        const proximoValido = [1,2,3,4,5,6].find(n => !newDeleted.includes(n)) || 1;
+        let activeCamps = [];
+        for (let i = 1; i <= currentTotalCamps; i++) {
+            if (!newDeleted.includes(i)) activeCamps.push(i);
+        }
+        const proximoValido = activeCamps.length > 0 ? Math.min(...activeCamps) : 1;
+        
         window.location.href = `teams.html?camp=${proximoValido}`;
     } catch (err) {
         console.error(err);
@@ -211,7 +242,6 @@ window.deleteCamp = async () => {
 // ==========================================
 // CARREGAR EQUIPES DO BANCO DE DADOS
 // ==========================================
-
 const q = query(collection(db, "teams"), orderBy("createdAt", "desc"));
 
 onSnapshot(q, (snapshot) => {
@@ -270,7 +300,6 @@ function renderTeamsGrid() {
 // ==========================================
 // LÓGICA DE EXCLUSÃO DE TIME E ASSASSINO
 // ==========================================
-
 window.deleteTeam = async (teamId) => {
     if(isCurrentCampLocked && !isAdmin) return alert("Ações bloqueadas! O Campeonato foi encerrado.");
     if(!confirm("⚠️ AVISO: Deseja realmente excluir esta equipe permanentemente?")) return;
@@ -295,7 +324,6 @@ window.toggleKiller = async (teamId, memberEmail) => {
 // ==========================================
 // VISUALIZAR EQUIPE CADASTRADA
 // ==========================================
-
 window.openViewModal = (team) => {
     document.getElementById('m-team-logo').src = team.logo;
     document.getElementById('m-team-leader').innerText = team.leaderName;
@@ -362,7 +390,6 @@ window.openViewModal = (team) => {
 // ==========================================
 // CRIAR EQUIPE E ADICIONAR MEMBROS
 // ==========================================
-
 window.openCreateTeamModal = () => {
     if(isCurrentCampLocked) return alert("As inscrições para este campeonato estão encerradas!");
     
@@ -457,9 +484,8 @@ window.renderDraftMembers = () => {
 };
 
 // ==========================================
-// ENVIAR EQUIPE COM UPLOAD VIA IMGBB
+// SUBMETER EQUIPE (COM UPLOAD VIA IMGBB)
 // ==========================================
-
 window.submitTeam = async () => {
     if(isCurrentCampLocked && !isAdmin) return alert("As inscrições para este campeonato estão encerradas!");
 
@@ -527,6 +553,7 @@ window.closeModal = (modalId) => {
     document.getElementById(modalId).classList.remove('open');
     if(modalId === 'team-modal') window.currentViewedTeamId = null;
 };
+
 window.closeModalOut = (event, modalId) => {
     if (event.target.id === modalId) window.closeModal(modalId);
 };
