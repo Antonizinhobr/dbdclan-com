@@ -44,7 +44,7 @@ onAuthStateChanged(auth, (user) => {
         if(user.photoURL) document.getElementById("header-avatar").src = user.photoURL;
 
         if(isAdmin) {
-            document.getElementById('admin-hint').innerHTML = "👑 ADMIN: Gerencie os resultados usando os ícones X (perdeu) e ✅ (ganhou) ao lado dos nomes.";
+            document.getElementById('admin-hint').innerHTML = "👑 ADMIN: Gerencie os resultados usando os ícones X (perdeu) e ✅ (ganhou) dentro dos cards.";
             document.querySelectorAll('.team-slot').forEach(el => el.classList.add('admin-mode'));
         }
         renderMenus();
@@ -75,16 +75,11 @@ function renderMenus() {
             menuBrackets.innerHTML += `<a href="bracket.html?camp=${i}">Chaves ${i}</a>`;
         }
     }
-
     window.nextCampId = 1;
     while (activeCamps.includes(window.nextCampId)) window.nextCampId++;
 
     if (isAdmin) {
-        menuTeams.innerHTML += `
-            <a href="#" onclick="window.criarCampeonato(event)" class="dropdown-create-camp">
-                <i class="fas fa-plus"></i> CRIAR CAMP ${window.nextCampId}
-            </a>
-        `;
+        menuTeams.innerHTML += `<a href="#" onclick="window.criarCampeonato(event)" class="dropdown-create-camp"><i class="fas fa-plus"></i> CRIAR CAMP ${window.nextCampId}</a>`;
     }
 }
 
@@ -106,7 +101,7 @@ onSnapshot(bracketRef, (docSnap) => {
     updateBracketUI();
 });
 
-// 3. ATUALIZAR VISUAL E INJETAR CONTROLES
+// 3. ATUALIZAR VISUAL DOS CARDS
 function updateBracketUI() {
     const slots = ['q1','q2','q3','q4','q5','q6','q7','q8','s1','s2','s3','s4','f1','f2','champ'];
 
@@ -125,7 +120,7 @@ function updateBracketUI() {
             if(resultStatus === "winner") el.classList.add('is-winner');
             if(resultStatus === "loser") el.classList.add('is-loser');
 
-            let teamContent = `<img src="../assets/icon.jpg"> <span class="team-name" style="color:red;">Time Excluído</span>`;
+            let teamContent = `<img src="../assets/icon.jpg"> <span class="team-name" style="color:red;">EXCLUÍDO</span>`;
             if (teamData) {
                 teamContent = `<img src="${teamData.logo}"> <span class="team-name">${teamData.name}</span>`;
             }
@@ -145,12 +140,12 @@ function updateBracketUI() {
             }
             el.innerHTML = teamContent + controls;
         } else {
-            el.innerHTML = `<img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" style="opacity:0;"> <span class="team-name" style="color:#555;">A Definir</span>`;
+            el.innerHTML = `<img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" style="opacity:0; height:70px;"> <span class="team-name" style="color:#555;">A DEFINIR</span>`;
         }
     });
 }
 
-// 4. LÓGICA DE GERENCIAMENTO (VENCER/PERDER)
+// 4. LÓGICA DE GERENCIAMENTO (VENCER/PERDER SEGURO)
 const ADVANCE_MAP = {
     'q1': 's1', 'q2': 's1',
     'q3': 's2', 'q4': 's2',
@@ -162,8 +157,10 @@ const ADVANCE_MAP = {
 };
 
 window.setPartidaResult = async (event, slotId, teamId, status) => {
-    event.stopPropagation(); 
-    const updateData = {};
+    event.stopPropagation(); // Impede de abrir o modal de seleção
+    
+    // Clona o estado atual completo para fazer uma atualização limpa
+    let newState = JSON.parse(JSON.stringify(currentBracketState));
     const nextSlotId = ADVANCE_MAP[slotId];
 
     let opponentSlotId = null;
@@ -174,35 +171,34 @@ window.setPartidaResult = async (event, slotId, teamId, status) => {
         }
     }
 
+    if (!newState[slotId]) newState[slotId] = { teamId: teamId };
+
     if (status === "winner") {
-        updateData[`${slotId}.status`] = "winner"; 
-        if (opponentSlotId && currentBracketState[opponentSlotId]) {
-            updateData[`${opponentSlotId}.status`] = "loser"; 
+        newState[slotId].status = "winner"; 
+        if (opponentSlotId && newState[opponentSlotId]) {
+            newState[opponentSlotId].status = "loser"; 
         }
-        updateData[`${nextSlotId}.teamId`] = teamId;
-        updateData[`${nextSlotId}.status`] = null; 
+        newState[nextSlotId] = { teamId: teamId, status: null }; 
     } 
     else if (status === "loser") {
-        updateData[`${slotId}.status`] = "loser";
-        if (opponentSlotId && currentBracketState[opponentSlotId]) {
-            updateData[`${opponentSlotId}.status`] = "winner";
-            updateData[`${nextSlotId}.teamId`] = currentBracketState[opponentSlotId].teamId;
-            updateData[`${nextSlotId}.status`] = null;
+        newState[slotId].status = "loser";
+        if (opponentSlotId && newState[opponentSlotId]) {
+            newState[opponentSlotId].status = "winner";
+            newState[nextSlotId] = { teamId: newState[opponentSlotId].teamId, status: null };
         }
     }
-    else if (status === null) {
-        updateData[`${slotId}.status`] = null; 
-        if (opponentSlotId && currentBracketState[opponentSlotId]) {
-            updateData[`${opponentSlotId}.status`] = null; 
+    else if (status === null) { // DESFAZER (RESET)
+        newState[slotId].status = null; 
+        if (opponentSlotId && newState[opponentSlotId]) {
+            newState[opponentSlotId].status = null; 
         }
-        if (currentBracketState[nextSlotId] && (currentBracketState[nextSlotId].teamId === teamId || (opponentSlotId && currentBracketState[nextSlotId].teamId === currentBracketState[opponentSlotId].teamId))) {
-            updateData[`${nextSlotId}.teamId`] = null;
-            updateData[`${nextSlotId}.status`] = null;
+        if (newState[nextSlotId] && (newState[nextSlotId].teamId === teamId || (opponentSlotId && newState[opponentSlotId] && newState[nextSlotId].teamId === newState[opponentSlotId].teamId))) {
+            newState[nextSlotId] = null;
         }
     }
 
-    try { await setDoc(bracketRef, updateData, { merge: true }); } 
-    catch(e) { alert("Erro ao atualizar resultado da partida."); }
+    try { await setDoc(bracketRef, newState); } // Salva tudo de uma vez
+    catch(e) { alert("Erro ao atualizar resultado da partida."); console.error(e); }
 };
 
 // 5. SELEÇÃO MANUAL
@@ -210,10 +206,19 @@ window.handleSlotClick = (event, slotId) => {
     if(!isAdmin) return;
     
     if (!slotId.startsWith('q')) {
-        return alert("Admin: Só é possível inserir times nas Quartas de Final. O restante avança pelas vitórias (✅)!");
+        return alert("Admin: Só é possível inserir times na base da pirâmide (Quartas de Final). O restante avança pelas vitórias (✅)!");
     }
 
     activeSlotId = slotId;
+    
+    // LÓGICA DO BOTÃO DE REMOVER: Só mostra se a vaga já tem um time
+    const btnRemove = document.getElementById('btn-remove-team-modal');
+    if (currentBracketState[slotId] && currentBracketState[slotId].teamId) {
+        btnRemove.style.display = 'flex';
+    } else {
+        btnRemove.style.display = 'none';
+    }
+
     const modalList = document.getElementById('modal-team-list');
     modalList.innerHTML = '';
 
@@ -221,7 +226,7 @@ window.handleSlotClick = (event, slotId) => {
         modalList.innerHTML = '<p style="color:#888; text-align:center;">Nenhuma equipe cadastrada neste campeonato ainda.</p>';
     } else {
         allTeams.forEach(team => { 
-            modalList.innerHTML += `<div class="modal-team-item" onclick="window.assignTeamToSlot('${team.id}')"><img src="${team.logo}"><span class="team-name" style="font-size: 0.9rem;">${team.name}</span></div>`;
+            modalList.innerHTML += `<div class="modal-team-item" onclick="window.assignTeamToSlot('${team.id}')"><img src="${team.logo}"><span class="team-name" style="font-size: 1rem;">${team.name}</span></div>`;
         });
     }
     document.getElementById('select-team-modal').classList.add('open');
