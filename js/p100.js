@@ -1,21 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import {
-    getAuth,
-    onAuthStateChanged,
-    signOut,
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import {
-    getFirestore,
-    collection,
-    addDoc,
-    onSnapshot,
-    query,
-    orderBy,
-    doc,
-    updateDoc,
-    serverTimestamp,
-    getDoc,
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, doc, updateDoc, serverTimestamp, getDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyARpVKfzOMm-v0pv9-7w9xahvhItosrI2Q",
@@ -30,7 +15,8 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-const MAKE_WEBHOOK_URL = "https://hook.us2.make.com/zocc3p6xafnet5su7pk24ax62luys8mt";
+const MAKE_WEBHOOK_URL = "COLE_AQUI_A_URL_DO_MAKE";
+const BASE_GITHUB_URL = "https://raw.githubusercontent.com/Antonizinhobr/dbdclan-com/SH4DOW/assets/img/dbd";
 
 const ADMIN_UIDS = [
     "discord:1400218900284571689",
@@ -81,10 +67,7 @@ onAuthStateChanged(auth, (user) => {
 });
 
 function formatCharName(filename) {
-    return filename
-        .replace(".png", "")
-        .replace(/([A-Z])/g, " $1")
-        .trim();
+    return filename.replace(".png", "").replace(/([A-Z])/g, " $1").trim();
 }
 
 window.loadP100Chars = (role) => {
@@ -143,12 +126,8 @@ window.submitP100Ticket = async () => {
     const fileInput = document.getElementById("p100-file");
     const btn = document.getElementById("btn-submit-p100");
 
-    if (!selectedP100CharObj) {
-        return alert("Selecione qual personagem você colocou P100 na grade visual!");
-    }
-    if (fileInput.files.length === 0) {
-        return alert("Envie o print de tela inteira comprovando o P100!");
-    }
+    if (!selectedP100CharObj) return alert("Selecione qual personagem você colocou P100 na grade visual!");
+    if (fileInput.files.length === 0) return alert("Envie o print de tela inteira comprovando o P100!");
 
     btn.innerText = "ENVIANDO PROVA PARA A IMGBB...";
     btn.disabled = true;
@@ -203,6 +182,15 @@ function loadTickets() {
                 ? `<img src="${t.charImgPath}" style="width: 30px; height: 30px; border-radius: 4px; border: 1px solid #555; vertical-align: middle;">`
                 : "";
 
+            // Botão de excluir
+            let deleteBtn = "";
+            if (isAdmin || t.uid === currentUser.uid) {
+                deleteBtn = `
+                <button onclick="window.deleteTicket('${docSnap.id}')" style="position: absolute; top: 10px; left: 10px; background: rgba(255,0,0,0.8); border: none; color: #fff; border-radius: 4px; padding: 6px; cursor: pointer; z-index: 10;">
+                    <i class="fas fa-trash"></i>
+                </button>`;
+            }
+
             let adminControls = "";
             if (isAdmin && t.status === "pending") {
                 adminControls = `
@@ -215,6 +203,7 @@ function loadTickets() {
 
             const ticketHtml = `
                 <div class="ticket-card ${t.status}">
+                    ${deleteBtn}
                     <span class="ticket-status status-${t.status}">${t.status}</span>
                     <img src="${t.proofImg}" class="ticket-img" onclick="window.open('${t.proofImg}', '_blank')" title="Clique para ampliar">
                     <div class="ticket-info">
@@ -239,6 +228,17 @@ function loadTickets() {
     });
 }
 
+window.deleteTicket = async (id) => {
+    if (confirm("Tem certeza que deseja excluir esta solicitação?")) {
+        try {
+            await deleteDoc(doc(db, "tickets_p100", id));
+        } catch (error) {
+            console.error("Erro ao excluir:", error);
+            alert("Não foi possível excluir o ticket.");
+        }
+    }
+};
+
 window.processTicket = async (id, newStatus) => {
     let reason = null;
     
@@ -259,6 +259,15 @@ window.processTicket = async (id, newStatus) => {
 
         if (newStatus === "approved") {
             const discordId = data.uid.replace("discord:", "");
+            
+            // Converte o caminho local da imagem do personagem para o link público do GitHub
+            let publicCharUrl = "";
+            if (data.charImgPath) {
+                let parts = data.charImgPath.split("/dbd/");
+                if (parts.length > 1) {
+                    publicCharUrl = BASE_GITHUB_URL + "/" + encodeURI(parts[1]);
+                }
+            }
 
             fetch(MAKE_WEBHOOK_URL, {
                 method: "POST",
@@ -269,6 +278,7 @@ window.processTicket = async (id, newStatus) => {
                     player_name: data.userName,
                     proof_url: data.proofImg,
                     message: data.message,
+                    char_url: publicCharUrl // <-- Nova variável enviada para o Make
                 }),
             });
             
@@ -300,7 +310,6 @@ window.closeModalOut = (e, id) => {
     }
 };
 
-// --- CONTROLES DE USUÁRIO DO HEADER ---
 const profileTrigger = document.getElementById("user-profile-trigger");
 if (profileTrigger) {
     profileTrigger.onclick = (e) => {

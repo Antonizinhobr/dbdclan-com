@@ -417,3 +417,48 @@
     transition: none !important;
     transform: none !important;
 }
+
+/* ==========================================
+   MENU DE USUÁRIO (HEADER)
+   ========================================== */
+.header-user-wrapper {
+    position: relative;
+}
+
+.user-submenu-box {
+    position: absolute;
+    top: 60px;
+    right: 0;
+    background: rgba(0, 0, 0, 0.95);
+    border: 1px solid #333;
+    padding: 15px;
+    z-index: 1001;
+    min-width: 180px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    border-radius: 8px;
+}
+
+.user-submenu-box.hidden {
+    display: none;
+}
+
+.btn-logout {
+    background: none;
+    border: none;
+    color: #ff0000;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    font-family: 'Arial Black', sans-serif;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: 0.2s;
+}
+
+.btn-logout:hover {
+    color: #cc0000;
+    transform: scale(1.05);
+}
