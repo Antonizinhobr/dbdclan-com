@@ -15,7 +15,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-const MAKE_WEBHOOK_URL = "COLE_AQUI_A_URL_DO_MAKE";
+const MAKE_WEBHOOK_URL = "https://hook.us2.make.com/zocc3p6xafnet5su7pk24ax62luys8mt";
 const BASE_GITHUB_URL = "https://raw.githubusercontent.com/Antonizinhobr/dbdclan-com/SH4DOW/assets/img/dbd";
 
 const ADMIN_UIDS = [
@@ -260,7 +260,6 @@ window.processTicket = async (id, newStatus) => {
         if (newStatus === "approved") {
             const discordId = data.uid.replace("discord:", "");
             
-            // Converte o caminho local da imagem do personagem para o link público do GitHub
             let publicCharUrl = "";
             if (data.charImgPath) {
                 let parts = data.charImgPath.split("/dbd/");
@@ -278,7 +277,7 @@ window.processTicket = async (id, newStatus) => {
                     player_name: data.userName,
                     proof_url: data.proofImg,
                     message: data.message,
-                    char_url: publicCharUrl // <-- Nova variável enviada para o Make
+                    char_url: publicCharUrl
                 }),
             });
             
