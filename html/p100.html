@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DbD - Solicitar P100</title>
+    <link rel="stylesheet" href="../assets/css/index.css">
+    <link rel="stylesheet" href="../assets/css/p100.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="fade-in">
+
+    <header>
+        <div class="logo">DEAD BY DAYLIGHT</div>
+        <nav class="nav-menu">
+            <a href="home.html" class="nav-link">Votação</a>
+            <a href="teams.html" class="nav-link">Times</a>
+            <a href="bracket.html" class="nav-link">Chaves</a>
+            <a href="p100.html" class="nav-link active" style="color: gold;">
+                <i class="fas fa-medal"></i> P100
+            </a>
+        </nav>
+        <div class="header-user-wrapper">
+            <div class="user-container" id="user-profile-trigger">
+                <span id="display-name">...</span>
+                <div class="avatar-circle">
+                    <img src="../assets/icon.jpg" id="header-avatar" alt="User">
+                </div>
+            </div>
+            <div id="user-submenu" class="hidden user-submenu-box">
+                <button id="logout-btn" class="btn-logout">
+                    <i class="fas fa-sign-out-alt"></i> SAIR DA NÉVOA
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-padding">
+        <div class="info-section transparent-bg">
+            <h1>SALA DE TROFÉUS P100</h1>
+            <p>Provou a sua devoção à Entidade? Reclame o seu cargo de prestígio.</p>
+            
+            <button class="cta-btn" onclick="window.openP100Modal()" id="btn-request-p100">
+                <i class="fas fa-medal"></i> SOLICITAR CARGO P100
+            </button>
+        </div>
+
+        <div id="admin-p100-section" class="hidden">
+            <h2 class="section-title"><i class="fas fa-user-shield"></i> TICKETS PENDENTES</h2>
+            <div id="tickets-grid" class="tickets-grid"></div>
+        </div>
+
+        <div id="user-p100-section">
+            <h2 class="section-title"><i class="fas fa-history"></i> MINHAS SOLICITAÇÕES</h2>
+            <div id="my-tickets-list" class="tickets-grid"></div>
+        </div>
+    </main>
+
+    <div id="p100-modal" class="perk-modal" onclick="window.closeModalOut(event, 'p100-modal')">
+        <div class="perk-modal-content modal-wizard-box">
+            <button class="close-modal-btn" onclick="window.closeModal('p100-modal')">×</button>
+            <h2 class="wizard-title">SOLICITAR P100</h2>
+            
+            <div class="p100-form">
+                <label>1. Selecione o Lado e o Personagem:</label>
+                <div class="role-selector-p100">
+                    <button class="cta-btn outline active" id="btn-p100-surv" onclick="window.loadP100Chars('survivor')">
+                        SOBREVIVENTE
+                    </button>
+                    <button class="cta-btn outline" id="btn-p100-kill" onclick="window.loadP100Chars('killer')">
+                        ASSASSINO
+                    </button>
+                </div>
+
+                <div class="selected-char-preview">
+                    <div class="slot-box" id="selected-p100-char-slot"></div>
+                    <span id="selected-p100-char-name">Nenhum personagem selecionado</span>
+                </div>
+
+                <input type="text" class="search-input" id="p100-search" placeholder="Pesquisar personagem..." oninput="window.searchP100Grid(this.value)">
+                
+                <div class="selection-grid" id="p100-char-grid"></div>
+
+                <label style="margin-top: 10px;">2. Print de Prova (Tela Inteira + Nickname):</label>
+                <input type="file" id="p100-file" accept="image/*">
+                <p class="form-hint">⚠️ Atenção: Fotos cortadas ou sem nickname visível serão rejeitadas.</p>
+
+                <label>3. Mensagem de Motivação (Opcional):</label>
+                <textarea id="p100-msg" placeholder="Como foi a sua jornada até aqui?"></textarea>
+
+                <button class="cta-btn btn-full" id="btn-submit-p100" onclick="window.submitP100Ticket()">
+                    ENVIAR PARA ANÁLISE
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="../js/p100.js"></script>
+</body>
+</html>
