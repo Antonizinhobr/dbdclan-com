@@ -87,48 +87,61 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, onSnapshot, query, where, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, collection, onSnapshot, query, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyARpVKfzOMm-v0pv9-7w9xahvhItosrI2Q",
             authDomain: "dbd-camp.firebaseapp.com",
             projectId: "dbd-camp",
-            storageBucket: "dbd-camp.firebasestorage.app"
+            storageBucket: "dbd-camp.firebasestorage.app",
+            messagingSenderId: "357760091556",
+            appId: "1:357760091556:web:4d9191b487baf240e92d31",
         };
 
         const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // Busca apenas tickets APROVADOS
-        const q = query(collection(db, "tickets_p100"), where("status", "==", "approved"));
-        
-        onSnapshot(q, (snap) => {
-            const grid = document.getElementById("gallery-grid");
-            grid.innerHTML = "";
+        const grid = document.getElementById("gallery-grid");
 
-            if(snap.empty) {
-                grid.innerHTML = "<p style='color: #888; text-align: center; grid-column: 1/-1;'>Ninguém alcançou o topo ainda. Seja o primeiro!</p>";
-                return;
-            }
-
-            snap.forEach((docSnap) => {
-                const data = docSnap.data();
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                const q = query(collection(db, "tickets_p100"), where("status", "==", "approved"));
                 
-                const card = document.createElement("div");
-                card.className = "gallery-card";
-                card.innerHTML = `
-                    <div style="position: relative; display: inline-block;">
-                        <img src="${data.charImgPath}" class="gallery-char-img">
-                        <div style="position: absolute; bottom: 0; right: -10px; background: gold; color: #000; font-weight: bold; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; border: 2px solid #000; font-size: 0.8rem;">100</div>
-                    </div>
-                    <div class="gallery-player-name">${data.userName}</div>
-                    <div class="gallery-char-name">${data.character}</div>
-                    <button class="gallery-proof-btn" onclick="window.open('${data.proofImg}', '_blank')">
-                        <i class="fas fa-image"></i> Ver Prova
-                    </button>
-                `;
-                grid.appendChild(card);
-            });
+                onSnapshot(q, (snap) => {
+                    grid.innerHTML = "";
+
+                    if(snap.empty) {
+                        grid.innerHTML = "<p style='color: #888; text-align: center; grid-column: 1/-1;'>Ninguém alcançou o topo ainda. Seja o primeiro!</p>";
+                        return;
+                    }
+
+                    snap.forEach((docSnap) => {
+                        const data = docSnap.data();
+                        
+                        const card = document.createElement("div");
+                        card.className = "gallery-card";
+                        card.innerHTML = `
+                            <div style="position: relative; display: inline-block;">
+                                <img src="${data.charImgPath}" class="gallery-char-img">
+                                <div style="position: absolute; bottom: 0; right: -10px; background: gold; color: #000; font-weight: bold; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; border: 2px solid #000; font-size: 0.8rem;">100</div>
+                            </div>
+                            <div class="gallery-player-name">${data.userName}</div>
+                            <div class="gallery-char-name">${data.character}</div>
+                            <button class="gallery-proof-btn" onclick="window.open('${data.proofImg}', '_blank')">
+                                <i class="fas fa-image"></i> Ver Prova
+                            </button>
+                        `;
+                        grid.appendChild(card);
+                    });
+                }, (error) => {
+                    console.error("Erro ao carregar galeria:", error);
+                    grid.innerHTML = "<p style='color: red; text-align: center; grid-column: 1/-1;'>Erro ao carregar dados. Verifique as permissões.</p>";
+                });
+            } else {
+                grid.innerHTML = "<p style='color: #888; text-align: center; grid-column: 1/-1;'>Inicie sessão para ver a galeria de honra.</p>";
+            }
         });
     </script>
 </body>
