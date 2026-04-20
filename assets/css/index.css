@@ -2384,3 +2384,168 @@ h2#auth-title {
     height: 45px;
   }
 }
+
+/* =========================================
+   ESTILIZAÇÃO DOS ELEMENTOS GERAIS
+   ========================================= */
+
+.nav-link.p100 {
+  color: gold;
+}
+
+#user-submenu {
+  position: absolute;
+  top: 60px;
+  right: 0;
+  background: rgba(0, 0, 0, 0.95);
+  border: 1px solid #333;
+  padding: 15px;
+  z-index: 1001;
+  min-width: 180px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+}
+
+#logout-btn {
+  background: none;
+  border: none;
+  color: #ff0000;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  font-family: "Arial Black", sans-serif;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* =========================================
+   CARDS DE ESTATÍSTICAS
+   ========================================= */
+
+.stat-icon-users {
+  font-size: 50px;
+  color: #fff;
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+}
+
+.stat-icon-online {
+  font-size: 40px;
+  color: #00ff00;
+  filter: drop-shadow(0 0 15px #00ff00);
+}
+
+.stat-text-online {
+  color: #00ff00;
+}
+
+.glow-online {
+  background: radial-gradient(circle, rgba(0, 255, 0, 0.3) 0%, transparent 70%);
+}
+
+.boost-card-wrapper {
+  animation-delay: 0.4s;
+  position: relative;
+}
+
+.stat-icon-boosts {
+  font-size: 50px;
+  color: #ff73fa;
+  filter: drop-shadow(0 0 15px #ff73fa);
+}
+
+.stat-text-boosts {
+  color: #ff73fa;
+}
+
+.glow-boosts {
+  background: radial-gradient(circle, rgba(255, 115, 250, 0.3) 0%, transparent 70%);
+}
+
+.stat-label-white {
+  color: #fff;
+}
+
+#edit-boost-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 10;
+  background: rgba(255, 0, 0, 0.5);
+  border: 1px solid red;
+  color: white;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#edit-boost-btn i {
+  font-size: 10px;
+}
+
+/* =========================================
+   MODAL DA STAFF
+   ========================================= */
+
+.modal-col-side {
+  flex-direction: column;
+}
+
+#staff-modal-img {
+  border-radius: 50%;
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border: 4px solid #333;
+}
+
+#staff-modal-role {
+  margin-top: 15px;
+  font-weight: bold;
+  font-family: "Arial Black", sans-serif;
+  padding: 5px 15px;
+  border-radius: 5px;
+  /* As cores da borda e texto do cargo são aplicadas via JS dinamicamente */
+}
+
+.staff-modal-title {
+  margin-bottom: 5px;
+}
+
+.staff-modal-subtitle {
+  font-style: italic;
+  color: #aaa;
+  margin-bottom: 20px;
+}
+
+.staff-detail-label {
+  color: var(--accent-red, #ff0000); 
+}
+
+.social-title {
+  font-size: 0.7rem;
+  color: #666;
+  font-family: "Arial Black", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 5px;
+  display: block;
+}
+
+/* =========================================
+   FOOTER
+   ========================================= */
+
+.site-footer {
+  text-align: center;
+  padding: 20px;
+  background: #000;
+  color: #444;
+  font-size: 0.7rem;
+}

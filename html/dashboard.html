@@ -19,7 +19,7 @@
         <a href="#" class="nav-link active">Home</a>
         <a href="builds.html" class="nav-link">Builds da Comunidade</a>
         <a href="regras_servidor.html" class="nav-link">Regras do Servidor</a>
-        <a href="p100.html" class="nav-link" style="color: gold;"><i class="fas fa-medal"></i> P100</a>
+        <a href="p100.html" class="nav-link p100"><i class="fas fa-medal"></i> P100</a>
       </nav>
 
       <div style="position: relative">
@@ -30,39 +30,8 @@
           </div>
         </div>
 
-        <div
-          id="user-submenu"
-          class="hidden"
-          style="
-            position: absolute;
-            top: 60px;
-            right: 0;
-            background: rgba(0, 0, 0, 0.95);
-            border: 1px solid #333;
-            padding: 15px;
-            z-index: 1001;
-            min-width: 180px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-            border-radius: 8px;
-          "
-        >
-          <button
-            id="logout-btn"
-            style="
-              background: none;
-              border: none;
-              color: #ff0000;
-              cursor: pointer;
-              width: 100%;
-              text-align: left;
-              font-family: &quot;Arial Black&quot;;
-              font-size: 0.7rem;
-              text-transform: uppercase;
-              display: flex;
-              align-items: center;
-              gap: 10px;
-            "
-          >
+        <div id="user-submenu" class="hidden">
+          <button id="logout-btn">
             <i class="fas fa-sign-out-alt"></i> SAIR DA NÉVOA
           </button>
         </div>
@@ -141,14 +110,7 @@
         <div class="container stats-grid-glass">
           <div class="glass-card reveal">
             <div class="card-3d-element">
-              <i
-                class="fas fa-users"
-                style="
-                  font-size: 50px;
-                  color: #fff;
-                  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
-                "
-              ></i>
+              <i class="fas fa-users stat-icon-users"></i>
             </div>
             <div class="card-content">
               <h3 id="stat-members">0</h3>
@@ -158,80 +120,26 @@
           </div>
           <div class="glass-card reveal" style="animation-delay: 0.2s">
             <div class="card-3d-element">
-              <i
-                class="fas fa-circle"
-                style="
-                  font-size: 40px;
-                  color: #00ff00;
-                  filter: drop-shadow(0 0 15px #00ff00);
-                "
-              ></i>
+              <i class="fas fa-circle stat-icon-online"></i>
             </div>
             <div class="card-content">
-              <h3 id="stat-online" style="color: #00ff00">0</h3>
-              <p style="color: #fff">ONLINE AGORA</p>
+              <h3 id="stat-online" class="stat-text-online">0</h3>
+              <p class="stat-label-white">ONLINE AGORA</p>
             </div>
-            <div
-              class="card-glow"
-              style="
-                background: radial-gradient(
-                  circle,
-                  rgba(0, 255, 0, 0.3) 0%,
-                  transparent 70%
-                );
-              "
-            ></div>
+            <div class="card-glow glow-online"></div>
           </div>
-          <div
-            class="glass-card reveal"
-            style="animation-delay: 0.4s; position: relative"
-          >
-            <button
-              id="edit-boost-btn"
-              class="hidden"
-              style="
-                position: absolute;
-                top: 10px;
-                right: 10px;
-                z-index: 10;
-                background: rgba(255, 0, 0, 0.5);
-                border: 1px solid red;
-                color: white;
-                border-radius: 50%;
-                width: 25px;
-                height: 25px;
-                cursor: pointer;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-              "
-            >
-              <i class="fas fa-pen" style="font-size: 10px"></i>
+          <div class="glass-card reveal boost-card-wrapper">
+            <button id="edit-boost-btn" class="hidden">
+              <i class="fas fa-pen"></i>
             </button>
             <div class="card-3d-element">
-              <i
-                class="fas fa-gem"
-                style="
-                  font-size: 50px;
-                  color: #ff73fa;
-                  filter: drop-shadow(0 0 15px #ff73fa);
-                "
-              ></i>
+              <i class="fas fa-gem stat-icon-boosts"></i>
             </div>
             <div class="card-content">
-              <h3 id="stat-boosts" style="color: #ff73fa">0</h3>
-              <p style="color: #fff">BOOSTERS</p>
+              <h3 id="stat-boosts" class="stat-text-boosts">0</h3>
+              <p class="stat-label-white">BOOSTERS</p>
             </div>
-            <div
-              class="card-glow"
-              style="
-                background: radial-gradient(
-                  circle,
-                  rgba(255, 115, 250, 0.3) 0%,
-                  transparent 70%
-                );
-              "
-            ></div>
+            <div class="card-glow glow-boosts"></div>
           </div>
         </div>
       </section>
@@ -242,30 +150,21 @@
           <div class="staff-grid">
             <div class="staff-card reveal" onclick="openStaffModal('gabriel')">
               <div class="staff-img-container">
-                <img
-                  src="https://i.ibb.co/Rpv025bN/Gabriel.jpg"
-                  alt="Dono"
-                />
+                <img src="https://i.ibb.co/Rpv025bN/Gabriel.jpg" alt="Dono" />
               </div>
               <h3>GABRIEL</h3>
               <span class="role owner">DONO</span>
             </div>
             <div class="staff-card reveal" onclick="openStaffModal('rebeca')">
               <div class="staff-img-container">
-                <img
-                  src="https://i.ibb.co/q3b0DStn/Rebeca.jpg"
-                  alt="Mod"
-                />
+                <img src="https://i.ibb.co/q3b0DStn/Rebeca.jpg" alt="Mod" />
               </div>
               <h3>REBECCA</h3>
               <span class="role mod">ADMINISTRADORA</span>
             </div>
             <div class="staff-card reveal" onclick="openStaffModal('vinicius')">
               <div class="staff-img-container">
-                <img
-                  src="https://i.ibb.co/nqB8dYK4/Vinicius.jpg"
-                  alt="Mod"
-                />
+                <img src="https://i.ibb.co/nqB8dYK4/Vinicius.jpg" alt="Mod" />
               </div>
               <h3>VINICIUS</h3>
               <span class="role mod">ADMINISTRADOR</span>
@@ -286,125 +185,54 @@
           <i class="fab fa-discord"></i>
           <h2>JUNTE-SE À NÉVOA</h2>
           <p>Clique abaixo para entrar no nosso servidor oficial.</p>
-          <a href="#" target="_blank" class="discord-btn" id="btn-invite"
-            >ENTRAR AGORA</a
-          >
+          <a href="#" target="_blank" class="discord-btn" id="btn-invite">ENTRAR AGORA</a>
         </div>
       </section>
 
-      <footer
-        style="
-          text-align: center;
-          padding: 20px;
-          background: #000;
-          color: #444;
-          font-size: 0.7rem;
-        "
-      >
-        &copy; 2026 COMUNIDADE DBD. Todos os direitos reservados. Feito
-        por Anthonny Michael
+      <footer class="site-footer">
+        &copy; 2026 COMUNIDADE DBD. Todos os direitos reservados. Feito por Anthonny Michael
       </footer>
     </div>
 
-    <div
-      id="staff-modal"
-      class="perk-modal"
-      onclick="closeStaffModalOut(event)"
-    >
+    <div id="staff-modal" class="perk-modal" onclick="closeStaffModalOut(event)">
       <div class="perk-modal-content">
-        <button class="close-modal-btn" onclick="closeStaffModal()">
-          &times;
-        </button>
+        <button class="close-modal-btn" onclick="closeStaffModal()">&times;</button>
 
-        <div class="modal-image-side" style="flex-direction: column">
-          <img
-            id="staff-modal-img"
-            src=""
-            alt="Staff Profile"
-            style="
-              border-radius: 50%;
-              width: 200px;
-              height: 200px;
-              object-fit: cover;
-              border: 4px solid #333;
-            "
-          />
-          <span
-            id="staff-modal-role"
-            style="
-              margin-top: 15px;
-              font-weight: bold;
-              font-family: &quot;Arial Black&quot;;
-              color: gold;
-              border: 1px solid gold;
-              padding: 5px 15px;
-              border-radius: 5px;
-            "
-            >CARGO</span
-          >
+        <div class="modal-image-side modal-col-side">
+          <img id="staff-modal-img" src="" alt="Staff Profile" />
+          <span id="staff-modal-role">CARGO</span>
         </div>
 
         <div class="modal-info-side">
-          <h2
-            id="staff-modal-name"
-            class="modal-perk-name"
-            style="margin-bottom: 5px"
-          >
-            NOME
-          </h2>
-          <p
-            id="staff-modal-desc"
-            class="modal-perk-desc"
-            style="font-style: italic; color: #aaa; margin-bottom: 20px"
-          >
-            Descrição do membro.
-          </p>
+          <h2 id="staff-modal-name" class="modal-perk-name staff-modal-title">NOME</h2>
+          <p id="staff-modal-desc" class="modal-perk-desc staff-modal-subtitle">Descrição do membro.</p>
 
           <div class="staff-details-horizontal">
             <div class="detail-item">
-              <strong style="color: var(--accent-red)">Idade:</strong>
+              <strong class="staff-detail-label">Idade:</strong>
               <span id="staff-age">--</span>
             </div>
             <div class="detail-item">
-              <strong style="color: var(--accent-red)">Local:</strong>
+              <strong class="staff-detail-label">Local:</strong>
               <span id="staff-loc">--</span>
             </div>
             <div class="detail-item">
-              <strong style="color: var(--accent-red)">Tempo de jogo:</strong>
+              <strong class="staff-detail-label">Tempo de jogo:</strong>
               <span id="staff-time">--</span>
             </div>
             <div class="detail-item">
-              <strong style="color: var(--accent-red)">Main:</strong>
+              <strong class="staff-detail-label">Main:</strong>
               <span id="staff-main">--</span>
             </div>
           </div>
-          <span
-            style="
-              font-size: 0.7rem;
-              color: #666;
-              font-family: &quot;Arial Black&quot;;
-              text-transform: uppercase;
-              letter-spacing: 1px;
-              margin-bottom: 5px;
-              display: block;
-            "
-          >
-            Redes Sociais
-          </span>
+          
+          <span class="social-title">Redes Sociais</span>
 
           <div class="staff-socials">
-            <a id="link-insta" href="#" target="_blank"
-              ><i class="fab fa-instagram"></i
-            ></a>
-            <a id="link-tiktok" href="#" target="_blank"
-              ><i class="fab fa-tiktok"></i
-            ></a>
-            <a id="link-steam" href="#" target="_blank"
-              ><i class="fab fa-steam"></i
-            ></a>
-            <a id="link-twitch" href="#" target="_blank"
-              ><i class="fab fa-twitch"></i
-            ></a>
+            <a id="link-insta" href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a id="link-tiktok" href="#" target="_blank"><i class="fab fa-tiktok"></i></a>
+            <a id="link-steam" href="#" target="_blank"><i class="fab fa-steam"></i></a>
+            <a id="link-twitch" href="#" target="_blank"><i class="fab fa-twitch"></i></a>
           </div>
         </div>
       </div>
@@ -520,10 +348,8 @@
         document.getElementById("staff-modal-name").innerText = data.name;
         document.getElementById("staff-modal-role").innerText = data.role;
         document.getElementById("staff-modal-role").style.color = data.color;
-        document.getElementById("staff-modal-role").style.borderColor =
-          data.color;
-        document.getElementById("staff-modal-desc").innerText =
-          `"${data.desc}"`;
+        document.getElementById("staff-modal-role").style.borderColor = data.color;
+        document.getElementById("staff-modal-desc").innerText = `"${data.desc}"`;
 
         document.getElementById("staff-age").innerText = data.age;
         document.getElementById("staff-loc").innerText = data.loc;
@@ -559,23 +385,30 @@
         if (e.target.id === "staff-modal") window.closeStaffModal();
       };
 
+      const ADMIN_UIDS = [
+        "discord:1400218900284571689",
+        "discord:392062765323255828",
+        "discord:644323555462479892",
+        "discord:804843307568988180",
+        "discord:361362105363857408"
+      ];
+
       onAuthStateChanged(auth, (user) => {
         if (!user) {
           window.location.href = "login.html";
         } else {
-          const userName = user.displayName || user.email.split("@")[0];
-          document.getElementById("display-name").innerText =
-            userName.toUpperCase();
-          const isAdmin = ADMIN_EMAILS.some(
-            (adminEmail) =>
-              adminEmail.toLowerCase() === user.email.toLowerCase(),
-          );
+          const userName = user.displayName || (user.email ? user.email.split("@")[0] : "Usuário");
+          document.getElementById("display-name").innerText = userName.toUpperCase();
+          
+          const isAdmin = ADMIN_UIDS.includes(user.uid);
+          
           if (isAdmin) {
             const btnEdit = document.getElementById("edit-boost-btn");
             if (btnEdit) btnEdit.classList.remove("hidden");
           }
         }
       });
+      
       document.getElementById("user-profile-trigger").onclick = (e) => {
         e.stopPropagation();
         document.getElementById("user-submenu").classList.toggle("hidden");
@@ -583,6 +416,7 @@
       window.onclick = () =>
         document.getElementById("user-submenu").classList.add("hidden");
       document.getElementById("logout-btn").onclick = () => signOut(auth);
+      
       window.addEventListener("scroll", reveal);
       function reveal() {
         var reveals = document.querySelectorAll(".reveal");
@@ -596,6 +430,7 @@
         }
       }
       reveal();
+      
       function animateValue(id, start, end, duration) {
         const obj = document.getElementById(id);
         if (!obj) return;
@@ -616,6 +451,7 @@
         };
         window.requestAnimationFrame(step);
       }
+      
       async function fetchDiscordStats() {
         let onlineCount = 0;
         let totalMembers = 0;
@@ -648,6 +484,7 @@
           animateValue("stat-online", 0, onlineCount, 2000);
         }, 500);
       }
+      
       onSnapshot(doc(db, "sistema", "discord_stats"), (docSnapshot) => {
         if (docSnapshot.exists()) {
           const data = docSnapshot.data();
@@ -656,6 +493,7 @@
           animateValue("stat-boosts", 0, 0, 1000);
         }
       });
+      
       document.getElementById("edit-boost-btn").onclick = async () => {
         const currentVal = document.getElementById("stat-boosts").innerText;
         const newVal = prompt(
@@ -675,6 +513,7 @@
           }
         }
       };
+      
       fetchDiscordStats();
     </script>
   </body>
