@@ -24,6 +24,7 @@ const ADMIN_UIDS = [
     "discord:644323555462479892",
     "discord:804843307568988180",
     "discord:361362105363857408",
+    "discord:208380369261559808"
 ];
 
 let currentUser = null;
