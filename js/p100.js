@@ -15,7 +15,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-const MAKE_WEBHOOK_URL = "https://hook.us2.make.com/zocc3p6xafnet5su7pk24ax62luys8mt";
+const MAKE_WEBHOOK_URL = "https://entidadefogueira.discloud.app/api/p100-aprovado";
 const BASE_GITHUB_URL = "https://raw.githubusercontent.com/Antonizinhobr/dbdclan-com/SH4DOW/assets/img/dbd";
 
 const ADMIN_UIDS = [
