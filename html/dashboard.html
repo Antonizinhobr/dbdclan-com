@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Comunidade DbD - Home</title>
+    <title>REFÚGIO DA NÉVOA</title>
     <link rel="stylesheet" href="../assets/css/index.css" />
     <link
       rel="stylesheet"
@@ -17,9 +17,7 @@
 
       <nav class="nav-menu">
         <a href="#" class="nav-link active">Home</a>
-        <a href="builds.html" class="nav-link">Builds da Comunidade</a>
         <a href="regras_servidor.html" class="nav-link">Regras do Servidor</a>
-        <a href="p100.html" class="nav-link p100"><i class="fas fa-medal"></i> P100</a>
       </nav>
 
       <div style="position: relative">
@@ -49,7 +47,7 @@
           </div>
           <div class="hero-col-left">
             <div class="hero-content reveal">
-              <h1 class="glitch-text">SERVIDOR BLACK</h1>
+              <h1 class="glitch-text">REFÚGIO DA NÉVOA</h1>
               <p>
                 O servidor da comunidade de
                 <span class="glitch-text">Dead By Daylight</span> mais sombrio
@@ -148,47 +146,19 @@
         <div class="container">
           <h2 class="section-title reveal">A ENTIDADE (STAFF)</h2>
           <div class="staff-grid">
-            <div class="staff-card reveal" onclick="openStaffModal('gabriel')">
+            <div class="staff-card reveal" onclick="openStaffModal('Ravik')">
               <div class="staff-img-container">
-                <img src="https://i.ibb.co/Rpv025bN/Gabriel.jpg" alt="Dono" />
+                <img src="https://i.ibb.co/ch2qxHcP/Peachy-20250911-015431303.jpg" alt="Dono" />
               </div>
-              <h3>GABRIEL</h3>
+              <h3>RAVIK</h3>
               <span class="role owner">DONO</span>
             </div>
-            <div class="staff-card reveal" onclick="openStaffModal('rebeca')">
+            <div class="staff-card reveal" onclick="openStaffModal('Capy')">
               <div class="staff-img-container">
-                <img src="https://i.ibb.co/q3b0DStn/Rebeca.jpg" alt="Mod" />
+                <img src="https://i.ibb.co/pvSHbwBg/116-Sem-Titulo-20260227204822.png" alt="Mod" />
               </div>
-              <h3>REBECCA</h3>
-              <span class="role mod">ADMINISTRADORA</span>
-            </div>
-            <div class="staff-card reveal" onclick="openStaffModal('vinicius')">
-              <div class="staff-img-container">
-                <img src="https://i.ibb.co/nqB8dYK4/Vinicius.jpg" alt="Mod" />
-              </div>
-              <h3>VINICIUS</h3>
-              <span class="role mod">ADMINISTRADOR</span>
-            </div>
-            <div class="staff-card reveal" onclick="openStaffModal('joao')">
-              <div class="staff-img-container">
-                <img src="https://i.ibb.co/0VfNMn0s/Joao.jpg" alt="Mod" />
-              </div>
-              <h3>João Wesley</h3>
-              <span class="role mod">ADMINISTRADOR</span>
-            </div>
-            <div class="staff-card reveal" onclick="openStaffModal('japa')">
-              <div class="staff-img-container">
-                <img src="https://i.ibb.co/ZpcQ4kRw/546f9ce1-a3b7-4805-b914-b71e99ad8839.jpg" alt="Mod" />
-              </div>
-              <h3>GOBERY JAPA</h3>
-              <span class="role mod">ADMINISTRADOR</span>
-            </div>
-            <div class="staff-card reveal" onclick="openStaffModal('anthonny')">
-              <div class="staff-img-container">
-                <img src="https://i.ibb.co/0yp7rQL7/fae9a1e7d7575d1cb510303fb2571944-tplv-tiktokx-cropcenter-1080-1080.jpg" alt="Mod" />
-              </div>
-              <h3>ANTHONNY MICHAEL</h3>
-              <span class="role mod">ADMINISTRADOR</span>
+              <h3>CAPY</h3>
+              <span class="role mod">MODERADOR</span>
             </div>
           </div>
         </div>
@@ -266,8 +236,8 @@
         setDoc,
       } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-      const DISCORD_SERVER_ID = "1171347483545313331";
-      const DISCORD_INVITE_CODE = "SF7YTQjRAm";
+      const DISCORD_SERVER_ID = "1443645419853840559";
+      const DISCORD_INVITE_CODE = "YvzKApj7DJ";
 
       const firebaseConfig = {
         apiKey: "AIzaSyARpVKfzOMm-v0pv9-7w9xahvhItosrI2Q",
@@ -284,106 +254,38 @@
       const db = getFirestore(app);
 
       window.staffData = {
-        gabriel: {
-          name: "GABRIEL",
+        Ravik: {
+          name: "RAVIK",
           role: "DONO",
           color: "gold",
-          img: "https://i.ibb.co/Rpv025bN/Gabriel.jpg",
-          desc: "O criador da comunidade. O poderoso Chefão, the GoodFather.",
+          img: "https://i.ibb.co/ch2qxHcP/Peachy-20250911-015431303.jpg",
+          desc: "O criador da comunidade.",
           age: "21 Anos",
-          loc: "Rio De Janeiro",
-          time: "500 horas",
-          main: "Survivor (Lara Croft) e Killer (Drácula e Blight)",
+          loc: "Ceará",
+          time: "1000 horas",
+          main: "Survivor (Renato Lira)",
           links: {
-            insta: "https://www.instagram.com/gb.serrano_?igsh=MWd1d3EzODBrYjgxMg%3D%3D&utm_source=qr",
-            tiktok: "https://www.tiktok.com/@blackzins1?_r=1&_t=ZS-95JfoSYxr5s",
-            steam: "https://steamcommunity.com/profiles/76561198308812472/",
-            twitch: "https://m.twitch.tv/blackzins1/home",
-          },
-        },
-        vinicius: {
-          name: "VINICIUS",
-          role: "ADMINISTRADOR",
-          color: "#00ff00",
-          img: "https://i.ibb.co/nqB8dYK4/Vinicius.jpg",
-          desc: "O emo, escuta música no alto com casaco no sol de 40 graus.",
-          age: "21 Anos",
-          loc: "Rio de Janeiro",
-          time: "3 anos",
-          main: "Killer (Spirit)",
-          links: {
-            insta: "https://www.instagram.com/vante.yz?igsh=OXEyNmZpOWVvdnk%3D",
-            tiktok: "https://www.tiktok.com/@vini._..iz",
-            steam: "https://steamcommunity.com/profiles/76561198421575433/",
+            insta: "https://www.instagram.com/ravikinho/",
+            tiktok: "https://www.tiktok.com/@refugionevoa",
+            steam: "https://steamcommunity.com/profiles/76561199478856074/",
             twitch: "#",
           },
         },
-        joao: {
-          name: "João Wesley",
-          role: "ADMINISTRADOR",
+        Capy: {
+          name: "CAPY",
+          role: "MODERADOR",
           color: "#00ff00",
-          img: "https://i.ibb.co/0VfNMn0s/Joao.jpg",
-          desc: "Administrador. Mantém a comunidade saudável, somente jogando Minecraft, Pubg e Free Fire mobile.",
-          age: "23 Anos",
-          loc: "Paraíba",
-          time: "",
-          main: "",
+          img: "https://i.ibb.co/pvSHbwBg/116-Sem-Titulo-20260227204822.png",
+          desc: "A criança atiradora de machados.",
+          age: "15 Anos",
+          loc: "Santa Catarina",
+          time: "200 horas",
+          main: "Killer (Huntress)",
           links: {
-            insta: "https://www.instagram.com/wesley_0047_?igsh=MWVrZXB2cTk0eWw2bg%3D%3D",
-            tiktok: "https://www.tiktok.com/@wesiey_?_r=1&_t=ZS-95JpXNQt0Q1",
-            steam: "#",
-            twitch: "#",
-          },
-        },
-        rebeca: {
-          name: "REBECCA",
-          role: "ADMINISTRADORA",
-          color: "#00ff00",
-          img: "https://i.ibb.co/q3b0DStn/Rebeca.jpg",
-          desc: "A brigona, pega briga ate com mosca.",
-          age: "17 Anos",
-          loc: "Rio de Janeiro",
-          time: "230 horas",
-          main: "Killer (Sadako)",
-          links: {
-            insta: "https://www.instagram.com/ebeccas?igsh=MXFwcGNsbWhsczFzdQ%3D%3D&utm_source=qr",
+            insta: "https://www.instagram.com/latenightdriveathome/",
             tiktok: "#",
-            steam: "https://steamcommunity.com/profiles/76561198751460446/",
+            steam: "https://steamcommunity.com/id/latenightdriveathome",
             twitch: "#",
-          },
-        },
-        japa: {
-          name: "GOBERY JAPA",
-          role: "ADMINISTRADOR",
-          color: "#00ff00",
-          img: "https://i.ibb.co/ZpcQ4kRw/546f9ce1-a3b7-4805-b914-b71e99ad8839.jpg",
-          desc: "O japones comedor de pastel de cachorro.",
-          age: "29 Anos",
-          loc: "Mato Grosso do Sul",
-          time: "9 anos",
-          main: "Killer (Nurse) e Surv (Cheryl)",
-          links: {
-            insta: "https://www.instagram.com/gobery.tsuji/",
-            tiktok: "https://www.tiktok.com/@japatsuji",
-            steam: "#",
-            twitch: "#",
-          },
-        },
-        anthonny: {
-          name: "ANTHONNY MICHAEL",
-          role: "ADMINISTRADOR",
-          color: "#00ff00",
-          img: "https://i.ibb.co/0yp7rQL7/fae9a1e7d7575d1cb510303fb2571944-tplv-tiktokx-cropcenter-1080-1080.jpg",
-          desc: "O programador que faz programa barato.",
-          age: "22 Anos",
-          loc: "Alagoas",
-          time: "8 anos",
-          main: "Killer (Blight, Kaneki, Oni, DeathSlinger)",
-          links: {
-            insta: "https://www.instagram.com/_ofcanthonny_santos__/",
-            tiktok: "https://www.tiktok.com/@anthonny_secbr",
-            steam: "https://steamcommunity.com/profiles/76561199746557480/",
-            twitch: "https://www.twitch.tv/sh4dow_sec",
           },
         },
       };
@@ -435,11 +337,9 @@
 
       const ADMIN_UIDS = [
         "discord:1400218900284571689",
-        "discord:392062765323255828",
-        "discord:644323555462479892",
-        "discord:804843307568988180",
-        "discord:361362105363857408",
-        "discord:208380369261559808"
+        "discord:1522742461389078568",
+        "discord:743696235248091206",
+        "discord:1012918511275884544"
       ];
 
       onAuthStateChanged(auth, (user) => {

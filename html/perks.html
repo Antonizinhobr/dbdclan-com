@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,17 +9,19 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="icon" href="../assets/icon.jpg" type="image/jpg">
 </head>
+
 <body class="fade-in">
 
     <header>
         <div class="logo">DEAD BY DAYLIGHT</div>
-        
+
         <nav class="nav-menu">
             <a href="dashboard.html" class="nav-link">Home</a>
             <a href="home.html" class="nav-link">Votação</a>
-            
+
             <div class="nav-dropdown">
-                <a href="teams.html" class="nav-link">Times <i class="fas fa-chevron-down" style="font-size: 0.6rem; margin-left: 5px;"></i></a>
+                <a href="teams.html" class="nav-link">Times <i class="fas fa-chevron-down"
+                        style="font-size: 0.6rem; margin-left: 5px;"></i></a>
                 <div class="dropdown-content">
                     <a href="teams.html?camp=1">Campeonato 1</a>
                 </div>
@@ -28,7 +31,8 @@
         </nav>
 
         <div class="user-container">
-            <a href="dashboard.html" style="color: #666; text-decoration: none; font-size: 0.8rem; font-family: var(--font-game);">
+            <a href="dashboard.html"
+                style="color: #666; text-decoration: none; font-size: 0.8rem; font-family: var(--font-game);">
                 <i class="fas fa-arrow-left"></i> VOLTAR AO HUB
             </a>
         </div>
@@ -37,7 +41,9 @@
     <div class="video-bg-container">
         <div class="video-overlay"></div>
         <video autoplay muted loop playsinline>
-            <source src="https://assets.deadbydaylight.com/DBD_CHAPTER_Ice_Cream_Web_Screenshots_Video_Beauty_04_8d864790b8.mp4" type="video/mp4">
+            <source
+                src="https://assets.deadbydaylight.com/DBD_CHAPTER_Ice_Cream_Web_Screenshots_Video_Beauty_04_8d864790b8.mp4"
+                type="video/mp4">
         </video>
     </div>
 
@@ -48,14 +54,14 @@
         </div>
 
         <div class="perks-container">
-            
+
             <div class="section-title"><i class="fas fa-skull"></i> ASSASSINOS</div>
             <div class="perk-grid" id="killer-grid">
-                </div>
+            </div>
 
             <div class="section-title" style="margin-top: 20px;"><i class="fas fa-running"></i> SOBREVIVENTES</div>
             <div class="perk-grid" id="survivor-grid">
-                </div>
+            </div>
 
         </div>
     </main>
@@ -63,11 +69,11 @@
     <div id="perk-modal" class="perk-modal" onclick="closeModal(event)">
         <div class="perk-modal-content">
             <button class="close-modal-btn" onclick="closeModal(event)">×</button>
-            
+
             <div class="modal-image-side">
                 <img id="m-img" src="" alt="Perk Image">
             </div>
-            
+
             <div class="modal-info-side">
                 <div class="modal-perk-type" id="m-type">TIPO</div>
                 <div class="modal-perk-name" id="m-name">NOME DA PERK</div>
@@ -81,34 +87,34 @@
             {
                 id: 'k1',
                 type: 'killer',
-                name: 'SEM SAÍDA',
+                name: 'FÚRIA ESPIRITUAl',
                 label: 'Vantagem',
-                img: 'https://deadbydaylight.com/static/15784ce523232550dbe82f11822c4f66/17f75/trickster_no_way_out_f031ae648a.webp',
-                description: 'Cada sobrevivente diferente que você pendura no gancho adiciona um token à perk. Quando o último gerador é concluído, os portões de saída ficam bloqueados por um período adicional para cada token acumulado, atrasando significativamente o endgame.'
+                img: 'https://deadbydaylight.com/static/386fbe4848cb193ab19a00c65d1f607e/17f75/spirit_spirit_fury_5fb281e464.webp',
+                description: 'Após quebrar 2 barricadas, a próxima que atordoar você será quebrada na hora pela Entidade'
             },
             {
                 id: 'k2',
                 type: 'killer',
-                name: 'CONTROLE DE PLATEIA',
+                name: 'TERRENO ASSOMBRADO',
                 label: 'Vantagem',
-                img: 'https://deadbydaylight.com/static/a9485074af79e9e6b4435cfc51843a93/17f75/trickster_hex_crowd_control_548bc70e3c.webp',
-                description: 'Sempre que um sobrevivente realiza um vault rápido em uma janela durante uma perseguição, essa janela é bloqueada temporariamente, impedindo novos vaults e reduzindo opções de loop.'
+                img: 'https://deadbydaylight.com/static/ab36c64cd0cae68ea4d7b85a21134d11/17f75/spirit_hex_haunted_ground_6660d78143.webp',
+                description: 'Gere dois Totens Enfeitiçados. Após purificar ou abençoar um dos totens, todos os Sobreviventes ficam Expostos por uma longa duração, sendo derrubados num só acerto. O Totem restante fica Simples.'
             },
             {
                 id: 'k3',
                 type: 'killer',
-                name: 'INSTINTO ALIENÍGENA',
+                name: 'PERCEPÇÃO REFINADA',
                 label: 'Vantagem',
-                img: 'https://deadbydaylight.com/static/d156b9b2404b517af289563b417072ff/eb71d/DBD_CH_29_Xeno_Perk3_Alien_Instinct_1397f8d80e.webp',
-                description: 'Quando você engancha um Sobrevivente, a aura do Sobrevivente ferido mais distante é revelada por 5 segundos. Além disso, esse sobrevivente ferido sofre do efeito de estado Alheio.'
+                img: 'https://deadbydaylight.com/static/6748a86bbfca55dab26e029744c08dad/eb71d/AM_3607_DBD_CH_25_Perk_Icons_WEB_WESKER_Awakened_Awareness_af4d7fb970.webp',
+                description: 'Ao carregar Sobreviventes, as Auras de todos os Sobreviventes no seu Raio de Terror serão reveladas.'
             },
             {
                 id: 'k4',
                 type: 'killer',
-                name: 'SINTONIA TECIDA',
+                name: 'COUP DE GRACE',
                 label: 'Vantagem',
-                img: 'https://deadbydaylight.com/static/0f28dbccb0026e040f88ed4d5e479475/eb71d/DBD_Churros_Perk_Icons_Web_Killer_Weave_Attunement_FINAL_ba8666c4ec.webp',
-                description: 'Quando o item de um sobrevivente acaba pela primeira vez, ele cai, revelando a aura do item e de sobreviventes próximos (até 12m). Além disso, quem pegar o item derrubado fica com o efeito Alheio por até 30 segundos.'
+                img: 'https://deadbydaylight.com/static/8157ac6eaee62e16016840ffc15072ed/17f75/twins_coup_de_grace_c9dd40d252.webp',
+                description: 'Ganhe um ponto de progressão sempre que um gerador for reparado. Cada ponto concede uma investida bem mais ampla.'
             },
             {
                 id: 'k5',
@@ -165,6 +171,102 @@
                 label: 'Vantagem',
                 img: 'https://deadbydaylight.com/static/90246eed252fd7006ab73559f61bfdda/17f75/nightmare_blood_warden_6e52ee4aac.webp',
                 description: 'Guardião Sanguinário transforma o momento final da partida em uma armadilha mortal. Quando os sobreviventes acham que a fuga está garantida, essa perk permite selar os portões de saída, prendendo todos dentro do mapa e criando uma oportunidade devastadora para virar o jogo. Os portões de saída ficam bloqueados por 1 minuto, após realizar um gancho de qualquer sobrevivente com os portões já abertos.'
+            },
+            {
+                id: 'k12',
+                type: 'killer',
+                name: 'GARANTIA DE MORTO',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/e6e42e932a1d6361d04785b32fb8a14a/17f75/deathslinger_dead_mans_switch_ab13669444.webp',
+                description: 'Garantia do Morto é ativada ao enganchar um Sobrevivente. Um gerador que tiver o reparo interrompido ficará bloqueado pela Entidade por uma duração. Os geradores afetados ficam realçados por uma aura branca.'
+            },
+            {
+                id: 'k13',
+                type: 'killer',
+                name: 'RETRIBUIÇÃO',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/2e0fe24e003a171318667dcb86ef536e/17f75/deathslinger_hex_retribution_c1902ea672.webp',
+                description: 'Gere um Totem Enfeitiçado. Sobreviventes purificando um Totem não poderão ouvir o Raio de Terror nem ver a Luz Vermelha por uma duração. Após a purificação de um Totem Enfeitiçado, a aura de todos os Sobreviventes é revelada brevemente.'
+            },
+            {
+                id: 'k14',
+                type: 'killer',
+                name: 'GUARDIÃO SANGUINÁRIO',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/90246eed252fd7006ab73559f61bfdda/17f75/nightmare_blood_warden_6e52ee4aac.webp',
+                description: 'Guardião Sanguinário transforma o momento final da partida em uma armadilha mortal. Quando os sobreviventes acham que a fuga está garantida, essa perk permite selar os portões de saída, prendendo todos dentro do mapa e criando uma oportunidade devastadora para virar o jogo. Os portões de saída ficam bloqueados por 1 minuto, após realizar um gancho de qualquer sobrevivente com os portões já abertos.'
+            },
+            {
+                id: 'k15',
+                type: 'killer',
+                name: 'AMIGOS ATÉ O FIM',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/ca732bdf468b3dfa1f7e8c3b466ded1b/eb71d/AM_4856_Db_D_CH_30_Perks_icon_v2_Friend_till_the_end_d1654f769f.webp',
+                description: 'Você fica obcecado por um Sobrevivente. Quando você engancha um Sobrevivente que não é a Obsessão, a Obsessão fica Exposta e tem sua aura é revelada por um breve período. Quando você engancha a Obsessão, outro Sobrevivente aleatório grita, revelando a posição dele, tornando-se a Obsessão.'
+            },
+            {
+                id: 'k16',
+                type: 'killer',
+                name: 'NÃO HÁ ONDE SE ESCONDER',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/b453aee2d4fee48e37668840dcff28d9/eb71d/DBD_CH_26_Perk_Icon_Knight_Nowhere_to_hide_12e580173c.webp',
+                description: 'Ao chutar um Gerador, a aura de todos os Sobreviventes próximos será revelada.'
+            },
+            {
+                id: 'k17',
+                type: 'killer',
+                name: 'SOBERBA',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/21d0781a1c9324a2c883eb29d81a9260/eb71d/DBD_CH_26_Perk_Icon_Knight_Hubris_6442077d2c.webp',
+                description: 'Sempre que você for atordoado por um Sobrevivente, tal Sobrevivente será Exposto por uma determinada duração.'
+            },
+            {
+                id: 'k18',
+                type: 'killer',
+                name: 'PERSEGUIDOR MORTÍFERO',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/e383549e3f916fdb4b128bba414c4981/17f75/nemesis_lethal_pursuer_cc37842cd5.webp',
+                description: 'Ao começo de cada partida, a aura de todos os Sobreviventes se revelará para você por uma breve duração.'
+            },
+            {
+                id: 'k19',
+                type: 'killer',
+                name: 'ENCHENTE DE FÚRIA',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/d7037a02c56c1b09c811e6121cd8d8d3/17f75/scourge_hook_flood_of_rage_f1b5d099d0.webp',
+                description: 'Cada partida começa com até quatro Ganchos do Tormento. Quando um Sobrevivente enganchado num Gancho do Tormento for resgatado, a aura de todos os demais Sobreviventes se revelará por uma breve duração.'
+            },
+            {
+                id: 'k20',
+                type: 'killer',
+                name: 'ARMA SUPREMA',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/9f2dbde49218d4dec1d404b1da964b6d/eb71d/DBD_CH_29_Xeno_Perk1_Ultimate_Weapon_c7537dbfbe.webp',
+                description: 'Quando você vasculha um Armário, todos os Sobreviventes ao seu redor gritam, têm suas Auras reveladas e recebem o efeito de Cegueira por um breve período.'
+            },
+            {
+                id: 'k21',
+                type: 'killer',
+                name: 'SOU TODO OUVIDOS',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/63b37bfa925be6d0e44ce3fe39d94e59/17f75/ghostface_im_all_ears_f2274df445.webp',
+                description: 'Após um Sobrevivente pular por uma janela ou barricada rapidamente, você pode ver a aura dele por uma breve duração e interceptá-lo de acordo.'
+            },
+            {
+                id: 'k22',
+                type: 'killer',
+                name: 'BRINQUE COM SUA COMIDA',
+                label: 'Vantagem',
+                img: 'https://i.ibb.co/BVkZVn2Y/play-with-your-food.png',
+                description: 'Sempre que você parar de perseguir a obsessão você recebe 1 Token, em um total de 3. Para cada Token você recebe 4% de Celeridade.'
+            },
+            {
+                id: 'k23',
+                type: 'killer',
+                name: 'O JOGO COMEÇOU',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/04b992192950526ff60aee4d7ac1f1f2/eb71d/DBD_CH_27_Perk_Icon_The_Skull_Merchant_Game_Afoot_5f66e856ae.webp',
+                description: 'Quando você atingir o Sobrevivente mais perseguido, ele se tornará a Obsessão. Ao perseguir a Obsessão, chutar Geradores e quebrar Paredes ou Barricadas concederá um aumento de velocidade temporário.'
             },
             {
                 id: 's1',
@@ -262,12 +364,292 @@
                 img: 'https://deadbydaylight.com/static/3224c0938e319049524416ace3c976cf/eb71d/Db_D_ST_Perk_Icons_Teamwork_Full_Circuit_27851afee8.webp',
                 description: 'Quando você está reparando um gerador, as skillchecks ficam 25% maiores do Bom Teste de Perícia, além de reparar 5% mais rápido ao reparar com outro sobrevivente.'
             },
+            {
+                id: 's14',
+                type: 'survivor',
+                name: 'EM ALERTA',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/4db2eab3493299491619bdd71e049848/17f75/feng_alert_0bfe135ab7.webp',
+                description: 'Seus sentidos afiados estão em alerta. Veja um relance da aura do Assassino sempre que ele danificar um gerador, quebrar uma barricada ou quebrar uma parede destrutível.'
+            },
+            {
+                id: 's15',
+                type: 'survivor',
+                name: 'AUTODIDATA',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/92221def72259160cc09bee2cee12a35/17f75/adam_autodidact_d31109a3be.webp',
+                description: 'Comece a partida com uma penalidade à velocidade de cura. Ganhe um ponto de progressão sempre que você tiver sucesso num Teste de Perícia ao curar um Sobrevivente, podendo acumular até 5. Cada ponto de progressão concede um pico de progresso adicional a cada Teste de Perícia de sucesso.'
+            },
+            {
+                id: 's16',
+                type: 'survivor',
+                name: 'JOGADOR TÁTICO',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/6b79e7a11e20970d3107881f5786bae4/eb71d/DBD_CH_27_Perk_Icon_Renato_Background_Player_6285c5fcf5.webp',
+                description: 'Quando o Assassino apanha outro Sobrevivente, Jogador Tático se aciona por uma breve duração. Da próxima vez que você começar a correr, parta numa arrancada e ganhe um pico de velocidade temporário. A vantagem causa o efeito do estado Exaustão e não pode ser usada enquanto estiver Exausto.'
+            },
+            {
+                id: 's17',
+                type: 'survivor',
+                name: 'SUPERAÇÃO',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/511757466c1e66063e1ac6e820f242ef/17f75/kate_boil_over_5a203c81e8.webp',
+                description: 'Sua luta intensa dificulta o trabalho dos Assassinos que carregarem você, aumentando a probabilidade de você fugir debatendo-se. Enquanto carregam você, Assassinos não podem mais revelar as auras de ganchos próximos.'
+            },
+            {
+                id: 's18',
+                type: 'survivor',
+                name: 'BENÇÃO: CÍRCULO CURATIVO',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/a42edd797f91400e4c16612e7be91514/17f75/mikaela_circle_of_healing_870ce95e78.webp',
+                description: 'Em vez de purificar um Totem Simples ou Enfeitiçado, você pode abençoá-lo para criar um Totem Abençoado. Sobreviventes ao alcance do Totem Abençoado recebem um bônus de velocidade de cura e podem se curar com um Kit Médico.'
+            },
+            {
+                id: 's19',
+                type: 'survivor',
+                name: 'BENÇÃO: TEORIA DAS TREVAS',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/393a87b91e11548a3680fdd10681e85c/17f75/Boon_Dark_Theory_f46e1b6168.webp',
+                description: 'Abençoe um Totem Simples ou Enfeitiçado para criar um Totem Abençoado. Todos os Sobreviventes dentro do alcance do Totem Abençoado ganham mais um bônus de velocidade de movimento. O bônus persistirá por uma breve duração após a pessoa deixar a aura da Bênção.'
+            },
+            {
+                id: 's20',
+                type: 'survivor',
+                name: 'BENÇÃO: EXPONENCIAL',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/20202b1ca378b52079f3dc017bb9c646/17f75/jonah_boon_exponential_a4b3415ba8.webp',
+                description: 'Em vez de purificar um Totem Simples ou Enfeitiçado, você pode abençoá-lo para criar um Totem Abençoado. Sobreviventes ao alcance do Totem Abençoado se recuperam mais rapidamente e podem se recuperar completamente do estado Morrendo sem ajuda.'
+            },
+            {
+                id: 's21',
+                type: 'survivor',
+                name: 'BENÇÃO: PASSO SOMBRIO',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/4bc3ce4bca261846728e1323c6070bdb/eb71d/DBD_ZODIAC_PERKS_2_Illumination_Final_2301ea1b9a.webp',
+                description: 'Em vez de purificar um Totem Simples ou Enfeitiçado, você pode abençoá-lo para criar um Totem Abençoado. Se estiverem no alcance do Totem Abençoado, os Sobreviventes não deixarão marcas e suas auras não poderão ser vistas pelo Assassino.'
+            },
+            {
+                id: 's22',
+                type: 'survivor',
+                name: 'TEMPO PRECIOSO',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/4def1f69fdead1c9413db77d07f5e1f8/c4129/Bill_Unbreakable_d1ab7b31c4.webp',
+                description: 'Após resgatar um Sobrevivente do gancho, o resgatado ganha o efeito do estado Resistência, capaz de sofrer um acerto por uma breve duração. Em vez de ser derrubado, o Sobrevivente precisará em vez disso tratar uma Ferida Profunda.'
+            },
+            {
+                id: 's23',
+                type: 'survivor',
+                name: 'QUEBRAR',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/ff57ffee4029cb07c1f57b941be80027/17f75/jeff_breakdown_e8805bae5e.webp',
+                description: 'Quando desenganchado, ele quebra o Gancho, inutilizando-o por uma longa duração. A aura do Assassino se revela brevemente.'
+            },
+            {
+                id: 's24',
+                type: 'survivor',
+                name: 'FUGA',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/d2a1a226463b0966c8fdf2654a4bcfaf/17f75/yui_breakout_d2fbd69195.webp',
+                description: 'Quando um Sobrevivente estiver sendo levado por um Assassino perto de você, sua velocidade de movimento aumenta muito, junto da velocidade de debater-se do Sobrevivente em questão.'
+            },
+            {
+                id: 's25',
+                type: 'survivor',
+                name: 'APERTANDO OS CINTOS',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/1fe359e0ad5f7dbee01e6caa42301151/17f75/ash_buckle_up_73950dd094.webp',
+                description: 'Revele a aura de aliados próximos que estiverem no estado Morrendo, medindo o progresso de recuperação deles pela intensidade da aura. Ao curar um Sobrevivente morrendo, você enxerga a aura do Assassino e do Sobrevivente em questão.'
+            },
+            {
+                id: 's26',
+                type: 'survivor',
+                name: 'BENÇÃO: ILUMINADO',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/4bc3ce4bca261846728e1323c6070bdb/eb71d/DBD_ZODIAC_PERKS_2_Illumination_Final_2301ea1b9a.webp',
+                description: 'Campeão da Luz se ativa enquanto você estiver segurando uma Lanterna. Você se move mais rápido ao acioná-la. Após cegar o Assassino com sucesso, Lentidão é aplicada por tempo limitado, dando a você mais oportunidades para se distanciar.'
+            },
+            {
+                id: 's27',
+                type: 'survivor',
+                name: 'EXTRAOFICIALMENTE',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/2b061101dedd25be5d58480c7c41a0de/17f75/zarina_off_the_record_7de615fc83.webp',
+                description: 'Quando você sai do gancho, o Assassino fica incapaz de ler a sua aura por uma duração prolongada. Ao sofrer um ferimento, seus Gemidos de Dor são bem mais fracos.'
+            },
+            {
+                id: 's28',
+                type: 'survivor',
+                name: 'PRAZO FINAL',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/d245b17aa267f333242522cdc9a62521/eb71d/DBD_ZODIAC_PERKS_3_Deadline_Final_1be4c4184b.webp',
+                description: 'Enquanto estiver ferido, Testes de Perícia aparecem com mais frequência ao reparar e curar. A penalidade por falhar em Testes de Perícia é reduzida consideravelmente.'
+            },
+            {
+                id: 's29',
+                type: 'survivor',
+                name: 'INTUIÇÃO DE DETETIVE',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/be2affcc07f50d55576a3b38d64794a3/17f75/david_tapp_detectives_hunch_aef524776d.webp',
+                description: 'Quando um gerador for concluído, revele as auras de geradores, Totens e baús nos seus arredores por uma breve duração.'
+            },
+            {
+                id: 's30',
+                type: 'survivor',
+                name: 'TOCAIA',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/286747e4c62e2ab7305ec9d3b67b20c6/17f75/david_tapp_stake_out_e10982c89d.webp',
+                description: 'Ganhe um ponto de progressão a cada 15 s passados dentro do Raio de Terror do Assassino, fora de uma perseguição. Pode acumular até 4. Cada ponto de progressão transforma um Bom Teste de Perícia num Ótimo Teste de Perícia, além de conceder um pequeno bônus ao progresso do reparo do gerador.'
+            },
+            {
+                id: 's31',
+                type: 'survivor',
+                name: 'FAMA ACELERADA',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/726b2030a48eaec5a2e397118eecb44d/17f75/yunjin_fast_track_4960ecd17b.webp',
+                description: 'Ganhe pontos de progressão sempre que outro Sobrevivente for enganchado, podendo acumular até 27. Ao reparar um gerador, conclua um Ótimo Teste de Perícia para consumir todos os pontos, cada um acrescentando 1% de bônus ao progresso do reparo.'
+            },
+            {
+                id: 's32',
+                type: 'survivor',
+                name: 'PRAZO FINAL',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/027f0fe7918faa30084ef03264ff68cf/eb71d/DBD_CH_26_Perk_Icon_Vittorio_Potential_Energy_f7c7eb906e.webp',
+                description: 'Após reparar um Gerador por uma breve duração ininterrupta, esta vantagem poderá ser ativada. Ao ativá-la, todo o progresso do reparo não mais contribuirá ao Gerador. Em vez disso, ele carregará até 20 pontos de progressão, armazenando uma dose considerável de progresso de reparo. Uma vez obtidos, os pontos de progressão poderão ser usados para reparar imediatamente o progresso de um Gerador de sua escolha. Todos os pontos de progressão serão perdidos ao ser ferido, e parte deles será perdida ao falhar um Teste de Perícia.'
+            },
+            {
+                id: 's33',
+                type: 'survivor',
+                name: 'SABEDORIA DA NÉVOA',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/e196263891370186d1b45e3001f9a28f/eb71d/DBD_CH_26_Perk_Icon_Vittorio_Fogwise_4b8d5a7006.webp',
+                description: 'Acertar um Ótimo Teste de Perícia enquanto repara um gerador revelará a Aura do Assassino por uma breve duração.'
+            },
+            {
+                id: 's34',
+                type: 'survivor',
+                name: 'COMPETIÇÃO AMISTOSA',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/0a4bd358a614877689adf78aa3f223a3/eb71d/DBD_CH_27_Perk_Icon_Thalita_Friendly_Competition_8047d5e5d1.webp',
+                description: 'Ao concluir um Gerador com outros Sobreviventes, você e estes Sobreviventes receberão um modesto bônus de velocidade de reparo de Gerador.'
+            },
+            {
+                id: 's35',
+                type: 'survivor',
+                name: 'DISPUTA DE FORÇAS',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/b9da9d7a83106266d7e44bfbe9a2dfe8/17f75/elodie_power_struggle_90cd82a143.webp',
+                description: 'Enquanto o Assassino carregar você, chegar a certo nível de progresso ao debater-se ativa a Disputa de Forças. Caso o Assassino passe perto de uma barricada de pé, você pode derrubá-la e atordoar o Assassino, libertando-se no processo.'
+            },
+            {
+                id: 's36',
+                type: 'survivor',
+                name: 'APERTANDO OS CINTOS',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/1fe359e0ad5f7dbee01e6caa42301151/17f75/ash_buckle_up_73950dd094.webp',
+                description: 'Revele a aura de aliados próximos que estiverem no estado Morrendo, medindo o progresso de recuperação deles pela intensidade da aura. Ao curar um Sobrevivente morrendo, você enxerga a aura do Assassino e do Sobrevivente em questão.'
+            },
+            {
+                id: 's37',
+                type: 'survivor',
+                name: 'TRABALHO EM EQUIPE: PODER DE DOIS',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/2f225056de5364bf0e0db5ba9be44484/eb71d/DBD_CH_27_Perk_Icon_Thalita_Teamwork_Power_Of_Two_f1437073e7.webp',
+                description: 'Ao terminar de Curar um Sobrevivente, ambos receberão um bônus de velocidade de movimento enquanto continuarem juntos. O bônus cessará quando se separarem ou se um dos dois perder um estado de saúde.'
+            },
+            {
+                id: 's38',
+                type: 'survivor',
+                name: 'PARENTESCO',
+                label: 'Vantagem',
+                img: 'https://i.ibb.co/JRS6t33F/kindred.webp',
+                description: 'Quando você estiver enganchado você verá as auras de todos os sobreviventes. Se o Killer estiver à 16m de você todos os sobreviventes verão sua aura.'
+            },
+            {
+                id: 's39',
+                type: 'survivor',
+                name: 'DISCRIÇÃO',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/ba6c2f5320cec1c23a57cefc2c2bb989/eb71d/AM_3607_DBD_CH_25_Perk_Icons_WEB_ADA_Low_Profile_2bceaed131.webp',
+                description: 'Ao se tornar o último Sobrevivente restante, suas Marcas, Poças de Sangue e Gemidos de Dor são temporariamente suprimidos.'
+            },
+            {
+                id: 's40',
+                type: 'survivor',
+                name: 'SOLUÇÃO DE PROBLEMAS',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/095a2538e6972d2bd01ac298368ec5fa/eb71d/Gabriel_Troubleshooter_6a1638c587.webp',
+                description: 'Enquanto você estiver sendo perseguido pelo Assassino, será possível ver a aura do Gerador com o maior progresso. Ao derrubar uma Barricada, você também poderá ver a aura do Assassino por um breve período.'
+            },
+            {
+                id: 's41',
+                type: 'survivor',
+                name: 'FEITO PARA ISSO',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/e2e15d6257026d735031453e827f5e57/eb71d/Gabriel_Made_For_This_3328fcc4ed.webp',
+                description: 'Ao ser ferido e ficar no estado de MENDING, você corre ligeiramente mais rápido. Ao curar um colega, você ganha o efeito do estado Resistência por um breve período.'
+            },
+            {
+                id: 's42',
+                type: 'survivor',
+                name: 'ZELOSA AO EXTREMO',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/25b5663b69c1a07ad8f6d7973e5c3e35/eb71d/DBD_CH_24_Perks_HADDIE_Overzealous_34c305d159.webp',
+                description: 'Após purificar qualquer totem, você ganha um pouco mais de velocidade de reparo de geradores. O aumento cessa quando seu estado de saúde piorar.'
+            },
+            {
+                id: 's43',
+                type: 'survivor',
+                name: 'GAMBITO RÁPIDO',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/cf0cc51bc80ffcfdb8500a69696021bb/eb71d/DBD_CH_26_Perk_Icon_Vittorio_Quick_Gambit_b5b1ce4aae.webp',
+                description: 'Quando você for perseguido nos arredores de um Gerador, todos os Sobreviventes que estiverem reparando o Gerador receberão um aumento na velocidade de reparo.'
+            },
+            {
+                id: 's44',
+                type: 'survivor',
+                name: 'SABOTADOR',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/ca6c260f82b3ae52ec653ee5513252f1/c4129/Jake_saboteur_c6d31c2dd5.webp',
+                description: 'Quando um Assassino pega um Sobrevivente, a aura de todos os ganchos nos arredores é revelada. Então é possível sabotá-los sem uma caixa de ferramentas, facilitando reviravoltas de última hora.'
+            },
+            {
+                id: 's45',
+                type: 'survivor',
+                name: 'JOGO PEQUENO',
+                label: 'Vantagem',
+                img: 'https://i.ibb.co/4n8nmG6F/small-game.webp',
+                description: 'Em um raio de 12 metros de você, quando você olhar à um totem em 45 graus, você ouve um som.'
+            },
+            {
+                id: 's46',
+                type: 'survivor',
+                name: 'ÚNICO SOBREVIVENTE',
+                label: 'Vantagem',
+                img: 'https://i.ibb.co/6dn18GT/sole-survivor.webp',
+                description: 'Para cada 1 Sobrevivente morto você repara 75% mais rápido e abre portões e cura 50% mais rápido.'
+            },
+            {
+                id: 's47',
+                type: 'survivor',
+                name: 'PROTEÇÃO DE ALMA',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/2854e8e36f2f69a871a9b0d69c4f1956/17f75/cheryl_soul_guard_2fae8156de.webp',
+                description: 'Após ser curada ou se recuperar do estado Morrendo, ganhe brevemente Resistência para poder sofrer um acerto. Se for afetada por um Totem Enfeitiçado, você pode se recuperar totalmente do estado Morrendo.'
+            },
+            {
+                id: 's48',
+                type: 'survivor',
+                name: 'ALIANÇA REPRIMIDA',
+                label: 'Vantagem',
+                img: 'https://deadbydaylight.com/static/76ab11d7169f666a44fa6dd21b61d24f/17f75/cheryl_repressed_alliance_71ef44d8a8.webp',
+                description: 'Após reparar geradores por uma duração prolongada, você pode convocar a Entidade para bloquear o gerador em que está trabalhando, impedindo que o Assassino faça o progresso regredir.'
+            }
         ];
 
         const killerGrid = document.getElementById('killer-grid');
         const survivorGrid = document.getElementById('survivor-grid');
         const modal = document.getElementById('perk-modal');
-        
+
         const mImg = document.getElementById('m-img');
         const mType = document.getElementById('m-type');
         const mName = document.getElementById('m-name');
@@ -306,4 +688,5 @@
         renderPerks();
     </script>
 </body>
+
 </html>

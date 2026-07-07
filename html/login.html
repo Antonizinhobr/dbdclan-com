@@ -110,7 +110,7 @@
             GoogleAuthProvider,
             signInWithPopup,
             onAuthStateChanged,
-            signInWithCustomToken // IMPORTANTE AQUI!
+            signInWithCustomToken
         } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
         const firebaseConfig = {
@@ -127,21 +127,18 @@
         const auth = getAuth(app);
         const googleProvider = new GoogleAuthProvider();
 
-        // === MÁGICA DO LOGIN VIA DISCORD ===
         const urlParams = new URLSearchParams(window.location.search);
         const customToken = urlParams.get('token');
 
         if (customToken) {
             signInWithCustomToken(auth, customToken)
                 .then(() => {
-                    // Limpa o token gigantesco da barra de endereço
                     window.history.replaceState({}, document.title, window.location.pathname);
                 })
                 .catch((error) => {
                     showError("Erro no passe VIP do Discord: " + error.message);
                 });
         }
-        // ===================================
 
         onAuthStateChanged(auth, (user) => {
             if (user) {
