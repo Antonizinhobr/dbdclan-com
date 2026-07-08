@@ -451,7 +451,7 @@ window.prevTeamStep = () => {
 };
 
 window.addDraftMember = () => {
-    if (draftMembers.length >= 3) return alert("Limite de Membros atingido! Uma equipe pode ter no máximo 3 membros além do Capitão (Total de 4 jogadores).");
+    if (draftMembers.length >= 4) return alert("Limite de Membros atingido! Uma equipe pode ter no máximo 4 membros além do Capitão (Total de 5 jogadores).");
 
     const mName = document.getElementById('m-name').value.trim();
     const mEmail = document.getElementById('m-email').value.trim().toLowerCase();
@@ -499,9 +499,9 @@ window.renderDraftMembers = () => {
 window.submitTeam = async () => {
     if(isCurrentCampLocked && !isAdmin) return alert("As inscrições para este campeonato estão encerradas!");
 
-    // NOVA REGRA: Obrigar a ter exatamente 3 membros adicionados no elenco (total de 4 no time)
-    if (draftMembers.length < 3) {
-        return alert("Erro: Sua equipe está incompleta! Você precisa adicionar exatamente 3 membros (além do Capitão) para finalizar a inscrição.");
+    // NOVA REGRA: Obrigar a ter exatamente 4 membros adicionados no elenco (total de 5 no time)
+    if (draftMembers.length < 4) {
+        return alert("Erro: Sua equipe está incompleta! Você precisa adicionar exatamente 4 membros (além do Capitão) para finalizar a inscrição.");
     }
 
     const user = auth.currentUser || currentUser;
@@ -554,6 +554,55 @@ window.submitTeam = async () => {
         
         window.closeModal('create-team-modal');
         alert("Equipe forjada com sucesso! Que a Entidade tenha piedade de vocês.");
+
+        // ==========================================
+        // INTEGRAÇÃO COM DISCORD WEBHOOK
+        // ==========================================
+        const webhookUrl = "https://discord.com/api/webhooks/1524454164904808558/EEBzHbxPgavMeP3RDKm_d4IDPlMJy9BAKtzzaWVjFhjyBN8NklZooRHRCXb432Eyeiei";
+        
+        // Formata os membros adicionais para o embed
+        const membersListString = draftMembers.map(m => `🔪 **${m.name}**`).join('\n');
+
+        const embedData = {
+            embeds: [
+                {
+                    title: "🩸 NOVA EQUIPE FORJADA NA NÉVOA! 🩸",
+                    description: `Um novo time acaba de realizar sua inscrição para o **Torneio ${currentCamp}**! Que a Entidade tenha piedade de suas almas...`,
+                    color: 10038562, // Vermelho Escuro / Cor de sangue
+                    thumbnail: {
+                        url: logoUrl
+                    },
+                    fields: [
+                        {
+                            name: "🛡️ NOME DA EQUIPE",
+                            value: `**${tName}**`,
+                            inline: true
+                        },
+                        {
+                            name: "👑 CAPITÃO",
+                            value: `${capName}`,
+                            inline: true
+                        },
+                        {
+                            name: "👥 ELENCO DE SOBREVIVENTES",
+                            value: membersListString,
+                            inline: false
+                        }
+                    ],
+                    footer: {
+                        text: "DbD - Inscrição de Equipes",
+                        icon_url: "https://i.ibb.co/ds7hn376/Batutinha.png"
+                    },
+                    timestamp: new Date().toISOString()
+                }
+            ]
+        };
+
+        fetch(webhookUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(embedData)
+        }).catch(err => console.error("Falha ao enviar aviso pro Discord:", err));
 
     } catch (error) {
         console.error("Erro ao salvar equipe:", error);
