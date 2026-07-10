@@ -446,3 +446,91 @@
   cursor: pointer;
   font-size: 0.9rem;
 }
+
+/* ==========================================
+   MEDIA QUERIES (RESPONSIVIDADE MOBILE)
+   ========================================== */
+
+@media screen and (max-width: 768px) {
+  /* 1. Correção dos Modais (Evita o bug da imagem) */
+  .perk-modal-content, 
+  .modal-wizard-box, 
+  .modal-max-800 {
+    width: 95%; /* Ocupa quase toda a largura da tela */
+    max-height: 90vh; /* Limita a altura para caber na tela */
+    overflow-y: auto; /* Permite rolar o conteúdo dentro do modal */
+    padding: 20px;
+    display: flex;
+    flex-direction: column; /* Empilha os elementos verticalmente */
+  }
+
+  /* 2. Modal de Visualizar Equipe (Lado da imagem vs Lado da Info) */
+  .modal-img-col {
+    border-right: none;
+    border-bottom: 1px solid #333;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    align-items: center;
+    width: 100%;
+  }
+
+  /* 3. Ajuste do Grid de Membros (Passa de 4 colunas para 2) */
+  .members-grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* 4. Painel do Admin e Botões Principais */
+  .admin-camp-controls {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .admin-title {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+
+  .wizard-nav-btns {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .btn-medium, 
+  .btn-large-center {
+    width: 100%;
+    padding: 15px;
+    font-size: 1rem;
+    box-sizing: border-box;
+  }
+  
+  /* 5. Ajustes de Header/Navegação básica */
+  header {
+    flex-direction: column;
+    text-align: center;
+    padding: 15px 10px;
+  }
+  
+  .nav-menu {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin: 15px 0;
+  }
+  
+  .header-user-wrapper {
+    margin-top: 10px;
+  }
+}
+
+/* Ajustes para telas muito pequenas (Celulares em pé) */
+@media screen and (max-width: 480px) {
+  /* O grid de membros passa a ter 1 membro por linha para melhor leitura */
+  .members-grid-4 {
+    grid-template-columns: 1fr;
+  }
+  
+  .team-logo-display {
+    width: 120px;
+    height: 120px;
+  }
+}
