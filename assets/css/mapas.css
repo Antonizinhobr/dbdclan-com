@@ -173,16 +173,74 @@
     margin: 0;
 }
 
+/* =========================================
+   📱 RESPONSIVIDADE (MEDIA QUERIES)
+   ========================================= */
+
+/* Notebooks e Telas Médias */
 @media screen and (max-width: 1200px) {
     #maps-main-grid { grid-template-columns: repeat(4, 1fr) !important; }
 }
 
-@media screen and (max-width: 768px) {
+/* Tablets e Monitores Pequenos */
+@media screen and (max-width: 1024px) {
     #maps-main-grid { grid-template-columns: repeat(3, 1fr) !important; }
-    #variations-grid, #maps-grid { grid-template-columns: repeat(2, 1fr) !important; }
+    
+    #modal-variations .perk-modal-content,
+    #modal-maps .perk-modal-content {
+        min-width: 400px !important;
+        padding: 25px 30px !important;
+    }
 }
 
+/* Tablets em pé e Celulares deitados */
+@media screen and (max-width: 768px) {
+    #maps-main-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 15px !important; }
+    #variations-grid, #maps-grid { gap: 15px !important; }
+    
+    #variations-grid .map-card,
+    #maps-grid .map-card {
+        width: 180px !important; 
+    }
+    
+    .fullscreen-modal-content {
+        padding: 20px !important;
+    }
+    
+    .fullscreen-title {
+        font-size: 1.5rem;
+        margin-top: 40px !important; /* Espaço maior para não encostar nos botões */
+    }
+    
+    .btn-back-modal {
+        font-size: 0.7rem !important;
+        padding: 5px 10px !important;
+    }
+}
+
+/* Celulares (Telas Pequenas) */
 @media screen and (max-width: 480px) {
-    #maps-main-grid { grid-template-columns: repeat(2, 1fr) !important; }
-    #variations-grid, #maps-grid { grid-template-columns: 1fr !important; }
+    #maps-main-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
+    #variations-grid, #maps-grid { flex-direction: column !important; align-items: center !important; }
+    
+    #variations-grid .map-card,
+    #maps-grid .map-card {
+        width: 100% !important; /* Cards ocupam a largura toda no modal no celular */
+        max-width: 250px !important;
+    }
+
+    #modal-variations .perk-modal-content,
+    #modal-maps .perk-modal-content {
+        min-width: 90vw !important;
+        padding: 20px 15px !important;
+    }
+    
+    .map-card-title {
+        font-size: 0.7rem;
+        padding: 8px 5px;
+    }
+    
+    .fullscreen-img {
+        max-height: 60vh; /* Evita que a imagem vase da tela em celulares pequenos */
+    }
 }

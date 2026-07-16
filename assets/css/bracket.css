@@ -324,3 +324,36 @@
     border-radius: 50%;
     object-fit: cover;
 }
+
+@media (max-width: 1024px) {
+    .team-slot { width: 95px; height: 120px; }
+    .team-slot img { width: 70px; height: 70px; }
+    .team-name { font-size: 0.55rem; }
+    .champion-slot { width: 115px; height: 140px; }
+    .champion-slot img { width: 85px; height: 85px; }
+    .tree li { padding: 10px 2px 0 2px; }
+}
+
+@media (max-width: 768px) {
+    .tree-container { 
+        overflow-x: auto; 
+        justify-content: flex-start; 
+        padding-bottom: 20px; 
+    }
+    .tree { min-width: 700px; }
+    .team-slot { width: 80px; height: 100px; padding: 5px; }
+    .team-slot img { width: 55px; height: 55px; }
+    .champion-slot { width: 90px; height: 115px; }
+    .champion-slot img { width: 65px; height: 65px; }
+    .trophy-icon { font-size: 1.8rem; }
+    .winner-title { font-size: 0.65rem; }
+    .team-slot.is-loser::after { font-size: 2.5rem; }
+}
+
+@media (max-width: 480px) {
+    .modal-wizard-box { padding: 20px; }
+    .tree { min-width: 600px; }
+    .team-slot { width: 70px; height: 90px; padding: 4px; }
+    .team-slot img { width: 45px; height: 45px; }
+    .team-name { font-size: 0.5rem; }
+}
