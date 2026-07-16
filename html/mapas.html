@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DBD - Numeração de Mapas</title>
+    <link rel="icon" href="../assets/icon.jpg" type="image/jpg">
+    <link rel="stylesheet" href="../assets/css/index.css">
+    <link rel="stylesheet" href="../assets/css/mapas.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="fade-in">
+
+    <header>
+        <div class="logo">DEAD BY DAYLIGHT</div>
+        <nav class="nav-menu">
+            <a href="dashboard.html" class="nav-link">Home</a>
+            <a href="teams.html" class="nav-link">Times</a>
+            <a href="mapas.html" class="nav-link active">Numeração de Mapas</a>
+        </nav>
+    </header>
+
+    <main class="main-padding">
+        <div class="info-section transparent-bg">
+            <h1>NUMERAÇÃO DE MAPAS</h1>
+            <p>Selecione um mapa para visualizar suas variações e numerações de callout.</p>
+        </div>
+
+        <div class="perks-container pt-0">
+            <div id="maps-main-grid" class="maps-grid">
+            </div>
+        </div>
+    </main>
+
+    <div id="modal-maps" class="perk-modal" onclick="closeModalOut(event, 'modal-maps')">
+        <div class="perk-modal-content modal-max-800">
+            <button class="btn-back-modal" onclick="closeModal('modal-maps')">
+                <i class="fas fa-arrow-left"></i> VOLTAR
+            </button>
+            <button class="close-modal-btn" onclick="closeModal('modal-maps')">×</button>
+            <div class="modal-info-side">
+                <div class="modal-perk-type">ESCOLHA O MAPA</div>
+                <div class="modal-perk-name" id="m-realm-name"></div>
+                
+                <div class="modal-section-divider">
+                    <div id="maps-grid" class="maps-grid variations-grid-layout">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-variations" class="perk-modal" onclick="closeModalOut(event, 'modal-variations')">
+        <div class="perk-modal-content modal-max-800">
+            <button class="btn-back-modal" onclick="voltarParaMaps()">
+                <i class="fas fa-arrow-left"></i> VOLTAR
+            </button>
+            <button class="close-modal-btn" onclick="closeModal('modal-variations')">×</button>
+            <div class="modal-info-side">
+                <div class="modal-perk-type">ESCOLHA A VARIAÇÃO</div>
+                <div class="modal-perk-name" id="v-map-name"></div>
+                
+                <div class="modal-section-divider">
+                    <div id="variations-grid" class="maps-grid variations-grid-layout">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-fullscreen" class="perk-modal" onclick="closeModalOut(event, 'modal-fullscreen')">
+        <div class="perk-modal-content fullscreen-modal-content">
+            <button class="btn-back-modal" onclick="voltarParaVariacoes()">
+                <i class="fas fa-arrow-left"></i> VOLTAR
+            </button>
+            <button class="close-modal-btn" onclick="closeModal('modal-fullscreen')">×</button>
+            <h2 id="f-variation-name" class="fullscreen-title"></h2>
+            <img id="f-variation-img" src="" alt="Mapa Expandido" class="fullscreen-img">
+        </div>
+    </div>
+
+    <script src="../js/mapas.js"></script>
+</body>
+</html>
