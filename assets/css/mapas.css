@@ -173,16 +173,10 @@
     margin: 0;
 }
 
-/* =========================================
-   📱 RESPONSIVIDADE (MEDIA QUERIES)
-   ========================================= */
-
-/* Notebooks e Telas Médias */
 @media screen and (max-width: 1200px) {
     #maps-main-grid { grid-template-columns: repeat(4, 1fr) !important; }
 }
 
-/* Tablets e Monitores Pequenos */
 @media screen and (max-width: 1024px) {
     #maps-main-grid { grid-template-columns: repeat(3, 1fr) !important; }
     
@@ -193,7 +187,6 @@
     }
 }
 
-/* Tablets em pé e Celulares deitados */
 @media screen and (max-width: 768px) {
     #maps-main-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 15px !important; }
     #variations-grid, #maps-grid { gap: 15px !important; }
@@ -209,7 +202,7 @@
     
     .fullscreen-title {
         font-size: 1.5rem;
-        margin-top: 40px !important; /* Espaço maior para não encostar nos botões */
+        margin-top: 40px !important;
     }
     
     .btn-back-modal {
@@ -218,14 +211,13 @@
     }
 }
 
-/* Celulares (Telas Pequenas) */
 @media screen and (max-width: 480px) {
     #maps-main-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
     #variations-grid, #maps-grid { flex-direction: column !important; align-items: center !important; }
     
     #variations-grid .map-card,
     #maps-grid .map-card {
-        width: 100% !important; /* Cards ocupam a largura toda no modal no celular */
+        width: 100% !important;
         max-width: 250px !important;
     }
 
@@ -241,6 +233,6 @@
     }
     
     .fullscreen-img {
-        max-height: 60vh; /* Evita que a imagem vase da tela em celulares pequenos */
+        max-height: 60vh;
     }
 }

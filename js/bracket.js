@@ -84,7 +84,6 @@ function renderMenus() {
     }
 }
 
-// 1. CARREGAR EQUIPES DO CAMPEONATO
 const qTeams = query(collection(db, "teams"), orderBy("createdAt", "desc"));
 onSnapshot(qTeams, (snapshot) => {
     allTeams = [];
@@ -94,7 +93,6 @@ onSnapshot(qTeams, (snapshot) => {
     });
 });
 
-// 2. CARREGAR ESTADO DAS CHAVES
 const bracketRef = doc(db, "brackets", `camp_${currentCamp}`);
 onSnapshot(bracketRef, (docSnap) => {
     if (docSnap.exists()) currentBracketState = docSnap.data();
@@ -102,7 +100,6 @@ onSnapshot(bracketRef, (docSnap) => {
     updateBracketUI();
 });
 
-// 3. ATUALIZAR VISUAL DOS CARDS
 function updateBracketUI() {
     const slots = ['q1','q2','q3','q4','q5','q6','q7','q8','s1','s2','s3','s4','f1','f2','champ'];
 
@@ -146,7 +143,6 @@ function updateBracketUI() {
     });
 }
 
-// 4. LÓGICA DE GERENCIAMENTO (VENCER/PERDER SEGURO)
 const ADVANCE_MAP = {
     'q1': 's1', 'q2': 's1',
     'q3': 's2', 'q4': 's2',
@@ -158,9 +154,8 @@ const ADVANCE_MAP = {
 };
 
 window.setPartidaResult = async (event, slotId, teamId, status) => {
-    event.stopPropagation(); // Impede de abrir o modal de seleção
+    event.stopPropagation();
     
-    // Clona o estado atual completo para fazer uma atualização limpa
     let newState = JSON.parse(JSON.stringify(currentBracketState));
     const nextSlotId = ADVANCE_MAP[slotId];
 
@@ -188,7 +183,7 @@ window.setPartidaResult = async (event, slotId, teamId, status) => {
             newState[nextSlotId] = { teamId: newState[opponentSlotId].teamId, status: null };
         }
     }
-    else if (status === null) { // DESFAZER (RESET)
+    else if (status === null) {
         newState[slotId].status = null; 
         if (opponentSlotId && newState[opponentSlotId]) {
             newState[opponentSlotId].status = null; 
@@ -198,11 +193,10 @@ window.setPartidaResult = async (event, slotId, teamId, status) => {
         }
     }
 
-    try { await setDoc(bracketRef, newState); } // Salva tudo de uma vez
+    try { await setDoc(bracketRef, newState); }
     catch(e) { alert("Erro ao atualizar resultado da partida."); console.error(e); }
 };
 
-// 5. SELEÇÃO MANUAL
 window.handleSlotClick = (event, slotId) => {
     if(!isAdmin) return;
     
@@ -212,7 +206,6 @@ window.handleSlotClick = (event, slotId) => {
 
     activeSlotId = slotId;
     
-    // LÓGICA DO BOTÃO DE REMOVER: Só mostra se a vaga já tem um time
     const btnRemove = document.getElementById('btn-remove-team-modal');
     if (currentBracketState[slotId] && currentBracketState[slotId].teamId) {
         btnRemove.style.display = 'flex';

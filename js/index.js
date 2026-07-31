@@ -64,11 +64,10 @@ const mapList = [
         ]
     },
     { 
-        name: "PÂNTANO DO REMANSO", 
-        img: "https://deadbydaylight.com/static/4042dfd3fea1a24a14eb4ef5b3b4b78f/54ac6/backwaterswamp_realm_thepalerose_map1_083911a12d.webp",
+        name: "FÁBRICA DE EMBALAGEM DE CARNES GIDEON", 
+        img: "https://deadbydaylight.com/static/d965543d06032dfed3ef11ffee49dadf/54ac6/gideon_meat_plant_2_bf81a4f6cc.webp",
         variants: [
-            { name: "DESPENSA SOMBRIA", img: "../assets/img/Pântano Do Remanso/Dispensa Cruel.png" },
-            { name: "A ROSA LÍVIDA", img: "../assets/img/Pântano Do Remanso/Rosa Lívida.png" }
+            { name: "O JOGO", img: "../assets/img/Fábrica de Embalagem de Carnes Gideon/O Jogo.png" }
         ]
     },
     { 
@@ -83,9 +82,9 @@ const mapList = [
         ]
     },
     { 
-        name: "JARDIM DA ALEGRIA", 
-        img: "https://deadbydaylight.com/static/f28d1adf92a2ca532e867fbfa2dd48b3/54ac6/DBD_CH_24_Garden_Of_Joy_House_Truck_1920x1080_afc4470f70.webp",
-        variants: [{ name: "JARDIM DA ALEGRIA", img: "../assets/img/Jardim Da Alegria/Jardim Da Alegria.png" }]
+        name: "ESCOLA PRIMÁRIA MIDWICH", 
+        img: "https://deadbydaylight.com/static/0faba5402373ff0d80b5a624b58749e2/54ac6/silenthill_realm_midwichelementaryschool_map1_d9fccff58d.webp",
+        variants: [{ name: "ESCOLA PRIMÁRIA MIDWICH", img: "../assets/img/Silent Hill/Escola Primária Midwich.png" }]
     },
     { 
         name: "TÚMULO DE GLENVALE", 
