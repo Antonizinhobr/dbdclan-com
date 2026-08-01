@@ -19,7 +19,8 @@ const auth = getAuth(app);
 const ADMIN_UIDS = [
     "discord:1400218900284571689",
     "discord:1522742461389078568",
-    "discord:743696235248091206"
+    "discord:743696235248091206",
+    "discord:744346487063969794"
 ];
 
 const mapList = [

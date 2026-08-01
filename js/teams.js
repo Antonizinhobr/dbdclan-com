@@ -18,7 +18,8 @@ const db = getFirestore(app);
 const ADMIN_UIDS = [
     "discord:1400218900284571689",
     "discord:1522742461389078568",
-    "discord:743696235248091206"
+    "discord:743696235248091206",
+    "discord:744346487063969794"
 ];
 
 let currentUser = null;
@@ -65,9 +66,6 @@ let allTeams = [];
 let registeredEmails = new Set(); 
 let draftMembers = []; 
 
-// ==========================================
-// LÓGICA DE GERENCIAMENTO DE CAMPEONATOS
-// ==========================================
 onSnapshot(doc(db, "sistema", "geral"), (docSnap) => {
     if (docSnap.exists()) {
         const data = docSnap.data();
@@ -242,9 +240,6 @@ window.deleteCamp = async () => {
     }
 };
 
-// ==========================================
-// CARREGAR EQUIPES DO BANCO DE DADOS E REGISTRAR EMAILS
-// ==========================================
 const q = query(collection(db, "teams"), orderBy("createdAt", "desc"));
 
 onSnapshot(q, (snapshot) => {
@@ -255,7 +250,6 @@ onSnapshot(q, (snapshot) => {
         const data = docSnap.data();
         allTeams.push({ id: docSnap.id, ...data });
         
-        // Cadastra os e-mails apenas do campeonato atual para bloqueio
         if(data.campId == currentCamp) {
             if(data.leaderEmail) registeredEmails.add(data.leaderEmail.toLowerCase());
             if(data.members) data.members.forEach(m => registeredEmails.add(m.email.toLowerCase()));
@@ -301,9 +295,6 @@ function renderTeamsGrid() {
     });
 }
 
-// ==========================================
-// LÓGICA DE EXCLUSÃO DE TIME E ASSASSINO
-// ==========================================
 window.deleteTeam = async (teamId) => {
     if(isCurrentCampLocked && !isAdmin) return alert("Ações bloqueadas! O Campeonato foi encerrado.");
     if(!confirm("⚠️ AVISO: Deseja realmente excluir esta equipe permanentemente?")) return;
@@ -325,9 +316,6 @@ window.toggleKiller = async (teamId, memberEmail) => {
     }
 };
 
-// ==========================================
-// VISUALIZAR EQUIPE CADASTRADA
-// ==========================================
 window.openViewModal = (team) => {
     document.getElementById('m-team-logo').src = team.logo;
     document.getElementById('m-team-leader').innerText = team.leaderName;
@@ -391,16 +379,12 @@ window.openViewModal = (team) => {
     document.getElementById('team-modal').classList.add('open');
 };
 
-// ==========================================
-// CRIAR EQUIPE E ADICIONAR MEMBROS
-// ==========================================
 window.openCreateTeamModal = () => {
     if(isCurrentCampLocked && !isAdmin) return alert("As inscrições para este campeonato estão encerradas!");
     
     const user = auth.currentUser || currentUser;
     if (!user) return alert("Sessão inválida. Por favor, aguarde ou recarregue a página.");
 
-    // NOVA REGRA: Verifica se o usuário logado já está em algum time!
     const userEmail = user.email ? user.email.toLowerCase() : "";
     if (userEmail && registeredEmails.has(userEmail)) {
         return alert("Você já está cadastrado em uma equipe neste campeonato! Cada jogador pode participar de apenas um time.");
@@ -493,13 +477,9 @@ window.renderDraftMembers = () => {
     `).join('');
 };
 
-// ==========================================
-// SUBMETER EQUIPE (COM UPLOAD VIA IMGBB E VALIDAÇÃO)
-// ==========================================
 window.submitTeam = async () => {
     if(isCurrentCampLocked && !isAdmin) return alert("As inscrições para este campeonato estão encerradas!");
 
-    // NOVA REGRA: Obrigar a ter exatamente 4 membros adicionados no elenco (total de 5 no time)
     if (draftMembers.length < 4) {
         return alert("Erro: Sua equipe está incompleta! Você precisa adicionar exatamente 4 membros (além do Capitão) para finalizar a inscrição.");
     }
@@ -554,13 +534,8 @@ window.submitTeam = async () => {
         
         window.closeModal('create-team-modal');
         alert("Equipe forjada com sucesso! Que a Entidade tenha piedade de vocês.");
-
-        // ==========================================
-        // INTEGRAÇÃO COM DISCORD WEBHOOK
-        // ==========================================
         const webhookUrl = "https://discord.com/api/webhooks/1524454164904808558/EEBzHbxPgavMeP3RDKm_d4IDPlMJy9BAKtzzaWVjFhjyBN8NklZooRHRCXb432Eyeiei";
         
-        // Formata os membros adicionais para o embed
         const membersListString = draftMembers.map(m => `🔪 **${m.name}**`).join('\n');
 
         const embedData = {
@@ -568,7 +543,7 @@ window.submitTeam = async () => {
                 {
                     title: "🩸 NOVA EQUIPE FORJADA NA NÉVOA! 🩸",
                     description: `Um novo time acaba de realizar sua inscrição para o **Torneio ${currentCamp}**! Que a Entidade tenha piedade de suas almas...`,
-                    color: 10038562, // Vermelho Escuro / Cor de sangue
+                    color: 10038562,
                     thumbnail: {
                         url: logoUrl
                     },
