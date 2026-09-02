@@ -1,84 +1,79 @@
-.hero-section {
+.hero-section.unified-hero {
   position: relative;
   width: 100%;
-  height: 90vh;
-  background: url("https://deadbydaylight.com/static/a5cdc5db3804f817df112184c81f5ead/663bd/dbd-gallery-background.webp") no-repeat center center/cover;
-  overflow: hidden;
+  min-height: 100vh;
+  background: url(../bg.jpg) no-repeat center center/cover;
   display: flex;
+  flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
+  padding-top: 140px;
+  padding-bottom: 60px;
+  overflow: hidden;
 }
 
 .hero-overlay-global {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.4);
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    circle at center,
+    rgba(0, 0, 0, 0.4) 0%,
+    rgba(0, 0, 0, 0.9) 100%
+  );
   z-index: 1;
 }
 
-.hero-split-container {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
+.hero-centered-container {
   position: relative;
   z-index: 10;
-}
-
-.hero-col-left {
-  flex: 1.2;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-}
-
-.hero-col-right {
-  flex: 1;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-}
-
-.hero-col-right img {
   width: 100%;
-  height: auto;
-  max-height: 90%;
-  object-fit: contain;
-  filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.5));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 50px;
 }
 
-.hero-content {
-  position: relative;
-  z-index: 10;
+.hero-content-centered {
   text-align: center;
-  padding: 40px;
-  max-width: 650px;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
-.hero-content h1 {
+.badge-pill {
+  display: inline-block;
+  padding: 6px 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 30px;
+  font-size: 0.8rem;
+  color: #ccc;
+  margin-bottom: 25px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  backdrop-filter: blur(5px);
+}
+
+.hero-content-centered h1 {
   font-family: var(--font-game);
-  font-size: 3.5rem;
+  font-size: 4.5rem;
   color: #fff;
   text-transform: uppercase;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   text-shadow: 0 0 20px rgba(0, 0, 0, 0.9);
+  line-height: 1.1;
 }
 
-.hero-content p {
+.hero-content-centered p {
   color: #ccc;
   font-size: 1.2rem;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
   text-shadow: 0 2px 5px rgba(0, 0, 0, 0.9);
 }
 
-.hero-buttons {
+.hero-buttons-centered {
   display: flex;
   justify-content: center;
   gap: 20px;
@@ -87,7 +82,129 @@
 .glitch-text {
   color: red;
   font-weight: bold;
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-family: "Lucida Sans", Geneva, Verdana, sans-serif;
+}
+
+.feature-showcase {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.showcase-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  padding: 0;
+  margin-bottom: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.showcase-tab {
+  background: transparent;
+  border: none;
+  color: #9ca3af;
+  padding: 18px 40px;
+  min-width: 170px;
+  font-family:
+    "Inter",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  position: relative;
+  border-radius: 0;
+  border-right: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.showcase-tab:last-child {
+  border-right: none;
+}
+
+.showcase-tab i {
+  font-size: 1rem;
+  opacity: 0.7;
+}
+
+.showcase-tab:hover {
+  color: #fff;
+}
+
+.showcase-tab.active {
+  color: #fff;
+  font-weight: 600;
+  background: linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.06) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+.showcase-tab.active i {
+  opacity: 1;
+}
+
+.showcase-tab.active::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: #fff;
+  box-shadow: 0 0 12px 1px rgba(255, 255, 255, 0.5);
+  z-index: 2;
+}
+
+.showcase-content-container {
+  padding: 0;
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  margin-top: -1px;
+}
+
+.showcase-panel {
+  display: none;
+  width: 100%;
+  animation: fadePanelUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.showcase-panel.active {
+  display: block;
+}
+
+.showcase-img {
+  width: 100%;
+  height: auto;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8);
+  display: block;
+}
+
+@keyframes fadePanelUp {
+  0% {
+    opacity: 0;
+    transform: translateY(15px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .content-section {
@@ -200,8 +317,13 @@
 }
 
 @keyframes float3D {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-10px) rotate(2deg); }
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(2deg);
+  }
 }
 
 .card-content {
@@ -233,7 +355,11 @@
   transform: translate(-50%, -50%);
   width: 150px;
   height: 150px;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.1) 0%,
+    transparent 70%
+  );
   z-index: 1;
   opacity: 0;
   transition: 0.5s;
@@ -251,40 +377,36 @@
   color: #fff;
   filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
 }
-
 .stat-icon-online {
   font-size: 40px;
   color: #00ff00;
   filter: drop-shadow(0 0 15px #00ff00);
 }
-
 .stat-text-online {
   color: #00ff00;
 }
-
 .glow-online {
   background: radial-gradient(circle, rgba(0, 255, 0, 0.3) 0%, transparent 70%);
 }
-
 .boost-card-wrapper {
   animation-delay: 0.4s;
   position: relative;
 }
-
 .stat-icon-boosts {
   font-size: 50px;
   color: #ff73fa;
   filter: drop-shadow(0 0 15px #ff73fa);
 }
-
 .stat-text-boosts {
   color: #ff73fa;
 }
-
 .glow-boosts {
-  background: radial-gradient(circle, rgba(255, 115, 250, 0.3) 0%, transparent 70%);
+  background: radial-gradient(
+    circle,
+    rgba(255, 115, 250, 0.3) 0%,
+    transparent 70%
+  );
 }
-
 .stat-label-white {
   color: #fff;
 }
@@ -304,10 +426,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-#edit-boost-btn i {
-  font-size: 10px;
 }
 
 .staff-grid {
@@ -331,7 +449,6 @@
   border: 3px solid #333;
   margin: 0 auto 15px;
   transition: 0.3s;
-  cursor: pointer;
 }
 
 .staff-card:hover .staff-img-container {
@@ -364,162 +481,30 @@
   border: 1px solid gold;
 }
 
-.role.mod {
-  background: rgba(0, 255, 0, 0.2);
-  color: #00ff00;
-  border: 1px solid #00ff00;
-}
-/* ===== LAYOUT COM SIDEBAR (ESTILO FEATUREBASE) ===== */
-.fb-layout {
-    display: flex;
-    gap: 30px;
-    height: 100%;
-    min-height: 500px;
-}
-
-.fb-sidebar {
-    width: 250px;
-    flex-shrink: 0;
-    border-right: 1px solid rgba(255, 255, 255, 0.08);
-    padding-right: 20px;
-    display: flex;
-    flex-direction: column;
-}
-
-.sidebar-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 15px 10px;
-    margin-bottom: 20px;
-    font-family: var(--font-game);
-    font-size: 0.9rem;
-    color: #fff;
-}
-
-.sidebar-logo {
-    width: 30px;
-    height: 30px;
-    border-radius: 5px;
-    object-fit: cover;
-}
-
-.menu-label {
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    color: #666;
-    letter-spacing: 1px;
-    margin-bottom: 10px;
-    padding-left: 10px;
-    font-weight: 600;
-}
-
-.menu-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 10px 12px;
-    color: #a0a0b0;
-    text-decoration: none;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    margin-bottom: 5px;
-    transition: all 0.2s;
-}
-
-.menu-item i {
-    width: 20px;
-    text-align: center;
-    font-size: 1rem;
-}
-
-.menu-item:hover {
-    background: rgba(255, 255, 255, 0.05);
-    color: #fff;
-}
-
-.menu-item.active {
-    background: rgba(139, 92, 246, 0.15); /* Fundo roxo suave */
-    color: #8b5cf6; /* Texto roxo */
-    font-weight: 600;
-}
-
-/* Área Principal ao lado da Sidebar */
-.fb-main-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-top: 20px;
-}
-
-.fb-content-title {
-    font-family: var(--font-game);
-    font-size: 1.8rem;
-    color: #fff;
-    margin-bottom: 10px;
-}
-
-.fb-content-subtitle {
-    color: #a0a0b0;
-    font-size: 0.95rem;
-    margin-bottom: 40px;
-    text-align: center;
-}
-
-/* Cards de conteúdo estilo Featurebase */
-.fb-card {
-    background: #1a1b26; /* Fundo um pouco mais claro que o painel */
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 12px;
-    padding: 25px;
-    width: 100%;
-    max-width: 600px;
-    margin-bottom: 20px;
-    transition: transform 0.2s;
-}
-
-.fb-card:hover {
-    border-color: rgba(255, 255, 255, 0.1);
-    transform: translateY(-2px);
-}
-
-.fb-card h3 {
-    font-family: var(--font-game);
-    font-size: 1rem;
-    color: #fff;
-    margin-bottom: 12px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.fb-card h3 i {
-    color: #8b5cf6; /* Ícone roxo */
-}
-
-.fb-card p {
-    color: #a0a0b0;
-    font-size: 0.9rem;
-    line-height: 1.5;
-}
-
-/* Ajuste Responsivo da Sidebar */
 @media screen and (max-width: 768px) {
-    .fb-layout {
-        flex-direction: column;
-    }
-    
-    .fb-sidebar {
-        width: 100%;
-        border-right: none;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-        padding-right: 0;
-        padding-bottom: 20px;
-        margin-bottom: 20px;
-    }
-    
-    .tab-content {
-        padding: 20px;
-    }
+  .hero-section.unified-hero {
+    padding-top: 120px;
+  }
+  .hero-content-centered h1 {
+    font-size: 2.8rem;
+  }
+  .hero-buttons-centered {
+    flex-direction: column;
+    padding: 0 20px;
+  }
+  .showcase-tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    justify-content: flex-start;
+    padding-bottom: 2px;
+  }
+  .showcase-tab {
+    padding: 12px 20px;
+    font-size: 13px;
+    border-right: 1px solid rgba(255, 255, 255, 0.03);
+    min-width: 130px;
+  }
+  .showcase-tab:last-child {
+    border-right: none;
+  }
 }

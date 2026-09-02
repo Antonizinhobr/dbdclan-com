@@ -43,64 +43,99 @@
     </header>
 
     <div class="fade-in">
-      <section class="hero-section">
-        <div class="hero-split-container">
-          <div class="hero-col-right reveal">
-            <img
-              src="https://deadbydaylight.com/static/4b4a2cc749f4fe4f8b214b9593ba6330/cadf7/dbd_platform_generator_survivor_3x_0734c1e5d6.webp"
-              alt="Survivors"
-            />
-          </div>
-          <div class="hero-col-left">
-            <div class="hero-content reveal">
-              <h1 class="glitch-text">REFÚGIO DA NÉVOA</h1>
-              <p>
-                O servidor da comunidade de
-                <span class="glitch-text">Dead By Daylight</span> mais sombrio
-                da Névoa. Junte-se a nós.
-              </p>
-              <div class="hero-buttons">
-                <a href="#ferramentas" class="cta-btn">CAMPEONATOS</a>
-                <a href="#discord-invite" class="cta-btn outline">DISCORD</a>
-              </div>
+      
+      <!-- HERO UNIFICADO: TEXTO NO TOPO + SHOWCASE DE DASHBOARD EMBAIXO -->
+      <section class="hero-section unified-hero">
+        <div class="hero-overlay-global"></div>
+        
+        <div class="container hero-centered-container">
+          
+          <!-- Texto Centralizado -->
+          <div class="hero-content-centered reveal">
+            <div class="badge-pill">A NÉVOA CHAMA</div>
+            <h1 class="glitch-text">REFÚGIO DA NÉVOA</h1>
+            <p>
+              O servidor da comunidade de <span class="glitch-text">Dead By Daylight</span> mais sombrio da Névoa. Junte-se a nós.
+            </p>
+            <div class="hero-buttons-centered">
+              <a href="#ferramentas" class="cta-btn">CAMPEONATOS</a>
+              <a href="#discord-invite" class="cta-btn outline">DISCORD</a>
             </div>
           </div>
+
+          <!-- Showcase (Abas e Imagens/Vídeos) -->
+          <div class="feature-showcase reveal">
+            <div class="showcase-tabs">
+              <button class="showcase-tab active" data-target="tab-server">
+                <i class="fas fa-server"></i> Server
+              </button>
+              <button class="showcase-tab" data-target="tab-support">
+                <i class="fas fa-headset"></i> Support
+              </button>
+              <button class="showcase-tab" data-target="tab-bots">
+                <i class="fas fa-robot"></i> Bots
+              </button>
+              <button class="showcase-tab" data-target="tab-tournament">
+                <i class="fas fa-trophy"></i> Tournament
+              </button>
+              <button class="showcase-tab" data-target="tab-journal">
+                <i class="fas fa-book"></i> Journal
+              </button>
+            </div>
+
+            <div class="showcase-content-container">
+              <!-- Painel 1: Server (Ativo por padrão) -->
+              <div class="showcase-panel active" id="tab-server">
+                <video src="../assets/videos/servidor.mp4" class="showcase-img" autoplay loop muted playsinline></video>
+              </div>
+              
+              <!-- Painel 2: Support -->
+              <div class="showcase-panel" id="tab-support">
+                <video src="../assets/videos/suporte.mp4" class="showcase-img" autoplay loop muted playsinline></video>
+              </div>
+              
+              <!-- Painel 3: Bots -->
+              <div class="showcase-panel" id="tab-bots">
+                <video src="../assets/videos/bots.mp4" class="showcase-img" autoplay loop muted playsinline></video>
+              </div>
+
+              <!-- Painel 4: Journal -->
+              <div class="showcase-panel" id="tab-journal">
+                <video src="../assets/videos/noticias.mp4" class="showcase-img" autoplay loop muted playsinline></video>
+              </div>
+
+              <!-- Painel 5: Tournament -->
+              <div class="showcase-panel" id="tab-tournament">
+                <video src="COLOQUE_O_LINK_DO_SEU_VIDEO_AQUI.mp4" class="showcase-img" autoplay loop muted playsinline></video>
+              </div>
+              
+              
+            </div>
+          </div>
+
         </div>
-        <div class="hero-overlay-global"></div>
       </section>
 
       <section id="ferramentas" class="content-section">
         <div class="container">
           <h2 class="section-title reveal">FERRAMENTAS DE TORNEIO</h2>
           <div class="tools-grid">
-            <div
-              class="tool-card reveal"
-              onclick="window.location.href = 'home.html'"
-            >
+            <div class="tool-card reveal" onclick="window.location.href = 'home.html'">
               <div class="tool-icon"><i class="fas fa-map-marked-alt"></i></div>
               <h3>VOTAÇÃO DE REINOS</h3>
               <p>Defina o palco do próximo massacre.</p>
             </div>
-            <div
-              class="tool-card reveal"
-              onclick="window.location.href = 'teams.html'"
-            >
+            <div class="tool-card reveal" onclick="window.location.href = 'teams.html'">
               <div class="tool-icon"><i class="fas fa-users"></i></div>
               <h3>EQUIPES</h3>
               <p>Veja quem são os sobreviventes e assassinos.</p>
             </div>
-            <div
-              class="tool-card reveal"
-              onclick="window.location.href = 'perks.html'"
-            >
+            <div class="tool-card reveal" onclick="window.location.href = 'perks.html'">
               <div class="tool-icon"><i class="fas fa-ban"></i></div>
               <h3>PERKS BANIDAS</h3>
               <p>O que é proibido pela Entidade.</p>
             </div>
-            <div
-              class="tool-card reveal"
-              onclick="window.location.href = 'regras.html'"
-            >
+            <div class="tool-card reveal" onclick="window.location.href = 'regras.html'">
               <div class="tool-icon"><i class="fas fa-star"></i></div>
               <h3>SISTEMA DE PONTUAÇÃO</h3>
               <p>Regras do campeonato, pontuações e penalidades.</p>
@@ -418,9 +453,7 @@
 
       document.getElementById("logout-btn").onclick = () => signOut(auth);
       
-      // ===== NAVBAR SCROLL EFFECT =====
       const navbar = document.getElementById('navbar');
-
       window.addEventListener('scroll', () => {
         if (window.scrollY > 50) {
           navbar.classList.remove('navbar-transparent');
@@ -534,6 +567,27 @@
       };
       
       fetchDiscordStats();
+
+      // ====== SCRIPT DO FEATURE SHOWCASE ======
+      document.addEventListener("DOMContentLoaded", () => {
+        const tabs = document.querySelectorAll('.showcase-tab');
+        const panels = document.querySelectorAll('.showcase-panel');
+
+        tabs.forEach(tab => {
+          tab.addEventListener('click', () => {
+            tabs.forEach(t => t.classList.remove('active'));
+            panels.forEach(p => p.classList.remove('active'));
+
+            tab.classList.add('active');
+            
+            const targetId = tab.getAttribute('data-target');
+            const targetPanel = document.getElementById(targetId);
+            if (targetPanel) {
+              targetPanel.classList.add('active');
+            }
+          });
+        });
+      });
     </script>
   </body>
 </html>
