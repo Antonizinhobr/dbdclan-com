@@ -1,0 +1,44 @@
+/* ===== MODAL STAFF ===== */
+.modal-col-side {
+  flex-direction: column;
+}
+
+#staff-modal-img {
+  border-radius: 50%;
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border: 4px solid #333;
+}
+
+#staff-modal-role {
+  margin-top: 15px;
+  font-weight: bold;
+  font-family: "Arial Black", sans-serif;
+  padding: 5px 15px;
+  border-radius: 5px;
+}
+
+.staff-modal-title {
+  margin-bottom: 5px;
+}
+
+.staff-modal-subtitle {
+  font-style: italic;
+  color: #aaa;
+  margin-bottom: 20px;
+}
+
+.staff-detail-label {
+  color: var(--accent-red, #ff0000); 
+}
+
+.social-title {
+  font-size: 0.7rem;
+  color: #666;
+  font-family: "Arial Black", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 5px;
+  display: block;
+}

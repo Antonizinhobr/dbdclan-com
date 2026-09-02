@@ -1,0 +1,96 @@
+.map-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  padding: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+  min-height: 300px;
+}
+
+.map-card {
+  position: relative;
+  width: 280px;
+  height: 280px;
+  border: 2px solid #222;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  background-color: #000;
+  cursor: pointer;
+}
+
+.map-card:hover {
+  border-color: var(--accent-red);
+  transform: scale(1.05);
+  z-index: 2;
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+}
+
+.map-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.6;
+  transition: 0.4s;
+}
+
+.map-card:hover img {
+  opacity: 1;
+}
+
+.map-name {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.95));
+  padding: 15px 10px 8px;
+  text-align: center;
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+  font-family: var(--font-game);
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.vote-badge {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: var(--accent-red);
+  color: #fff;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  font-weight: bold;
+  z-index: 10;
+  border: 2px solid #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+  font-family: var(--font-game);
+}
+
+.variant-card {
+  height: 350px !important;
+  background-color: #000 !important;
+}
+
+.variant-card img {
+  object-fit: contain !important;
+  background-color: rgba(0, 0, 0, 0.8) !important;
+  opacity: 1 !important;
+}
+
+@keyframes pinPop {
+  0% { transform: scale(0.5); opacity: 0; }
+  70% { transform: scale(1.1); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.map-card-anim {
+  animation: pinPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}

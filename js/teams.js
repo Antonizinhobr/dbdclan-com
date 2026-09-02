@@ -93,23 +93,29 @@ function updateCampUI() {
     const adminControls = document.getElementById('admin-camp-controls');
     const lockBtn = document.getElementById('btn-toggle-lock');
 
-    if (isAdmin) adminControls.classList.remove('hidden');
-    else adminControls.classList.add('hidden');
+    // Força a exibição diretamente pelo JS para evitar conflitos de !important no CSS
+    if (isAdmin && adminControls) {
+        adminControls.style.display = 'flex';
+    } else if (adminControls) {
+        adminControls.style.display = 'none';
+    }
 
     if (isCurrentCampLocked) {
-        banner.classList.remove('hidden');
-        btnCreate.classList.add('hidden'); 
+        // MODO BLOQUEADO
+        if (banner) banner.classList.remove('hidden');
+        if (btnCreate) btnCreate.style.display = 'none'; // Esconde o botão de registro
         
-        if (isAdmin) {
+        if (lockBtn) {
             lockBtn.innerHTML = '<i class="fas fa-unlock"></i> REABRIR INSCRIÇÕES';
             lockBtn.classList.remove('admin-btn-unlocked');
             lockBtn.classList.add('admin-btn-locked');
         }
     } else {
-        banner.classList.add('hidden');
-        btnCreate.classList.remove('hidden');
+        // MODO ABERTO
+        if (banner) banner.classList.add('hidden');
+        if (btnCreate) btnCreate.style.display = 'flex'; // Mostra o botão de registro
         
-        if (isAdmin) {
+        if (lockBtn) {
             lockBtn.innerHTML = '<i class="fas fa-lock"></i> ENCERRAR INSCRIÇÕES';
             lockBtn.classList.remove('admin-btn-locked');
             lockBtn.classList.add('admin-btn-unlocked');
@@ -188,7 +194,12 @@ window.toggleLockCamp = async () => {
     let newLocked = [...lockedCamps];
     const campInt = parseInt(currentCamp);
     
-    if (isCurrentCampLocked) {
+    // Inverte o estado e atualiza a tela IMEDIATAMENTE (sem esperar o banco)
+    isCurrentCampLocked = !isCurrentCampLocked;
+    updateCampUI();
+    
+    // Mostra o alerta de acordo com o novo estado
+    if (!isCurrentCampLocked) {
         newLocked = newLocked.filter(c => c !== campInt);
         alert(`As inscrições para o Campeonato ${campInt} foram REABERTAS!`);
     } else {
@@ -196,6 +207,7 @@ window.toggleLockCamp = async () => {
         alert(`O Campeonato ${campInt} foi BLOQUEADO! Ninguém mais pode criar ou excluir times.`);
     }
     
+    // Envia a atualização para o Firebase no fundo
     await setDoc(refDoc, { lockedCamps: newLocked }, { merge: true });
 };
 

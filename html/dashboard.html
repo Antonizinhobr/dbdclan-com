@@ -4,7 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>REFÚGIO DA NÉVOA</title>
-    <link rel="stylesheet" href="../assets/css/index.css" />
+    <link rel="stylesheet" href="../assets/css/global.css" />
+    <link rel="stylesheet" href="../assets/css/navbar.css" />
+    <link rel="stylesheet" href="../assets/css/dashboard.css" />
+    <link rel="stylesheet" href="../assets/css/components.css" />
+    <link rel="stylesheet" href="../assets/css/modal.css" />
+    <link rel="stylesheet" href="../assets/css/responsive.css" />    
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
@@ -12,7 +17,7 @@
     <link rel="icon" href="../assets/icon.jpg" type="image/jpg" />
   </head>
   <body>
-    <header class="dashboard-header">
+    <header id="navbar" class="dashboard-header navbar-transparent">
       <div class="logo">REFÚGIO DA NÉVOA</div>
 
       <nav class="nav-menu">
@@ -21,19 +26,19 @@
         <a href="mapas.html" class="nav-link">Numeração de Mapas</a>
       </nav>
 
-      <div style="position: relative">
+      <div class="nav-actions">
         <div class="user-container" id="user-profile-trigger">
-          <span id="display-name">...</span>
+          <span id="display-name">CARREGANDO...</span>
           <div class="avatar-circle">
             <img src="../assets/icon.jpg" alt="User Profile" />
           </div>
         </div>
+      </div>
 
-        <div id="user-submenu" class="hidden">
-          <button id="logout-btn">
-            <i class="fas fa-sign-out-alt"></i> SAIR DA NÉVOA
-          </button>
-        </div>
+      <div id="user-submenu" class="dropdown-menu">
+        <button id="logout-btn">
+          <i class="fas fa-sign-out-alt"></i> SAIR DA NÉVOA
+        </button>
       </div>
     </header>
 
@@ -318,29 +323,118 @@
         "discord:743696235248091206"
       ];
 
+      const displayNameEl = document.getElementById('display-name');
+      let authChecked = false;
+
+      if (displayNameEl) {
+        displayNameEl.textContent = 'CARREGANDO...';
+      }
+
       onAuthStateChanged(auth, (user) => {
+        authChecked = true;
+        
         if (!user) {
           window.location.href = "login.html";
         } else {
           const userName = user.displayName || (user.email ? user.email.split("@")[0] : "Usuário");
-          document.getElementById("display-name").innerText = userName.toUpperCase();
+          if (displayNameEl) {
+            displayNameEl.textContent = userName.toUpperCase();
+          }
           
           const isAdmin = ADMIN_UIDS.includes(user.uid);
-          
           if (isAdmin) {
             const btnEdit = document.getElementById("edit-boost-btn");
             if (btnEdit) btnEdit.classList.remove("hidden");
           }
         }
       });
+
+      setTimeout(() => {
+        if (!authChecked && displayNameEl) {
+          displayNameEl.textContent = '...';
+        }
+      }, 3000);
       
-      document.getElementById("user-profile-trigger").onclick = (e) => {
+      const userTrigger = document.getElementById('user-profile-trigger');
+      const userSubmenu = document.getElementById('user-submenu');
+      let isMenuOpen = false;
+      let animationTimeout = null;
+
+      userTrigger.addEventListener('click', function(e) {
         e.stopPropagation();
-        document.getElementById("user-submenu").classList.toggle("hidden");
-      };
-      window.onclick = () =>
-        document.getElementById("user-submenu").classList.add("hidden");
+        
+        userSubmenu.classList.remove('hiding');
+        
+        if (isMenuOpen) {
+          userSubmenu.classList.remove('show');
+          userSubmenu.classList.add('hiding');
+          userTrigger.classList.remove('open');
+          
+          clearTimeout(animationTimeout);
+          animationTimeout = setTimeout(() => {
+            userSubmenu.classList.remove('hiding');
+          }, 250);
+          
+          isMenuOpen = false;
+        } else {
+          userSubmenu.classList.remove('hiding');
+          userSubmenu.classList.add('show');
+          userTrigger.classList.add('open');
+          isMenuOpen = true;
+        }
+      });
+
+      document.addEventListener('click', function(e) {
+        if (!userTrigger.contains(e.target) && !userSubmenu.contains(e.target)) {
+          if (isMenuOpen) {
+            userSubmenu.classList.remove('show');
+            userSubmenu.classList.add('hiding');
+            userTrigger.classList.remove('open');
+            
+            clearTimeout(animationTimeout);
+            animationTimeout = setTimeout(() => {
+              userSubmenu.classList.remove('hiding');
+            }, 250);
+            
+            isMenuOpen = false;
+          }
+        }
+      });
+
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && isMenuOpen) {
+          userSubmenu.classList.remove('show');
+          userSubmenu.classList.add('hiding');
+          userTrigger.classList.remove('open');
+          
+          clearTimeout(animationTimeout);
+          animationTimeout = setTimeout(() => {
+            userSubmenu.classList.remove('hiding');
+          }, 250);
+          
+          isMenuOpen = false;
+        }
+      });
+
       document.getElementById("logout-btn").onclick = () => signOut(auth);
+      
+      // ===== NAVBAR SCROLL EFFECT =====
+      const navbar = document.getElementById('navbar');
+
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+          navbar.classList.remove('navbar-transparent');
+          navbar.classList.add('navbar-scrolled');
+        } else {
+          navbar.classList.remove('navbar-scrolled');
+          navbar.classList.add('navbar-transparent');
+        }
+      });
+
+      if (window.scrollY > 50) {
+        navbar.classList.remove('navbar-transparent');
+        navbar.classList.add('navbar-scrolled');
+      }
       
       window.addEventListener("scroll", reveal);
       function reveal() {

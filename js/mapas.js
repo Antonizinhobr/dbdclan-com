@@ -1,4 +1,4 @@
-const CAMINHO_PASTA = "../assets/img/MAPAS NUMERADOS DBD/"; 
+const CAMINHO_PASTA = "../assets/img/MAPAS NUMERADOS DBD/";
 
 let currentGrupoIndex = null;
 let currentMapaIndex = null;
@@ -11,27 +11,20 @@ const bancoDeMapas = [
     { nomeGrupo: "PRACA GREENVILLE", mapas: [{ nome: "PRACA GREENVILLE", qtdVariacoes: 1 }] },
     { nomeGrupo: "NINHO DOS CORVOS", mapas: [{ nome: "NINHO DOS CORVOS", qtdVariacoes: 2 }] },
     { nomeGrupo: "PIZZARIA DO FREDDY", mapas: [{ nome: "PIZZARIA DO FREDDY", qtdVariacoes: 1 }] },
-
     {
         nomeGrupo: "TUMULO DE GLENVALE",
         isReino: true,
-        mapas: [
-            { nome: "SALAO DO CACHORRO MORTO", qtdVariacoes: 1 },
-        ]
+        mapas: [{ nome: "SALAO DO CACHORRO MORTO", qtdVariacoes: 1 }]
     },
     {
         nomeGrupo: "INSTITUTO MEMORIAL LERY",
         isReino: true,
-        mapas: [
-            { nome: "SALA DE TRATAMENTO", qtdVariacoes: 1 },
-        ]
+        mapas: [{ nome: "SALA DE TRATAMENTO", qtdVariacoes: 1 }]
     },
     {
         nomeGrupo: "LABORATORIO NACIONAL HAWKINS",
         isReino: true,
-        mapas: [
-            { nome: "COMPLEXO SUBTERRANEO", qtdVariacoes: 1 },
-        ]
+        mapas: [{ nome: "COMPLEXO SUBTERRANEO", qtdVariacoes: 1 }]
     },
     {
         nomeGrupo: "SPRINGWOOD",
@@ -100,7 +93,7 @@ const bancoDeMapas = [
         isReino: true,
         mapas: [
             { nome: "PARAISO DA GASOLINA", qtdVariacoes: 1 },
-            { nome: "LOCAL DE DESCANSO AZAROV", qtdVariacoes: 1 },
+            { nome: "DESCANSO AZAROV", qtdVariacoes: 1 },
             { nome: "LOJA MISERAVEL", qtdVariacoes: 1 },
             { nome: "CABANA DE SANGUE", qtdVariacoes: 1 },
             { nome: "PATIO DA SUCATA", qtdVariacoes: 1 }
@@ -131,7 +124,7 @@ function renderMainGrid() {
     bancoDeMapas.forEach((grupo, index) => {
         const card = document.createElement("div");
         card.className = "map-card";
-        
+
         let imgSrc = "";
         if (grupo.isReino) {
             const primeiroMapa = grupo.mapas[0].nome;
@@ -144,7 +137,7 @@ function renderMainGrid() {
             <img src="${imgSrc}" alt="${grupo.nomeGrupo}" onerror="this.src='../assets/icon.jpg'">
             <div class="map-card-title">${grupo.nomeGrupo}</div>
         `;
-        
+
         card.onclick = () => openModalMaps(index);
         grid.appendChild(card);
     });
@@ -159,7 +152,7 @@ function openModalMaps(grupoIndex) {
         const mapa = grupo.mapas[0];
         if (mapa.qtdVariacoes === 1) {
             const nomeVariacao = /\d$/.test(mapa.nome) ? `${mapa.nome} VARIACAO` : `${mapa.nome} 1 VARIACAO`;
-            
+
             let imgSrcVar = grupo.isReino
                 ? `${CAMINHO_PASTA}${grupo.nomeGrupo}/${mapa.nome}/${nomeVariacao}.png`
                 : `${CAMINHO_PASTA}${grupo.nomeGrupo}/${nomeVariacao}.png`;
@@ -185,18 +178,18 @@ function openModalMaps(grupoIndex) {
             <img src="${imgSrcBase}" alt="${mapa.nome}" onerror="this.src='../assets/icon.jpg'">
             <div class="map-card-title">${mapa.nome}</div>
         `;
-        
+
         card.onclick = () => {
             currentMapaIndex = mapaIndex;
-            document.getElementById("modal-maps").classList.remove("open");
-            
+            closeModal('modal-maps');
+
             if (mapa.qtdVariacoes === 1) {
                 const nomeVariacao = /\d$/.test(mapa.nome) ? `${mapa.nome} VARIACAO` : `${mapa.nome} 1 VARIACAO`;
-                
+
                 let imgSrcVar = grupo.isReino
                     ? `${CAMINHO_PASTA}${grupo.nomeGrupo}/${mapa.nome}/${nomeVariacao}.png`
                     : `${CAMINHO_PASTA}${grupo.nomeGrupo}/${nomeVariacao}.png`;
-                
+
                 openModalFullscreen(imgSrcVar, mapa.nome);
             } else {
                 openModalVariations(grupoIndex, mapaIndex);
@@ -220,8 +213,8 @@ function openModalVariations(grupoIndex, mapaIndex) {
 
     for (let i = 1; i <= mapa.qtdVariacoes; i++) {
         const nomeVariacao = `${mapa.nome} ${i} VARIACAO`;
-        let imgSrcBase = ""; 
-        let imgSrcVar = "";  
+        let imgSrcBase = "";
+        let imgSrcVar = "";
 
         if (grupo.isReino) {
             imgSrcBase = `${CAMINHO_PASTA}${grupo.nomeGrupo}/${mapa.nome}/${mapa.nome}.png`;
@@ -233,7 +226,7 @@ function openModalVariations(grupoIndex, mapaIndex) {
 
         let tituloCard = mapa.nome;
         if (mapa.qtdVariacoes > 1) {
-            tituloCard += ` ${i}`; 
+            tituloCard += ` ${i}`;
         }
 
         const card = document.createElement("div");
@@ -242,7 +235,7 @@ function openModalVariations(grupoIndex, mapaIndex) {
             <img src="${imgSrcBase}" alt="${tituloCard}" onerror="this.src='../assets/icon.jpg'">
             <div class="map-card-title">${tituloCard}</div>
         `;
-        
+
         card.onclick = () => openModalFullscreen(imgSrcVar, tituloCard);
         grid.appendChild(card);
     }
@@ -251,16 +244,30 @@ function openModalVariations(grupoIndex, mapaIndex) {
 }
 
 function openModalFullscreen(imgSrc, titulo) {
-    document.getElementById("modal-variations").classList.remove("open");
-    
-    document.getElementById("f-variation-name").innerText = titulo;
-    document.getElementById("f-variation-img").src = imgSrc;
-    
-    document.getElementById("modal-fullscreen").classList.add("open");
+    // Fecha o modal de variações se estiver aberto
+    closeModal('modal-variations');
+
+    const fullscreenModal = document.getElementById("modal-fullscreen");
+    const title = document.getElementById("f-variation-name");
+    const img = document.getElementById("f-variation-img");
+
+    title.innerText = titulo;
+
+    // Pré-carrega a imagem para evitar flicker
+    const tempImg = new Image();
+    tempImg.onload = function() {
+        img.src = this.src;
+    };
+    tempImg.onerror = function() {
+        img.src = '../assets/icon.jpg';
+    };
+    tempImg.src = imgSrc;
+
+    fullscreenModal.classList.add("open");
 }
 
 function voltarParaMaps() {
-    document.getElementById("modal-variations").classList.remove("open");
+    closeModal('modal-variations');
     const grupo = bancoDeMapas[currentGrupoIndex];
     if (grupo.mapas.length > 1) {
         document.getElementById("modal-maps").classList.add("open");
@@ -268,10 +275,10 @@ function voltarParaMaps() {
 }
 
 function voltarParaVariacoes() {
-    document.getElementById("modal-fullscreen").classList.remove("open");
+    closeModal('modal-fullscreen');
     const grupo = bancoDeMapas[currentGrupoIndex];
     const mapa = grupo.mapas[currentMapaIndex];
-    
+
     if (mapa.qtdVariacoes === 1) {
         if (grupo.mapas.length > 1) {
             document.getElementById("modal-maps").classList.add("open");
@@ -282,7 +289,10 @@ function voltarParaVariacoes() {
 }
 
 function closeModal(modalId) {
-    document.getElementById(modalId).classList.remove("open");
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.classList.remove("open");
+    }
 }
 
 function closeModalOut(event, modalId) {

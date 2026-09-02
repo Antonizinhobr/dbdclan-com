@@ -4,8 +4,12 @@
     <meta charset="UTF-8">
     <title>Dead by Daylight - Variações</title>
     <link rel="icon" href="../assets/icon.jpg" type="image/jpg">
-    <link rel="stylesheet" href="../assets/css/index.css">
-    <style>
+    <link rel="stylesheet" href="../assets/css/global.css" />
+    <link rel="stylesheet" href="../assets/css/navbar.css" />
+    <link rel="stylesheet" href="../assets/css/home.css" />
+    <link rel="stylesheet" href="../assets/css/components.css" />
+    <link rel="stylesheet" href="../assets/css/responsive.css" />    
+<style>
         body.dynamic-bg {
             background-size: cover;
             background-position: center;
@@ -54,11 +58,47 @@
     </style>
 </head>
 <body class="fade-in dynamic-bg" id="body-layout">
-    <header>
-        <div class="logo">DEAD BY DAYLIGHT</div>
-        <nav><a href="home.html" style="color:#666; text-decoration:none;">← VOLTAR</a></nav>
+    <header id="navbar" class="dashboard-header navbar-transparent">
+        <div class="logo">REFÚGIO DA NÉVOA</div>
+
+        <nav class="nav-menu">
+            <a href="dashboard.html" class="nav-link">Home</a>
+            <a href="home.html" class="nav-link active">Votação</a>
+            
+            <div class="nav-dropdown">
+                <a href="#" class="nav-link">Times <i class="fas fa-chevron-down" style="font-size: 0.6rem; margin-left: 5px;"></i></a>
+                <div class="dropdown-content" id="camp-dropdown-teams">
+                    <a href="teams.html?camp=1">Campeonato 1</a>
+                </div>
+            </div>
+
+            <div class="nav-dropdown">
+                <a href="#" class="nav-link">Chaves <i class="fas fa-chevron-down" style="font-size: 0.6rem; margin-left: 5px;"></i></a>
+                <div class="dropdown-content" id="camp-dropdown-brackets">
+                    <a href="bracket.html?camp=1">Chaves 1</a>
+                </div>
+            </div>
+
+            <a href="perks.html" class="nav-link">Perks Banidas</a>
+        </nav>
+
+        <div class="nav-actions">
+            <div class="user-container" id="user-profile-trigger">
+                <span id="display-name">CARREGANDO...</span>
+                <div class="avatar-circle">
+                    <img src="../assets/icon.jpg" alt="User Profile" />
+                </div>
+            </div>
+        </div>
+
+        <div id="user-submenu" class="dropdown-menu">
+            <button id="logout-btn">
+                <i class="fas fa-sign-out-alt"></i> SAIR DA NÉVOA
+            </button>
+        </div>
     </header>
-    <main>
+
+    <main style="padding-top: 100px;">
         <div class="info-section">
             <h1 id="map-title">REINO</h1>
             <p id="var-status" style="color: #ddd;">Vote na variação estratégica:</p>
@@ -72,8 +112,8 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getFirestore, doc, updateDoc, increment, collection, getDocs, onSnapshot, setDoc, writeBatch } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyARpVKfzOMm-v0pv9-7w9xahvhItosrI2Q",
@@ -104,16 +144,200 @@
             window.location.href = 'home.html';
         }
 
-        onAuthStateChanged(auth, (u) => { 
-            if(u) {
-                const isAdmin = ADMIN_UIDS.includes(u.uid);
-                
-                if (isAdmin) {
-                    document.getElementById('finish-var-btn').style.display='block';
-                    document.getElementById('reset-all-btn').style.display='block';
-                } 
+        let currentTotalCamps = 1;
+        let deletedCamps = [];
+        let lockedCamps = [];
+
+        onSnapshot(doc(db, "sistema", "geral"), (docSnap) => {
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                currentTotalCamps = data.totalCampeonatos || 1;
+                deletedCamps = data.deletedCamps || [];
+                lockedCamps = data.lockedCamps || [];
+                renderCampDropdown();
             }
         });
+
+        function renderCampDropdown() {
+            const menuTeams = document.getElementById('camp-dropdown-teams');
+            const menuBrackets = document.getElementById('camp-dropdown-brackets');
+            
+            if(menuTeams) menuTeams.innerHTML = ''; 
+            if(menuBrackets) menuBrackets.innerHTML = '';
+
+            let activeCamps = [];
+
+            for (let i = 1; i <= currentTotalCamps; i++) {
+                if (!deletedCamps.includes(i)) {
+                    activeCamps.push(i);
+                    const isLocked = lockedCamps.includes(i) ? ' <i class="fas fa-lock icon-lock-small"></i>' : '';
+                    
+                    if(menuTeams) menuTeams.innerHTML += `<a href="teams.html?camp=${i}">Campeonato ${i}${isLocked}</a>`;
+                    if(menuBrackets) menuBrackets.innerHTML += `<a href="bracket.html?camp=${i}">Chaves ${i}</a>`;
+                }
+            }
+
+            const currentUser = auth.currentUser;
+            const isAdmin = currentUser && ADMIN_UIDS.includes(currentUser.uid);
+
+            if (isAdmin) {
+                let nextCampId = 1;
+                while (activeCamps.includes(nextCampId)) {
+                    nextCampId++;
+                }
+
+                if(menuTeams) {
+                    menuTeams.innerHTML += `
+                        <a href="#" onclick="window.criarCampeonato(event, ${nextCampId})" class="dropdown-create-camp">
+                            <i class="fas fa-plus"></i> CRIAR CAMP ${nextCampId}
+                        </a>
+                    `;
+                }
+            }
+        }
+
+        window.criarCampeonato = async (e, nextId) => {
+            e.preventDefault();
+            if (!confirm(`Deseja abrir as inscrições para o Campeonato ${nextId}?`)) return;
+            
+            const refDoc = doc(db, "sistema", "geral");
+            try {
+                let updates = {};
+                if (nextId > currentTotalCamps) {
+                    updates.totalCampeonatos = nextId;
+                } 
+                else if (deletedCamps.includes(nextId)) {
+                    updates.deletedCamps = deletedCamps.filter(id => id !== nextId);
+                }
+                
+                if (Object.keys(updates).length > 0) {
+                    await updateDoc(refDoc, updates);
+                }
+                
+                window.location.href = `teams.html?camp=${nextId}`;
+            } catch(err) {
+                alert("Erro ao criar campeonato. Permissão Negada.");
+                console.error(err);
+            }
+        };
+
+        const displayNameEl = document.getElementById('display-name');
+        let authChecked = false;
+
+        if (displayNameEl) {
+            displayNameEl.textContent = 'CARREGANDO...';
+        }
+
+        onAuthStateChanged(auth, (user) => {
+            authChecked = true;
+            
+            if (!user) {
+                window.location.href = "login.html";
+            } else {
+                const userName = user.displayName || (user.email ? user.email.split("@")[0] : "Usuário");
+                if (displayNameEl) {
+                    displayNameEl.textContent = userName.toUpperCase();
+                }
+                
+                const isAdmin = ADMIN_UIDS.includes(user.uid);
+                if (isAdmin) {
+                    document.getElementById('finish-var-btn').style.display = 'block';
+                    document.getElementById('reset-all-btn').style.display = 'block';
+                }
+                
+                renderCampDropdown();
+            }
+        });
+
+        setTimeout(() => {
+            if (!authChecked && displayNameEl) {
+                displayNameEl.textContent = '...';
+            }
+        }, 3000);
+
+        const userTrigger = document.getElementById('user-profile-trigger');
+        const userSubmenu = document.getElementById('user-submenu');
+        let isMenuOpen = false;
+        let animationTimeout = null;
+
+        if (userTrigger) {
+            userTrigger.addEventListener('click', function(e) {
+                e.stopPropagation();
+                
+                userSubmenu.classList.remove('hiding');
+                
+                if (isMenuOpen) {
+                    userSubmenu.classList.remove('show');
+                    userSubmenu.classList.add('hiding');
+                    userTrigger.classList.remove('open');
+                    
+                    clearTimeout(animationTimeout);
+                    animationTimeout = setTimeout(() => {
+                        userSubmenu.classList.remove('hiding');
+                    }, 250);
+                    
+                    isMenuOpen = false;
+                } else {
+                    userSubmenu.classList.remove('hiding');
+                    userSubmenu.classList.add('show');
+                    userTrigger.classList.add('open');
+                    isMenuOpen = true;
+                }
+            });
+        }
+
+        document.addEventListener('click', function(e) {
+            if (userTrigger && userSubmenu) {
+                if (!userTrigger.contains(e.target) && !userSubmenu.contains(e.target)) {
+                    if (isMenuOpen) {
+                        userSubmenu.classList.remove('show');
+                        userSubmenu.classList.add('hiding');
+                        userTrigger.classList.remove('open');
+                        
+                        clearTimeout(animationTimeout);
+                        animationTimeout = setTimeout(() => {
+                            userSubmenu.classList.remove('hiding');
+                        }, 250);
+                        
+                        isMenuOpen = false;
+                    }
+                }
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && isMenuOpen) {
+                userSubmenu.classList.remove('show');
+                userSubmenu.classList.add('hiding');
+                userTrigger.classList.remove('open');
+                
+                clearTimeout(animationTimeout);
+                animationTimeout = setTimeout(() => {
+                    userSubmenu.classList.remove('hiding');
+                }, 250);
+                
+                isMenuOpen = false;
+            }
+        });
+
+        document.getElementById("logout-btn").onclick = () => signOut(auth);
+
+        const navbar = document.getElementById('navbar');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.remove('navbar-transparent');
+                navbar.classList.add('navbar-scrolled');
+            } else {
+                navbar.classList.remove('navbar-scrolled');
+                navbar.classList.add('navbar-transparent');
+            }
+        });
+
+        if (window.scrollY > 50) {
+            navbar.classList.remove('navbar-transparent');
+            navbar.classList.add('navbar-scrolled');
+        }
 
         let rendered = false;
         function render(aberta) {

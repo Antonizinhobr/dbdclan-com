@@ -4,15 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DbD - Chaves do Torneio</title>
-    <link rel="stylesheet" href="../assets/css/index.css">
-    <link rel="stylesheet" href="../assets/css/bracket.css">
+    <link rel="stylesheet" href="../assets/css/global.css" />
+    <link rel="stylesheet" href="../assets/css/navbar.css" />
+    <link rel="stylesheet" href="../assets/css/bracket.css" />
+    <link rel="stylesheet" href="../assets/css/components.css" />
+    <link rel="stylesheet" href="../assets/css/responsive.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="icon" href="../assets/icon.jpg" type="image/jpg">
 </head>
 <body class="fade-in">
 
-    <header>
+    <header id="navbar" class="dashboard-header navbar-transparent">
         <div class="logo">REFÚGIO DA NÉVOA</div>
+
         <nav class="nav-menu">
             <a href="dashboard.html" class="nav-link">Home</a>
             <a href="home.html" class="nav-link">Votação</a>
@@ -26,14 +30,20 @@
             </div>
             <a href="perks.html" class="nav-link">Perks Banidas</a>
         </nav>
-        <div class="header-user-wrapper">
+
+        <div class="nav-actions">
             <div class="user-container" id="user-profile-trigger">
-                <span id="display-name">...</span>
-                <div class="avatar-circle"><img src="../assets/icon.jpg" id="header-avatar" alt="User"></div>
+                <span id="display-name">CARREGANDO...</span>
+                <div class="avatar-circle">
+                    <img src="../assets/icon.jpg" alt="User Profile" />
+                </div>
             </div>
-            <div id="user-submenu" class="hidden user-submenu-box">
-                <button id="logout-btn" class="btn-logout"><i class="fas fa-sign-out-alt"></i> SAIR DA NÉVOA</button>
-            </div>
+        </div>
+
+        <div id="user-submenu" class="dropdown-menu">
+            <button id="logout-btn">
+                <i class="fas fa-sign-out-alt"></i> SAIR DA NÉVOA
+            </button>
         </div>
     </header>
 
@@ -44,7 +54,7 @@
         </video>
     </div>
 
-    <main class="main-padding">
+    <main class="main-padding" style="padding-top: 100px;">
         <div class="info-section transparent-bg">
             <h1 id="page-main-title">CHAVES DO TORNEIO</h1>
             <p id="admin-hint">A escalada para a Grande Final da Névoa começa aqui.</p>
@@ -120,5 +130,135 @@
     </div>
 
     <script type="module" src="../js/bracket.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import {
+            getAuth,
+            signOut,
+            onAuthStateChanged,
+        } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyARpVKfzOMm-v0pv9-7w9xahvhItosrI2Q",
+            authDomain: "dbd-camp.firebaseapp.com",
+            projectId: "dbd-camp",
+            storageBucket: "dbd-camp.firebasestorage.app",
+            messagingSenderId: "357760091556",
+            appId: "1:357760091556:web:4d9191b487baf240e92d31",
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        const displayNameEl = document.getElementById('display-name');
+        let authChecked = false;
+
+        if (displayNameEl) {
+            displayNameEl.textContent = 'CARREGANDO...';
+        }
+
+        onAuthStateChanged(auth, (user) => {
+            authChecked = true;
+            
+            if (!user) {
+                window.location.href = "login.html";
+            } else {
+                const userName = user.displayName || (user.email ? user.email.split("@")[0] : "Usuário");
+                if (displayNameEl) {
+                    displayNameEl.textContent = userName.toUpperCase();
+                }
+            }
+        });
+
+        setTimeout(() => {
+            if (!authChecked && displayNameEl) {
+                displayNameEl.textContent = '...';
+            }
+        }, 3000);
+
+        const userTrigger = document.getElementById('user-profile-trigger');
+        const userSubmenu = document.getElementById('user-submenu');
+        let isMenuOpen = false;
+        let animationTimeout = null;
+
+        if (userTrigger) {
+            userTrigger.addEventListener('click', function(e) {
+                e.stopPropagation();
+                
+                userSubmenu.classList.remove('hiding');
+                
+                if (isMenuOpen) {
+                    userSubmenu.classList.remove('show');
+                    userSubmenu.classList.add('hiding');
+                    userTrigger.classList.remove('open');
+                    
+                    clearTimeout(animationTimeout);
+                    animationTimeout = setTimeout(() => {
+                        userSubmenu.classList.remove('hiding');
+                    }, 250);
+                    
+                    isMenuOpen = false;
+                } else {
+                    userSubmenu.classList.remove('hiding');
+                    userSubmenu.classList.add('show');
+                    userTrigger.classList.add('open');
+                    isMenuOpen = true;
+                }
+            });
+        }
+
+        document.addEventListener('click', function(e) {
+            if (userTrigger && userSubmenu) {
+                if (!userTrigger.contains(e.target) && !userSubmenu.contains(e.target)) {
+                    if (isMenuOpen) {
+                        userSubmenu.classList.remove('show');
+                        userSubmenu.classList.add('hiding');
+                        userTrigger.classList.remove('open');
+                        
+                        clearTimeout(animationTimeout);
+                        animationTimeout = setTimeout(() => {
+                            userSubmenu.classList.remove('hiding');
+                        }, 250);
+                        
+                        isMenuOpen = false;
+                    }
+                }
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && isMenuOpen) {
+                userSubmenu.classList.remove('show');
+                userSubmenu.classList.add('hiding');
+                userTrigger.classList.remove('open');
+                
+                clearTimeout(animationTimeout);
+                animationTimeout = setTimeout(() => {
+                    userSubmenu.classList.remove('hiding');
+                }, 250);
+                
+                isMenuOpen = false;
+            }
+        });
+
+        document.getElementById("logout-btn").onclick = () => signOut(auth);
+
+        const navbar = document.getElementById('navbar');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.remove('navbar-transparent');
+                navbar.classList.add('navbar-scrolled');
+            } else {
+                navbar.classList.remove('navbar-scrolled');
+                navbar.classList.add('navbar-transparent');
+            }
+        });
+
+        if (window.scrollY > 50) {
+            navbar.classList.remove('navbar-transparent');
+            navbar.classList.add('navbar-scrolled');
+        }
+    </script>
 </body>
 </html>

@@ -4,7 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DbD - Diretrizes da Comunidade</title>
-    <link rel="stylesheet" href="../assets/css/index.css" />
+    <link rel="stylesheet" href="../assets/css/global.css" />
+    <link rel="stylesheet" href="../assets/css/navbar.css" />
+    <link rel="stylesheet" href="../assets/css/regras_servidor.css" />
+    <link rel="stylesheet" href="../assets/css/components.css" />
+    <link rel="stylesheet" href="../assets/css/responsive.css" />    
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
@@ -12,61 +16,31 @@
     <link rel="icon" href="../assets/icon.jpg" type="image/jpg" />
   </head>
   <body class="fade-in">
-    <header class="rules-header">
+    <header id="navbar" class="dashboard-header navbar-transparent">
       <div class="logo">REFÚGIO DA NÉVOA</div>
+
       <nav class="nav-menu">
         <a href="dashboard.html" class="nav-link">Home</a>
-        <a href="#" class="nav-link active">Regras do Servidor</a>
+        <a href="regras_servidor.html" class="nav-link active">Regras do Servidor</a>
       </nav>
 
-      <div style="position: relative">
+      <div class="nav-actions">
         <div class="user-container" id="user-profile-trigger">
-          <span id="display-name">ANTHONNY MICHAEL</span>
+          <span id="display-name">CARREGANDO...</span>
           <div class="avatar-circle">
             <img src="../assets/icon.jpg" alt="User Profile" />
           </div>
         </div>
+      </div>
 
-        <div
-          id="user-submenu"
-          class="hidden"
-          style="
-            position: absolute;
-            top: 60px;
-            right: 0;
-            background: rgba(0, 0, 0, 0.95);
-            border: 1px solid #333;
-            padding: 15px;
-            z-index: 1001;
-            min-width: 180px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-            border-radius: 8px;
-          "
-        >
-          <button
-            id="logout-btn"
-            style="
-              background: none;
-              border: none;
-              color: #ff0000;
-              cursor: pointer;
-              width: 100%;
-              text-align: left;
-              font-family: &quot;Arial Black&quot;;
-              font-size: 0.7rem;
-              text-transform: uppercase;
-              display: flex;
-              align-items: center;
-              gap: 10px;
-            "
-          >
-            <i class="fas fa-sign-out-alt"></i> SAIR DA NÉVOA
-          </button>
-        </div>
+      <div id="user-submenu" class="dropdown-menu">
+        <button id="logout-btn">
+          <i class="fas fa-sign-out-alt"></i> SAIR DA NÉVOA
+        </button>
       </div>
     </header>
 
-    <main class="rules-main-content">
+    <main class="rules-main-content" style="padding-top: 100px;">
       <section class="container">
         <h2 class="section-title reveal active">DIRETRIZES DA COMUNIDADE</h2>
 
@@ -206,44 +180,115 @@
       const app = initializeApp(firebaseConfig);
       const auth = getAuth(app);
 
-      const profileTrigger = document.getElementById("user-profile-trigger");
-      const userSubmenu = document.getElementById("user-submenu");
-      const logoutBtn = document.getElementById("logout-btn");
+      const displayNameEl = document.getElementById('display-name');
+      let authChecked = false;
 
-      if (profileTrigger) {
-        profileTrigger.onclick = (e) => {
-          e.stopPropagation();
-          userSubmenu.classList.toggle("hidden");
-        };
-      }
-
-      window.onclick = () => {
-        if (userSubmenu && !userSubmenu.classList.contains("hidden")) {
-          userSubmenu.classList.add("hidden");
-        }
-      };
-
-      if (logoutBtn) {
-        logoutBtn.onclick = () => {
-          signOut(auth)
-            .then(() => {
-              window.location.href = "login.html";
-            })
-            .catch((error) => {
-              console.error("Erro ao sair:", error);
-            });
-        };
+      if (displayNameEl) {
+        displayNameEl.textContent = 'CARREGANDO...';
       }
 
       onAuthStateChanged(auth, (user) => {
+        authChecked = true;
+        
         if (!user) {
           window.location.href = "login.html";
         } else {
-          const userName = user.displayName || user.email.split("@")[0];
-          document.getElementById("display-name").innerText =
-            userName.toUpperCase();
+          const userName = user.displayName || (user.email ? user.email.split("@")[0] : "Usuário");
+          if (displayNameEl) {
+            displayNameEl.textContent = userName.toUpperCase();
+          }
         }
       });
+
+      setTimeout(() => {
+        if (!authChecked && displayNameEl) {
+          displayNameEl.textContent = '...';
+        }
+      }, 3000);
+
+      const userTrigger = document.getElementById('user-profile-trigger');
+      const userSubmenu = document.getElementById('user-submenu');
+      let isMenuOpen = false;
+      let animationTimeout = null;
+
+      if (userTrigger) {
+        userTrigger.addEventListener('click', function(e) {
+          e.stopPropagation();
+          
+          userSubmenu.classList.remove('hiding');
+          
+          if (isMenuOpen) {
+            userSubmenu.classList.remove('show');
+            userSubmenu.classList.add('hiding');
+            userTrigger.classList.remove('open');
+            
+            clearTimeout(animationTimeout);
+            animationTimeout = setTimeout(() => {
+              userSubmenu.classList.remove('hiding');
+            }, 250);
+            
+            isMenuOpen = false;
+          } else {
+            userSubmenu.classList.remove('hiding');
+            userSubmenu.classList.add('show');
+            userTrigger.classList.add('open');
+            isMenuOpen = true;
+          }
+        });
+      }
+
+      document.addEventListener('click', function(e) {
+        if (userTrigger && userSubmenu) {
+          if (!userTrigger.contains(e.target) && !userSubmenu.contains(e.target)) {
+            if (isMenuOpen) {
+              userSubmenu.classList.remove('show');
+              userSubmenu.classList.add('hiding');
+              userTrigger.classList.remove('open');
+              
+              clearTimeout(animationTimeout);
+              animationTimeout = setTimeout(() => {
+                userSubmenu.classList.remove('hiding');
+              }, 250);
+              
+              isMenuOpen = false;
+            }
+          }
+        }
+      });
+
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && isMenuOpen) {
+          userSubmenu.classList.remove('show');
+          userSubmenu.classList.add('hiding');
+          userTrigger.classList.remove('open');
+          
+          clearTimeout(animationTimeout);
+          animationTimeout = setTimeout(() => {
+            userSubmenu.classList.remove('hiding');
+          }, 250);
+          
+          isMenuOpen = false;
+        }
+      });
+
+      document.getElementById("logout-btn").onclick = () => signOut(auth);
+
+      const navbar = document.getElementById('navbar');
+
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+          navbar.classList.remove('navbar-transparent');
+          navbar.classList.add('navbar-scrolled');
+        } else {
+          navbar.classList.remove('navbar-scrolled');
+          navbar.classList.add('navbar-transparent');
+        }
+      });
+
+      if (window.scrollY > 50) {
+        navbar.classList.remove('navbar-transparent');
+        navbar.classList.add('navbar-scrolled');
+      }
 
       window.addEventListener("scroll", () => {
         var reveals = document.querySelectorAll(".reveal");

@@ -5,52 +5,58 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dead by Daylight - Map Selection</title>
-    <link rel="stylesheet" href="../assets/css/index.css">
+    <link rel="stylesheet" href="../assets/css/global.css" />
+    <link rel="stylesheet" href="../assets/css/navbar.css" />
+    <link rel="stylesheet" href="../assets/css/home.css" />
+    <link rel="stylesheet" href="../assets/css/components.css" />
+    <link rel="stylesheet" href="../assets/css/responsive.css" />    
     <link rel="icon" href="../assets/icon.jpg" type="image/jpg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
 <body class="fade-in">
 
-    <header>
+    <header id="navbar" class="dashboard-header navbar-transparent">
         <div class="logo">REFÚGIO DA NÉVOA</div>
 
         <nav class="nav-menu">
-            <a href="dashboard.html" class="nav-link" style="margin-right: 20px;">
-                </i> Home
-            </a>
-
-            <a href="#" class="nav-link active">Votação</a>
+            <a href="dashboard.html" class="nav-link">Home</a>
+            <a href="home.html" class="nav-link active">Votação</a>
+            
+            <div class="nav-dropdown">
+                <a href="#" class="nav-link">Times <i class="fas fa-chevron-down" style="font-size: 0.6rem; margin-left: 5px;"></i></a>
+                <div class="dropdown-content" id="camp-dropdown-teams">
+                    <a href="teams.html?camp=1">Campeonato 1</a>
+                </div>
+            </div>
 
             <div class="nav-dropdown">
-                <a href="teams.html" class="nav-link">Times <i class="fas fa-chevron-down"
-                        style="font-size: 0.6rem; margin-left: 5px;"></i></a>
-                <div class="dropdown-content">
-                    <a href="teams.html?camp=1">Campeonato 1</a>
+                <a href="#" class="nav-link">Chaves <i class="fas fa-chevron-down" style="font-size: 0.6rem; margin-left: 5px;"></i></a>
+                <div class="dropdown-content" id="camp-dropdown-brackets">
+                    <a href="bracket.html?camp=1">Chaves 1</a>
                 </div>
             </div>
 
             <a href="perks.html" class="nav-link">Perks Banidas</a>
         </nav>
 
-        <div class="user-container" id="user-profile-trigger"
-            style="display: flex; align-items: center; cursor: pointer; position: relative;">
-            <span id="display-name"
-                style="margin-right: 15px; font-size: 0.8rem; color: #ff0000; text-transform: uppercase; font-weight: bold;">...</span>
-            <div class="avatar-circle"
-                style="width: 45px; height: 45px; border: 2px solid #ff0000; border-radius: 50%; overflow: hidden; background: #111;">
-                <img src="../assets/icon.jpg" style="width: 100%; height: 100%; object-fit: cover;">
+        <div class="nav-actions">
+            <div class="user-container" id="user-profile-trigger">
+                <span id="display-name">CARREGANDO...</span>
+                <div class="avatar-circle">
+                    <img src="../assets/icon.jpg" alt="User Profile" />
+                </div>
             </div>
-            <div id="user-submenu" class="hidden"
-                style="position: absolute; top: 60px; right: 0; background: #111; border: 1px solid #333; padding: 15px; z-index: 100; min-width: 180px; box-shadow: 0 5px 15px rgba(0,0,0,0.5);">
-                <button id="logout-btn"
-                    style="background:none; border:none; color:#ff0000; cursor:pointer; width: 100%; text-align: left; font-family: 'Arial Black'; font-size: 0.7rem; text-transform: uppercase;">SAIR
-                    DA NÉVOA</button>
-            </div>
+        </div>
+
+        <div id="user-submenu" class="dropdown-menu">
+            <button id="logout-btn">
+                <i class="fas fa-sign-out-alt"></i> SAIR DA NÉVOA
+            </button>
         </div>
     </header>
 
-    <main>
+    <main style="padding-top: 80px;">
         <div class="info-section">
             <h1 id="main-title">Votação de Reinos</h1>
             <p id="status-text">Analise os reinos disponíveis...</p>
@@ -74,6 +80,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyARpVKfzOMm-v0pv9-7w9xahvhItosrI2Q",
@@ -87,6 +94,7 @@
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
+        const db = getFirestore(app);
         const ADMIN_UIDS = [
             "discord:1400218900284571689",
             "discord:1522742461389078568",
@@ -94,29 +102,158 @@
             "discord:744346487063969794"
         ];
 
+        let currentTotalCamps = 1;
+        let deletedCamps = [];
+        let lockedCamps = [];
+
+        onSnapshot(doc(db, "sistema", "geral"), (docSnap) => {
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                currentTotalCamps = data.totalCampeonatos || 1;
+                deletedCamps = data.deletedCamps || [];
+                lockedCamps = data.lockedCamps || [];
+                renderCampDropdown();
+            }
+        });
+
+        function renderCampDropdown() {
+            const menuTeams = document.getElementById('camp-dropdown-teams');
+            const menuBrackets = document.getElementById('camp-dropdown-brackets');
+            
+            if(menuTeams) menuTeams.innerHTML = ''; 
+            if(menuBrackets) menuBrackets.innerHTML = '';
+
+            let activeCamps = [];
+
+            for (let i = 1; i <= currentTotalCamps; i++) {
+                if (!deletedCamps.includes(i)) {
+                    activeCamps.push(i);
+                    const isLocked = lockedCamps.includes(i) ? ' <i class="fas fa-lock icon-lock-small"></i>' : '';
+                    
+                    if(menuTeams) menuTeams.innerHTML += `<a href="teams.html?camp=${i}">Campeonato ${i}${isLocked}</a>`;
+                    if(menuBrackets) menuBrackets.innerHTML += `<a href="bracket.html?camp=${i}">Chaves ${i}</a>`;
+                }
+            }
+        }
+
+        const displayNameEl = document.getElementById('display-name');
+        let authChecked = false;
+
+        if (displayNameEl) {
+            displayNameEl.textContent = 'CARREGANDO...';
+        }
+
         onAuthStateChanged(auth, (user) => {
+            authChecked = true;
+            
             if (user) {
-                const userName = user.displayName || "SOBREVIVENTE";
-                document.getElementById('display-name').innerText = userName.toUpperCase();
+                const userName = user.displayName || (user.email ? user.email.split("@")[0] : "Usuário");
+                if (displayNameEl) {
+                    displayNameEl.textContent = userName.toUpperCase();
+                }
 
                 const isAdmin = ADMIN_UIDS.includes(user.uid);
 
                 if (isAdmin) {
-                    console.log("Admin detectado!");
                     const controls = document.getElementById('admin-controls');
                     if (controls) controls.classList.remove('hidden');
                 }
+                
+                renderCampDropdown();
             } else {
                 window.location.href = 'login.html';
             }
         });
 
-        document.getElementById('user-profile-trigger').onclick = (e) => {
-            e.stopPropagation();
-            document.getElementById('user-submenu').classList.toggle('hidden');
-        };
-        window.onclick = () => document.getElementById('user-submenu').classList.add('hidden');
-        document.getElementById('logout-btn').onclick = () => signOut(auth);
+        setTimeout(() => {
+            if (!authChecked && displayNameEl) {
+                displayNameEl.textContent = '...';
+            }
+        }, 3000);
+
+        const userTrigger = document.getElementById('user-profile-trigger');
+        const userSubmenu = document.getElementById('user-submenu');
+        let isMenuOpen = false;
+        let animationTimeout = null;
+
+        if (userTrigger) {
+            userTrigger.addEventListener('click', function(e) {
+                e.stopPropagation();
+                
+                userSubmenu.classList.remove('hiding');
+                
+                if (isMenuOpen) {
+                    userSubmenu.classList.remove('show');
+                    userSubmenu.classList.add('hiding');
+                    userTrigger.classList.remove('open');
+                    
+                    clearTimeout(animationTimeout);
+                    animationTimeout = setTimeout(() => {
+                        userSubmenu.classList.remove('hiding');
+                    }, 250);
+                    
+                    isMenuOpen = false;
+                } else {
+                    userSubmenu.classList.remove('hiding');
+                    userSubmenu.classList.add('show');
+                    userTrigger.classList.add('open');
+                    isMenuOpen = true;
+                }
+            });
+        }
+
+        document.addEventListener('click', function(e) {
+            if (userTrigger && userSubmenu) {
+                if (!userTrigger.contains(e.target) && !userSubmenu.contains(e.target)) {
+                    if (isMenuOpen) {
+                        userSubmenu.classList.remove('show');
+                        userSubmenu.classList.add('hiding');
+                        userTrigger.classList.remove('open');
+                        
+                        clearTimeout(animationTimeout);
+                        animationTimeout = setTimeout(() => {
+                            userSubmenu.classList.remove('hiding');
+                        }, 250);
+                        
+                        isMenuOpen = false;
+                    }
+                }
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && isMenuOpen) {
+                userSubmenu.classList.remove('show');
+                userSubmenu.classList.add('hiding');
+                userTrigger.classList.remove('open');
+                
+                clearTimeout(animationTimeout);
+                animationTimeout = setTimeout(() => {
+                    userSubmenu.classList.remove('hiding');
+                }, 250);
+                
+                isMenuOpen = false;
+            }
+        });
+
+        document.getElementById("logout-btn").onclick = () => signOut(auth);
+
+        const navbar = document.getElementById('navbar');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.remove('navbar-transparent');
+                navbar.classList.add('navbar-scrolled');
+            } else {
+                navbar.classList.remove('navbar-scrolled');
+                navbar.classList.add('navbar-transparent');
+            }
+        });
+
+        if (window.scrollY > 50) {
+            navbar.classList.remove('navbar-transparent');
+            navbar.classList.add('navbar-scrolled');
+        }
     </script>
     <script type="module" src="../js/index.js"></script>
 </body>
