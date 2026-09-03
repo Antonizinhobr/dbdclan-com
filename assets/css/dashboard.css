@@ -2,7 +2,7 @@
   position: relative;
   width: 100%;
   min-height: 100vh;
-  background: url(../bg.jpg) no-repeat center center/cover;
+  background: url("../bg.jpg") no-repeat center center/cover;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -97,7 +97,33 @@
   gap: 0;
   padding: 0;
   margin-bottom: 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  position: relative;
+}
+
+.tab-slider {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 100%;
+  background: linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.06) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.tab-slider::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: #fff;
+  box-shadow: 0 0 12px 1px rgba(255, 255, 255, 0.5);
 }
 
 .showcase-tab {
@@ -123,10 +149,11 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  transition: all 0.3s ease;
+  transition: color 0.3s ease;
   position: relative;
   border-radius: 0;
   border-right: 1px solid rgba(255, 255, 255, 0.03);
+  z-index: 2;
 }
 
 .showcase-tab:last-child {
@@ -145,27 +172,10 @@
 .showcase-tab.active {
   color: #fff;
   font-weight: 600;
-  background: linear-gradient(
-    0deg,
-    rgba(255, 255, 255, 0.06) 0%,
-    rgba(255, 255, 255, 0) 100%
-  );
 }
 
 .showcase-tab.active i {
   opacity: 1;
-}
-
-.showcase-tab.active::after {
-  content: "";
-  position: absolute;
-  bottom: -1px;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: #fff;
-  box-shadow: 0 0 12px 1px rgba(255, 255, 255, 0.5);
-  z-index: 2;
 }
 
 .showcase-content-container {
@@ -506,5 +516,26 @@
   }
   .showcase-tab:last-child {
     border-right: none;
+  }
+  .tab-slider {
+    display: none;
+  }
+  .showcase-tab.active {
+    background: linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.06) 0%,
+      rgba(255, 255, 255, 0) 100%
+    );
+  }
+  .showcase-tab.active::after {
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: #fff;
+    box-shadow: 0 0 12px 1px rgba(255, 255, 255, 0.5);
+    z-index: 2;
   }
 }

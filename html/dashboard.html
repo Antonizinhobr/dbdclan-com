@@ -44,13 +44,11 @@
 
     <div class="fade-in">
       
-      <!-- HERO UNIFICADO: TEXTO NO TOPO + SHOWCASE DE DASHBOARD EMBAIXO -->
       <section class="hero-section unified-hero">
         <div class="hero-overlay-global"></div>
         
         <div class="container hero-centered-container">
           
-          <!-- Texto Centralizado -->
           <div class="hero-content-centered reveal">
             <div class="badge-pill">A NÉVOA CHAMA</div>
             <h1 class="glitch-text">REFÚGIO DA NÉVOA</h1>
@@ -63,9 +61,10 @@
             </div>
           </div>
 
-          <!-- Showcase (Abas e Imagens/Vídeos) -->
           <div class="feature-showcase reveal">
             <div class="showcase-tabs">
+              <div class="tab-slider"></div> 
+
               <button class="showcase-tab active" data-target="tab-server">
                 <i class="fas fa-server"></i> Server
               </button>
@@ -75,7 +74,6 @@
               <button class="showcase-tab" data-target="tab-bots">
                 <i class="fas fa-robot"></i> Bots
               </button>
-              <!-- Journal antes do Tournament -->
               <button class="showcase-tab" data-target="tab-journal">
                 <i class="fas fa-book"></i> Journal
               </button>
@@ -214,37 +212,20 @@
     <div id="staff-modal" class="perk-modal" onclick="closeStaffModalOut(event)">
       <div class="perk-modal-content">
         <button class="close-modal-btn" onclick="closeStaffModal()">&times;</button>
-
         <div class="modal-image-side modal-col-side">
           <img id="staff-modal-img" src="" alt="Staff Profile" />
           <span id="staff-modal-role">CARGO</span>
         </div>
-
         <div class="modal-info-side">
           <h2 id="staff-modal-name" class="modal-perk-name staff-modal-title">NOME</h2>
           <p id="staff-modal-desc" class="modal-perk-desc staff-modal-subtitle">Descrição do membro.</p>
-
           <div class="staff-details-horizontal">
-            <div class="detail-item">
-              <strong class="staff-detail-label">Idade:</strong>
-              <span id="staff-age">--</span>
-            </div>
-            <div class="detail-item">
-              <strong class="staff-detail-label">Local:</strong>
-              <span id="staff-loc">--</span>
-            </div>
-            <div class="detail-item">
-              <strong class="staff-detail-label">Tempo de jogo:</strong>
-              <span id="staff-time">--</span>
-            </div>
-            <div class="detail-item">
-              <strong class="staff-detail-label">Main:</strong>
-              <span id="staff-main">--</span>
-            </div>
+            <div class="detail-item"><strong class="staff-detail-label">Idade:</strong><span id="staff-age">--</span></div>
+            <div class="detail-item"><strong class="staff-detail-label">Local:</strong><span id="staff-loc">--</span></div>
+            <div class="detail-item"><strong class="staff-detail-label">Tempo de jogo:</strong><span id="staff-time">--</span></div>
+            <div class="detail-item"><strong class="staff-detail-label">Main:</strong><span id="staff-main">--</span></div>
           </div>
-          
           <span class="social-title">Redes Sociais</span>
-
           <div class="staff-socials">
             <a id="link-insta" href="#" target="_blank"><i class="fab fa-instagram"></i></a>
             <a id="link-tiktok" href="#" target="_blank"><i class="fab fa-tiktok"></i></a>
@@ -570,6 +551,13 @@
       document.addEventListener("DOMContentLoaded", () => {
         const tabs = document.querySelectorAll('.showcase-tab');
         const panels = document.querySelectorAll('.showcase-panel');
+        const slider = document.querySelector('.tab-slider');
+
+        function updateSlider(tab) {
+          if (!slider || !tab) return;
+          slider.style.width = `${tab.offsetWidth}px`;
+          slider.style.transform = `translateX(${tab.offsetLeft}px)`;
+        }
 
         tabs.forEach(tab => {
           tab.addEventListener('click', () => {
@@ -583,7 +571,19 @@
             if (targetPanel) {
               targetPanel.classList.add('active');
             }
+
+            updateSlider(tab);
           });
+        });
+
+        const initialActiveTab = document.querySelector('.showcase-tab.active');
+        if (initialActiveTab) {
+          setTimeout(() => updateSlider(initialActiveTab), 50); // Delay para renderização correta
+        }
+
+        window.addEventListener('resize', () => {
+          const currentActive = document.querySelector('.showcase-tab.active');
+          if (currentActive) updateSlider(currentActive);
         });
       });
     </script>
