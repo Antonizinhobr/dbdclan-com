@@ -75,16 +75,17 @@
               <button class="showcase-tab" data-target="tab-bots">
                 <i class="fas fa-robot"></i> Bots
               </button>
-              <button class="showcase-tab" data-target="tab-tournament">
-                <i class="fas fa-trophy"></i> Tournament
-              </button>
+              <!-- Journal antes do Tournament -->
               <button class="showcase-tab" data-target="tab-journal">
                 <i class="fas fa-book"></i> Journal
+              </button>
+              <button class="showcase-tab" data-target="tab-tournament">
+                <i class="fas fa-trophy"></i> Social Media
               </button>
             </div>
 
             <div class="showcase-content-container">
-              <!-- Painel 1: Server (Ativo por padrão) -->
+              <!-- Painel 1: Server -->
               <div class="showcase-panel active" id="tab-server">
                 <video src="../assets/videos/servidor.mp4" class="showcase-img" autoplay loop muted playsinline></video>
               </div>
@@ -106,10 +107,8 @@
 
               <!-- Painel 5: Tournament -->
               <div class="showcase-panel" id="tab-tournament">
-                <video src="COLOQUE_O_LINK_DO_SEU_VIDEO_AQUI.mp4" class="showcase-img" autoplay loop muted playsinline></video>
+                <video src="../assets/videos/redesocial.mp4" class="showcase-img" autoplay loop muted playsinline></video>
               </div>
-              
-              
             </div>
           </div>
 
@@ -568,7 +567,6 @@
       
       fetchDiscordStats();
 
-      // ====== SCRIPT DO FEATURE SHOWCASE ======
       document.addEventListener("DOMContentLoaded", () => {
         const tabs = document.querySelectorAll('.showcase-tab');
         const panels = document.querySelectorAll('.showcase-panel');
