@@ -433,7 +433,6 @@
           <button id="add-staff-btn" class="cta-btn hidden" style="margin-top: 15px; padding: 10px 20px; font-size: 0.8rem;" onclick="openAdminStaffModal()">+ ADICIONAR MEMBRO</button>
         </div>
 
-        <!-- Renderizado dinamicamente pelo Firebase -->
         <div class="staff-grid" id="staff-grid-container">
           <p style="color: #888; text-align: center; width: 100%;">Convocando a Entidade...</p>
         </div>
@@ -508,7 +507,6 @@
 
   </div>
 
-  <!-- MODAL DE EXIBIÇÃO DE STAFF (Público) -->
   <div id="staff-modal" class="perk-modal" onclick="closeStaffModalOut(event)">
     <div class="perk-modal-content">
       <button class="close-modal-btn" onclick="closeStaffModal()">&times;</button>
@@ -553,11 +551,14 @@
     </div>
   </div>
 
-  <!-- MODAL DE CADASTRO/EDIÇÃO DE STAFF (Somente Admins) -->
   <div id="admin-staff-modal" class="perk-modal">
-    <div class="perk-modal-content" style="max-width: 600px; padding: 30px;">
+    <div class="perk-modal-content admin-modal-premium">
       <button class="close-modal-btn" onclick="closeAdminStaffModal()">&times;</button>
-      <h2 style="color: #fff; font-family: var(--font-game); margin-bottom: 20px;">GERENCIAR STAFF</h2>
+      <div class="admin-modal-header">
+        <i class="fas fa-user-shield"></i>
+        <h2>GERENCIAR STAFF</h2>
+        <p>Adicione ou edite um arquiteto da Névoa.</p>
+      </div>
       
       <form id="admin-staff-form" onsubmit="saveStaffMember(event)">
         <div class="admin-form-row">
@@ -582,8 +583,8 @@
             </select>
           </div>
           <div class="admin-form-group">
-            <label>Link da Imagem (URL)</label>
-            <input type="url" id="staff-form-img" required>
+            <label>Foto de Perfil (JPG/PNG)</label>
+            <input type="file" id="staff-form-img" accept="image/png, image/jpeg" class="file-input-premium" required>
           </div>
         </div>
 
@@ -603,16 +604,16 @@
         </div>
 
         <div class="admin-form-row">
-          <div class="admin-form-group"><label>Instagram URL</label><input type="text" id="staff-form-insta"></div>
-          <div class="admin-form-group"><label>TikTok URL</label><input type="text" id="staff-form-tiktok"></div>
+          <div class="admin-form-group"><label>Instagram URL</label><input type="url" id="staff-form-insta" placeholder="Opcional"></div>
+          <div class="admin-form-group"><label>TikTok URL</label><input type="url" id="staff-form-tiktok" placeholder="Opcional"></div>
         </div>
 
         <div class="admin-form-row">
-          <div class="admin-form-group"><label>Steam URL</label><input type="text" id="staff-form-steam"></div>
-          <div class="admin-form-group"><label>Twitch URL</label><input type="text" id="staff-form-twitch"></div>
+          <div class="admin-form-group"><label>Steam URL</label><input type="url" id="staff-form-steam" placeholder="Opcional"></div>
+          <div class="admin-form-group"><label>Twitch URL</label><input type="url" id="staff-form-twitch" placeholder="Opcional"></div>
         </div>
 
-        <button type="submit" class="cta-btn" style="width: 100%; margin-top: 15px;">SALVAR MEMBRO</button>
+        <button type="submit" id="submit-staff-btn" class="cta-btn btn-full" style="margin-top: 20px;">SALVAR MEMBRO</button>
       </form>
     </div>
   </div>
@@ -651,25 +652,42 @@
     let currentUserIsAdmin = false;
     window.staffData = {}; 
 
-    // Ouve o login do usuário
+    const displayNameEl = document.getElementById('display-name');
+    let authChecked = false;
+
+    if (displayNameEl) {
+      displayNameEl.textContent = 'CARREGANDO...';
+    }
+
     onAuthStateChanged(auth, (user) => {
+      authChecked = true;
+
       if (!user) {
         window.location.href = "login.html";
       } else {
         const userName = user.displayName || (user.email ? user.email.split("@")[0] : "Usuário");
-        document.getElementById('display-name').textContent = userName.toUpperCase();
+        if (displayNameEl) {
+          displayNameEl.textContent = userName.toUpperCase();
+        }
 
         currentUserIsAdmin = ADMIN_UIDS.includes(user.uid);
         if (currentUserIsAdmin) {
-          document.getElementById("edit-boost-btn")?.classList.remove("hidden");
-          document.getElementById("add-staff-btn")?.classList.remove("hidden");
+          const btnEdit = document.getElementById("edit-boost-btn");
+          const btnAddStaff = document.getElementById("add-staff-btn");
+          if (btnEdit) btnEdit.classList.remove("hidden");
+          if (btnAddStaff) btnAddStaff.classList.remove("hidden");
         }
       }
     });
 
+    setTimeout(() => {
+      if (!authChecked && displayNameEl) {
+        displayNameEl.textContent = '...';
+      }
+    }, 3000);
+
     document.getElementById("logout-btn").onclick = () => signOut(auth);
 
-    // Sistema Automático de Staff
     onSnapshot(collection(db, "staff"), (snapshot) => {
       const grid = document.getElementById("staff-grid-container");
       if(!grid) return;
@@ -681,7 +699,6 @@
         staffArray.push({ id: docSnap.id, ...docSnap.data() });
       });
 
-      // Ordenação: Dono -> Admin -> Mod -> Dev
       const roleOrder = { "DONO": 1, "ADMINISTRADOR(A)": 2, "MODERADOR(A)": 3, "DEV": 4 };
       staffArray.sort((a,b) => (roleOrder[a.role] || 99) - (roleOrder[b.role] || 99));
 
@@ -696,7 +713,6 @@
         else if(data.role === "ADMINISTRADOR(A)") { roleClass = "role-ADMIN"; icon = "fa-gavel"; roleColor = "#ff4545"; }
         else if(data.role === "DEV") { roleClass = "role-DEV"; icon = "fa-code"; roleColor = "#5865f2"; }
 
-        // Adiciona a cor ao objeto para o modal público
         window.staffData[data.id].color = roleColor;
 
         const adminControls = currentUserIsAdmin ? `<button class="delete-staff-btn" onclick="event.stopPropagation(); deleteStaffMember('${data.id}')" title="Remover Membro"><i class="fas fa-trash"></i></button>` : '';
@@ -722,7 +738,6 @@
       });
     });
 
-    // Funções do Modal Admin (CRUD)
     window.openAdminStaffModal = () => {
       document.getElementById("admin-staff-modal").classList.add("open");
       document.getElementById("admin-staff-form").reset();
@@ -735,28 +750,63 @@
     window.saveStaffMember = async (e) => {
       e.preventDefault();
       const idInput = document.getElementById("staff-form-id").value.trim().toLowerCase().replace(/\s+/g, '-');
-      const payload = {
-        name: document.getElementById("staff-form-name").value,
-        role: document.getElementById("staff-form-role").value,
-        img: document.getElementById("staff-form-img").value,
-        desc: document.getElementById("staff-form-desc").value,
-        age: document.getElementById("staff-form-age").value || "--",
-        loc: document.getElementById("staff-form-loc").value || "--",
-        time: document.getElementById("staff-form-time").value || "--",
-        main: document.getElementById("staff-form-main").value || "--",
-        links: {
-          insta: document.getElementById("staff-form-insta").value || "#",
-          tiktok: document.getElementById("staff-form-tiktok").value || "#",
-          steam: document.getElementById("staff-form-steam").value || "#",
-          twitch: document.getElementById("staff-form-twitch").value || "#",
-        }
-      };
+      const fileInput = document.getElementById("staff-form-img");
+      const btnSubmit = document.getElementById("submit-staff-btn");
+
+      btnSubmit.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ENVIANDO PARA A NÉVOA...';
+      btnSubmit.disabled = true;
 
       try {
+        let imageUrl = "https://i.ibb.co/ch2qxHcP/Peachy-20250911-015431303.jpg";
+
+        if (fileInput.files.length > 0) {
+            const file = fileInput.files[0];
+            const formData = new FormData();
+            formData.append("image", file);
+            
+            const IMGBB_API_KEY = "02ac971f74c655e88eb932d14930342f";
+            
+            const response = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+                method: "POST",
+                body: formData
+            });
+            
+            const imgbbData = await response.json();
+            
+            if (imgbbData.success) {
+                imageUrl = imgbbData.data.url; 
+            } else {
+                throw new Error("O servidor de imagens recusou o arquivo.");
+            }
+        } else {
+            throw new Error("Por favor, selecione uma imagem.");
+        }
+
+        const payload = {
+          name: document.getElementById("staff-form-name").value,
+          role: document.getElementById("staff-form-role").value,
+          img: imageUrl,
+          desc: document.getElementById("staff-form-desc").value,
+          age: document.getElementById("staff-form-age").value || "--",
+          loc: document.getElementById("staff-form-loc").value || "--",
+          time: document.getElementById("staff-form-time").value || "--",
+          main: document.getElementById("staff-form-main").value || "--",
+          links: {
+            insta: document.getElementById("staff-form-insta").value || "#",
+            tiktok: document.getElementById("staff-form-tiktok").value || "#",
+            steam: document.getElementById("staff-form-steam").value || "#",
+            twitch: document.getElementById("staff-form-twitch").value || "#",
+          }
+        };
+
         await setDoc(doc(db, "staff", idInput), payload);
         closeAdminStaffModal();
+        alert("Membro da Staff salvo com sucesso!");
       } catch (err) {
         alert("Erro ao salvar: " + err.message);
+      } finally {
+        btnSubmit.innerText = "SALVAR MEMBRO";
+        btnSubmit.disabled = false;
       }
     };
 
@@ -766,7 +816,6 @@
       }
     };
 
-    // Abre o Modal Público (Exibição)
     window.openStaffModal = (id) => {
       const data = window.staffData[id];
       if (!data) return;
@@ -808,7 +857,6 @@
     window.closeStaffModal = () => document.getElementById("staff-modal").classList.remove("open");
     window.closeStaffModalOut = (e) => { if (e.target.id === "staff-modal") window.closeStaffModal(); };
 
-    // Efeitos da Página e Stats do Discord
     window.addEventListener("scroll", reveal);
     function reveal() {
       var reveals = document.querySelectorAll(".reveal");
