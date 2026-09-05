@@ -28,6 +28,13 @@
 
         <div class="mega-menu">
           <div class="mega-menu-grid">
+            <a href="santuario.html" class="mega-menu-item">
+              <div class="mega-icon"><i class="fas fa-gem"></i></div>
+              <div class="mega-text">
+                <span class="mega-title">Santuário dos Segredos</span>
+                <span class="mega-desc">Vantagens semanais disponíveis.</span>
+              </div>
+            </a>
             <a href="home.html" class="mega-menu-item">
               <div class="mega-icon"><i class="fas fa-map-marked-alt"></i></div>
               <div class="mega-text">
@@ -896,16 +903,41 @@
       }, 500);
     }
 
-    document.getElementById("edit-boost-btn").onclick = async () => {
-      const currentVal = document.getElementById("stat-boosts").innerText;
+    document.getElementById("edit-boost-btn").onclick = async (e) => {
+      e.stopPropagation();
+      const el = document.getElementById("stat-boosts");
+      const currentVal = el.innerText;
       const newVal = prompt("Digite a quantidade atual de Boosts:", currentVal);
-      if (newVal !== null && newVal !== "") {
-        const num = parseInt(newVal);
+      
+      if (newVal !== null && newVal.trim() !== "") {
+        const num = parseInt(newVal, 10);
         if (!isNaN(num)) {
-          await setDoc(doc(db, "sistema", "discord_stats"), { boosts: num }, { merge: true });
-        } else { alert("Por favor, digite apenas números."); }
+          el.innerText = num;
+          try {
+            await setDoc(doc(db, "sistema", "discord_stats"), { boosts: num }, { merge: true });
+          } catch (err) {
+            console.error(err);
+            alert("Erro de conexão ou falta de permissão no Firebase. As alterações não foram salvas.");
+          }
+        } else { 
+          alert("Por favor, digite apenas números."); 
+        }
       }
     };
+
+    onSnapshot(doc(db, "sistema", "discord_stats"), (docSnapshot) => {
+      if (docSnapshot.exists()) {
+        const data = docSnapshot.data();
+        const endVal = data.boosts || 0;
+        const currentVal = parseInt(document.getElementById("stat-boosts").innerText, 10) || 0;
+        
+        if (currentVal !== endVal) {
+          animateValue("stat-boosts", 0, endVal, 2000);
+        }
+      } else {
+        document.getElementById("stat-boosts").innerText = "0";
+      }
+    });
 
     fetchDiscordStats();
 
