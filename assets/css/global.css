@@ -21,7 +21,7 @@
 }
 
 body {
-  background: radial-gradient(circle at top center, #151012 0%, #050505 100%) fixed !important;
+  background: radial-gradient(circle at top center, #151012 0%, #050505 100%) fixed !important;  
   color: #fff;
   overflow-x: hidden;
 }
@@ -237,6 +237,7 @@ body {
   margin-bottom: 50px;
   position: relative;
   z-index: 2;
+  padding: 0 40px; 
 }
 
 .footer-brand {
@@ -248,11 +249,10 @@ body {
   font-family: var(--font-game, "Arial Black", sans-serif);
   font-size: 1.5rem;
   color: #fff;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   letter-spacing: 1px;
   position: relative;
   display: inline-block;
-  line-height: 1;
 }
 
 .footer-brand .logo::after {
@@ -279,6 +279,10 @@ body {
 .footer-connect {
   flex: 1;
   min-width: 200px;
+}
+
+.footer-connect {
+  max-width: 280px; 
 }
 
 .footer-nav h4,
@@ -313,8 +317,10 @@ body {
 .social-buttons {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 12px;
   margin-top: -8px;
+  padding-bottom: 50px;
 }
 
 .social-btn {
@@ -372,6 +378,10 @@ body {
   .footer-content {
     flex-direction: column;
     gap: 30px;
+    padding: 0 20px; 
+  }
+  .footer-connect {
+    max-width: none; 
   }
   .bottom-flex {
     flex-direction: column;
