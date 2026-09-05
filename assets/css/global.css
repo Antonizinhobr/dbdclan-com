@@ -21,7 +21,7 @@
 }
 
 body {
-  background: radial-gradient(circle at top center, #151012 0%, #050505 100%) fixed !important;  
+  background: radial-gradient(circle at top center, #151012 0%, #050505 100%) fixed !important;
   color: #fff;
   overflow-x: hidden;
 }
@@ -165,13 +165,10 @@ body {
   margin-bottom: 0;
 }
 
-/* =========================================================
-   SEÇÃO DE CONVITE DISCORD
-   ========================================================= */
 .invite-section {
   padding: 100px 20px;
   text-align: center;
-  background: transparent !important; /* Removido o fundo preto */
+  background: transparent !important;
 }
 
 .invite-content i {
@@ -204,12 +201,9 @@ body {
   box-shadow: 0 10px 20px rgba(114, 137, 218, 0.3);
 }
 
-/* =========================================================
-   RODAPÉ (FOOTER GLOBAL) - DESIGN MODERNO DA NÉVOA
-   ========================================================= */
 .custom-footer {
   position: relative;
-  background: transparent; /* Deixa o gradiente global do site brilhar aqui */
+  background: transparent;
   border-top: 1px solid rgba(255, 45, 45, 0.15);
   padding-top: 60px;
   color: #9ca3af;
@@ -238,6 +232,7 @@ body {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  align-items: flex-start;
   gap: 40px;
   margin-bottom: 50px;
   position: relative;
@@ -253,10 +248,11 @@ body {
   font-family: var(--font-game, "Arial Black", sans-serif);
   font-size: 1.5rem;
   color: #fff;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
   letter-spacing: 1px;
   position: relative;
   display: inline-block;
+  line-height: 1;
 }
 
 .footer-brand .logo::after {
@@ -293,6 +289,7 @@ body {
   letter-spacing: 1.5px;
   margin-bottom: 20px;
   font-weight: 800;
+  line-height: 1;
 }
 
 .nav-links {
@@ -317,6 +314,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  margin-top: -8px;
 }
 
 .social-btn {
@@ -384,5 +382,228 @@ body {
   }
   .custom-footer::before {
     width: 90%;
+  }
+  .social-buttons {
+    margin-top: 0;
+  }
+}
+
+#santuario {
+  padding: 80px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.shrine-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 25px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.shrine-title {
+  font-family: var(--font-game, "Arial Black", sans-serif);
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -2px;
+  margin: 0;
+}
+
+.shrine-period-box {
+  background: #111113;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 1px solid #ff0000;
+  border-left: 1px solid #ff0000;
+  border-radius: 12px;
+  padding: 15px 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  box-shadow: -2px -2px 10px rgba(255, 77, 0, 0.1);
+}
+
+.period-label {
+  font-size: 0.65rem;
+  color: #ff0000;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.period-dates {
+  font-size: 0.95rem;
+  color: #fff;
+  font-weight: 600;
+}
+
+.shrine-subtitle {
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 30px;
+}
+
+.shrine-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.shrine-card {
+  background: linear-gradient(145deg, #18181b, #111114);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  border-radius: 16px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  min-height: 400px;
+}
+
+.shrine-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(255, 77, 0, 0.3);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+}
+
+.character-bg {
+  position: absolute;
+  bottom: 0;
+  right: -20px;
+  width: 200px;
+  height: 200px;
+  background-size: contain;
+  background-position: bottom right;
+  background-repeat: no-repeat;
+  opacity: 0.4;
+  mask-image: linear-gradient(to top right, transparent 10%, black 90%);
+  -webkit-mask-image: linear-gradient(to top right, transparent 10%, black 90%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.card-inner {
+  padding: 30px 25px 25px 25px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+  z-index: 2;
+}
+
+.card-number {
+  position: absolute;
+  top: 20px;
+  right: 25px;
+  font-size: 0.7rem;
+  color: #666;
+  font-weight: 700;
+}
+
+.diamond-wrapper {
+  width: 100px;
+  height: 100px;
+  margin: 10px auto 40px auto;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.diamond-bg {
+  position: absolute;
+  width: 85px;
+  height: 85px;
+  background: #642b8f;
+  transform: rotate(45deg);
+  border-radius: 8px;
+  z-index: 1;
+  box-shadow: 0 0 25px rgba(100, 43, 143, 0.5);
+}
+
+.shrine-perk-img {
+  width: 95px;
+  height: 95px;
+  z-index: 2;
+  filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.6));
+}
+
+.shrine-card-content {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.tag-vantagem {
+  font-size: 0.65rem;
+  color: #ff0000;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.shrine-perk-name {
+  font-size: 1.35rem;
+  color: #fff;
+  font-weight: 800;
+  margin-bottom: 20px;
+  line-height: 1.2;
+}
+
+.shrine-card-footer {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding-top: 15px;
+  position: relative;
+}
+
+.footer-col {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.footer-col-label {
+  font-size: 0.55rem;
+  color: #666;
+  text-transform: uppercase;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.footer-col-value {
+  font-size: 0.85rem;
+  color: #e5e7eb;
+  font-weight: 600;
+}
+
+.card-corner-accent {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 0 15px 15px;
+  border-color: transparent transparent #ff0000 transparent;
+  z-index: 3;
+}
+
+@media (max-width: 768px) {
+  .shrine-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .shrine-title {
+    font-size: 2.5rem;
   }
 }
