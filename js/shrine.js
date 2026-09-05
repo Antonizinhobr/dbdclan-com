@@ -53,7 +53,6 @@ async function fetchShrineData() {
   }
 }
 
-// PRÉVIA NO DASHBOARD
 function renderShrinePreview(container, perksArray) {
     container.innerHTML = '';
     perksArray.forEach(perk => {

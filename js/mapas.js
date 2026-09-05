@@ -244,7 +244,6 @@ function openModalVariations(grupoIndex, mapaIndex) {
 }
 
 function openModalFullscreen(imgSrc, titulo) {
-    // Fecha o modal de variações se estiver aberto
     closeModal('modal-variations');
 
     const fullscreenModal = document.getElementById("modal-fullscreen");
@@ -253,7 +252,6 @@ function openModalFullscreen(imgSrc, titulo) {
 
     title.innerText = titulo;
 
-    // Pré-carrega a imagem para evitar flicker
     const tempImg = new Image();
     tempImg.onload = function() {
         img.src = this.src;

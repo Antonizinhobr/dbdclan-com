@@ -1,125 +1,173 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Dead by Daylight - Variações</title>
-    <link rel="icon" href="../assets/icon.jpg" type="image/jpg">
+    <link rel="icon" href="../assets/icon.jpg" type="image/jpg" />
     <link rel="stylesheet" href="../assets/css/global.css" />
     <link rel="stylesheet" href="../assets/css/navbar.css" />
     <link rel="stylesheet" href="../assets/css/home.css" />
     <link rel="stylesheet" href="../assets/css/components.css" />
-    <link rel="stylesheet" href="../assets/css/responsive.css" />    
-<style>
-        body.dynamic-bg {
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            background-repeat: no-repeat;
-            position: relative;
-            min-height: 100vh;
-        }
+    <link rel="stylesheet" href="../assets/css/responsive.css" />
+    <style>
+      body.dynamic-bg {
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        position: relative;
+        min-height: 100vh;
+      }
 
-        body.dynamic-bg::before {
-            content: "";
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: -1;
-        }
+      body.dynamic-bg::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: -1;
+      }
 
-        .info-section {
-            background: transparent !important;
-            padding-top: 20px;
-            text-shadow: 2px 2px 8px #000;
-        }
+      .info-section {
+        background: transparent !important;
+        padding-top: 20px;
+        text-shadow: 2px 2px 8px #000;
+      }
 
-        #finish-var-btn, #reset-all-btn {
-            background: rgba(0, 0, 0, 0.6) !important;
-            backdrop-filter: blur(5px);
-            border: 1px solid #ff0000;
-        }
-        
-        #reset-all-btn {
-            border-color: #fff;
-        }
+      #finish-var-btn,
+      #reset-all-btn {
+        background: rgba(0, 0, 0, 0.6) !important;
+        backdrop-filter: blur(5px);
+        border: 1px solid #ff0000;
+      }
 
-        #finish-var-btn:hover, #reset-all-btn:hover {
-            background: #000 !important;
-            transform: scale(1.05);
-        }
+      #reset-all-btn {
+        border-color: #fff;
+      }
 
-        .map-grid {
-            position: relative;
-            z-index: 5;
-        }
+      #finish-var-btn:hover,
+      #reset-all-btn:hover {
+        background: #000 !important;
+        transform: scale(1.05);
+      }
+
+      .map-grid {
+        position: relative;
+        z-index: 5;
+      }
     </style>
-</head>
-<body class="fade-in dynamic-bg" id="body-layout">
+  </head>
+  <body class="fade-in dynamic-bg" id="body-layout">
     <header id="navbar" class="dashboard-header navbar-transparent">
-        <div class="logo">REFÚGIO DA NÉVOA</div>
+      <div class="logo">REFÚGIO DA NÉVOA</div>
 
-        <nav class="nav-menu">
-            <a href="dashboard.html" class="nav-link">Home</a>
-            <a href="home.html" class="nav-link active">Votação</a>
-            
-            <div class="nav-dropdown">
-                <a href="#" class="nav-link">Times <i class="fas fa-chevron-down" style="font-size: 0.6rem; margin-left: 5px;"></i></a>
-                <div class="dropdown-content" id="camp-dropdown-teams">
-                    <a href="teams.html?camp=1">Campeonato 1</a>
-                </div>
-            </div>
+      <nav class="nav-menu">
+        <a href="dashboard.html" class="nav-link">Home</a>
+        <a href="home.html" class="nav-link active">Votação</a>
 
-            <div class="nav-dropdown">
-                <a href="#" class="nav-link">Chaves <i class="fas fa-chevron-down" style="font-size: 0.6rem; margin-left: 5px;"></i></a>
-                <div class="dropdown-content" id="camp-dropdown-brackets">
-                    <a href="bracket.html?camp=1">Chaves 1</a>
-                </div>
-            </div>
-
-            <a href="perks.html" class="nav-link">Perks Banidas</a>
-            <a href="santuario.html" class="nav-item">Santuário</a>
-        </nav>
-
-        <div class="nav-actions">
-            <div class="user-container" id="user-profile-trigger">
-                <span id="display-name">CARREGANDO...</span>
-                <div class="avatar-circle">
-                    <img src="../assets/icon.jpg" alt="User Profile" />
-                </div>
-            </div>
+        <div class="nav-dropdown">
+          <a href="#" class="nav-link"
+            >Times
+            <i
+              class="fas fa-chevron-down"
+              style="font-size: 0.6rem; margin-left: 5px"
+            ></i
+          ></a>
+          <div class="dropdown-content" id="camp-dropdown-teams">
+            <a href="teams.html?camp=1">Campeonato 1</a>
+          </div>
         </div>
 
-        <div id="user-submenu" class="dropdown-menu">
-            <button id="logout-btn">
-                <i class="fas fa-sign-out-alt"></i> SAIR DA NÉVOA
-            </button>
+        <div class="nav-dropdown">
+          <a href="#" class="nav-link"
+            >Chaves
+            <i
+              class="fas fa-chevron-down"
+              style="font-size: 0.6rem; margin-left: 5px"
+            ></i
+          ></a>
+          <div class="dropdown-content" id="camp-dropdown-brackets">
+            <a href="bracket.html?camp=1">Chaves 1</a>
+          </div>
         </div>
+
+        <a href="perks.html" class="nav-link">Perks Banidas</a>
+        <a href="santuario.html" class="nav-item">Santuário</a>
+      </nav>
+
+      <div class="nav-actions">
+        <div class="user-container" id="user-profile-trigger">
+          <span id="display-name">CARREGANDO...</span>
+          <div class="avatar-circle">
+            <img src="../assets/icon.jpg" alt="User Profile" />
+          </div>
+        </div>
+      </div>
+
+      <div id="user-submenu" class="dropdown-menu">
+        <button id="logout-btn">
+          <i class="fas fa-sign-out-alt"></i> SAIR DA NÉVOA
+        </button>
+      </div>
     </header>
 
-    <main style="padding-top: 100px;">
-        <div class="info-section">
-            <h1 id="map-title">REINO</h1>
-            <p id="var-status" style="color: #ddd;">Vote na variação estratégica:</p>
-            <div style="display: flex; justify-content: center; gap: 10px; margin-top: 20px;">
-                <button id="finish-var-btn" style="display:none; color:#ff0000; padding:12px 24px; cursor:pointer; font-family: 'Arial Black'; text-transform: uppercase;">FINALIZAR PARTIDA</button>
-                <button id="reset-all-btn" style="display:none; color:#fff; padding:12px 24px; cursor:pointer; font-family: 'Arial Black'; text-transform: uppercase;">REINICIAR TUDO</button>
-            </div>
+    <main style="padding-top: 100px">
+      <div class="info-section">
+        <h1 id="map-title">REINO</h1>
+        <p id="var-status" style="color: #ddd">Vote na variação estratégica:</p>
+        <div
+          style="
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+          "
+        >
+          <button
+            id="finish-var-btn"
+            style="
+              display: none;
+              color: #ff0000;
+              padding: 12px 24px;
+              cursor: pointer;
+              font-family: &quot;Arial Black&quot;;
+              text-transform: uppercase;
+            "
+          >
+            FINALIZAR PARTIDA
+          </button>
+          <button
+            id="reset-all-btn"
+            style="
+              display: none;
+              color: #fff;
+              padding: 12px 24px;
+              cursor: pointer;
+              font-family: &quot;Arial Black&quot;;
+              text-transform: uppercase;
+            "
+          >
+            REINICIAR TUDO
+          </button>
         </div>
-        <div class="map-grid" id="var-grid"></div>
+      </div>
+      <div class="map-grid" id="var-grid"></div>
     </main>
 
     <footer class="custom-footer">
       <div class="footer-top-glow"></div>
-      
+
       <div class="container footer-content">
         <div class="footer-brand">
           <div class="logo">REFÚGIO DA NÉVOA</div>
-          <p>O servidor da comunidade mais sombrio da Névoa. Junte-se a nós para campeonatos, discussões e muito mais.</p>
+          <p>
+            O servidor da comunidade mais sombrio da Névoa. Junte-se a nós para
+            campeonatos, discussões e muito mais.
+          </p>
         </div>
-        
+
         <div class="footer-nav">
           <h4>NAVEGAÇÃO</h4>
           <div class="nav-links">
@@ -142,325 +190,376 @@
           </div>
         </div>
       </div>
-      
+
       <div class="footer-bottom-bar">
         <div class="container bottom-flex">
-          <span class="copy">&copy; 2026 Refúgio da Névoa. Desenvolvido por <strong style="color:#fff;">Anthonny Michael</strong>.</span>
-          <span class="disclaimer">Não afiliado à Behaviour Interactive ou a Dead by Daylight™</span>
+          <span class="copy"
+            >&copy; 2026 Refúgio da Névoa. Desenvolvido por
+            <strong style="color: #fff">Anthonny Michael</strong>.</span
+          >
+          <span class="disclaimer"
+            >Não afiliado à Behaviour Interactive ou a Dead by Daylight™</span
+          >
         </div>
       </div>
     </footer>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getFirestore, doc, updateDoc, increment, collection, getDocs, onSnapshot, setDoc, writeBatch } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+      import {
+        getAuth,
+        signOut,
+        onAuthStateChanged,
+      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+      import {
+        getFirestore,
+        doc,
+        updateDoc,
+        increment,
+        collection,
+        getDocs,
+        onSnapshot,
+        setDoc,
+        writeBatch,
+      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyARpVKfzOMm-v0pv9-7w9xahvhItosrI2Q",
-            authDomain: "dbd-camp.firebaseapp.com",
-            projectId: "dbd-camp",
-            storageBucket: "dbd-camp.firebasestorage.app",
-            messagingSenderId: "357760091556",
-            appId: "1:357760091556:web:4d9191b487baf240e92d31"
-        };
+      const firebaseConfig = {
+        apiKey: "AIzaSyARpVKfzOMm-v0pv9-7w9xahvhItosrI2Q",
+        authDomain: "dbd-camp.firebaseapp.com",
+        projectId: "dbd-camp",
+        storageBucket: "dbd-camp.firebasestorage.app",
+        messagingSenderId: "357760091556",
+        appId: "1:357760091556:web:4d9191b487baf240e92d31",
+      };
 
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const auth = getAuth(app);
-        
-        const mapData = JSON.parse(localStorage.getItem('selectedMap')); 
-        
-        const ADMIN_UIDS = [
-            "discord:1400218900284571689",
-            "discord:1522742461389078568",
-            "discord:743696235248091206",
-            "discord:744346487063969794"
-        ];
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      const auth = getAuth(app);
 
-        if(mapData) {
-            document.getElementById('map-title').innerText = mapData.name;
-            document.getElementById('body-layout').style.backgroundImage = `url('${mapData.img}')`; 
-        } else {
-            window.location.href = 'home.html';
+      const mapData = JSON.parse(localStorage.getItem("selectedMap"));
+
+      const ADMIN_UIDS = [
+        "discord:1037035142860001400",
+        "discord:1400218900284571689",
+        "discord:743696235248091206",
+      ];
+
+      if (mapData) {
+        document.getElementById("map-title").innerText = mapData.name;
+        document.getElementById("body-layout").style.backgroundImage =
+          `url('${mapData.img}')`;
+      } else {
+        window.location.href = "home.html";
+      }
+
+      let currentTotalCamps = 1;
+      let deletedCamps = [];
+      let lockedCamps = [];
+
+      onSnapshot(doc(db, "sistema", "geral"), (docSnap) => {
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          currentTotalCamps = data.totalCampeonatos || 1;
+          deletedCamps = data.deletedCamps || [];
+          lockedCamps = data.lockedCamps || [];
+          renderCampDropdown();
+        }
+      });
+
+      function renderCampDropdown() {
+        const menuTeams = document.getElementById("camp-dropdown-teams");
+        const menuBrackets = document.getElementById("camp-dropdown-brackets");
+
+        if (menuTeams) menuTeams.innerHTML = "";
+        if (menuBrackets) menuBrackets.innerHTML = "";
+
+        let activeCamps = [];
+
+        for (let i = 1; i <= currentTotalCamps; i++) {
+          if (!deletedCamps.includes(i)) {
+            activeCamps.push(i);
+            const isLocked = lockedCamps.includes(i)
+              ? ' <i class="fas fa-lock icon-lock-small"></i>'
+              : "";
+
+            if (menuTeams)
+              menuTeams.innerHTML += `<a href="teams.html?camp=${i}">Campeonato ${i}${isLocked}</a>`;
+            if (menuBrackets)
+              menuBrackets.innerHTML += `<a href="bracket.html?camp=${i}">Chaves ${i}</a>`;
+          }
         }
 
-        let currentTotalCamps = 1;
-        let deletedCamps = [];
-        let lockedCamps = [];
+        const currentUser = auth.currentUser;
+        const isAdmin = currentUser && ADMIN_UIDS.includes(currentUser.uid);
 
-        onSnapshot(doc(db, "sistema", "geral"), (docSnap) => {
-            if (docSnap.exists()) {
-                const data = docSnap.data();
-                currentTotalCamps = data.totalCampeonatos || 1;
-                deletedCamps = data.deletedCamps || [];
-                lockedCamps = data.lockedCamps || [];
-                renderCampDropdown();
-            }
-        });
+        if (isAdmin) {
+          let nextCampId = 1;
+          while (activeCamps.includes(nextCampId)) {
+            nextCampId++;
+          }
 
-        function renderCampDropdown() {
-            const menuTeams = document.getElementById('camp-dropdown-teams');
-            const menuBrackets = document.getElementById('camp-dropdown-brackets');
-            
-            if(menuTeams) menuTeams.innerHTML = ''; 
-            if(menuBrackets) menuBrackets.innerHTML = '';
-
-            let activeCamps = [];
-
-            for (let i = 1; i <= currentTotalCamps; i++) {
-                if (!deletedCamps.includes(i)) {
-                    activeCamps.push(i);
-                    const isLocked = lockedCamps.includes(i) ? ' <i class="fas fa-lock icon-lock-small"></i>' : '';
-                    
-                    if(menuTeams) menuTeams.innerHTML += `<a href="teams.html?camp=${i}">Campeonato ${i}${isLocked}</a>`;
-                    if(menuBrackets) menuBrackets.innerHTML += `<a href="bracket.html?camp=${i}">Chaves ${i}</a>`;
-                }
-            }
-
-            const currentUser = auth.currentUser;
-            const isAdmin = currentUser && ADMIN_UIDS.includes(currentUser.uid);
-
-            if (isAdmin) {
-                let nextCampId = 1;
-                while (activeCamps.includes(nextCampId)) {
-                    nextCampId++;
-                }
-
-                if(menuTeams) {
-                    menuTeams.innerHTML += `
+          if (menuTeams) {
+            menuTeams.innerHTML += `
                         <a href="#" onclick="window.criarCampeonato(event, ${nextCampId})" class="dropdown-create-camp">
                             <i class="fas fa-plus"></i> CRIAR CAMP ${nextCampId}
                         </a>
                     `;
-                }
-            }
+          }
         }
+      }
 
-        window.criarCampeonato = async (e, nextId) => {
-            e.preventDefault();
-            if (!confirm(`Deseja abrir as inscrições para o Campeonato ${nextId}?`)) return;
-            
-            const refDoc = doc(db, "sistema", "geral");
-            try {
-                let updates = {};
-                if (nextId > currentTotalCamps) {
-                    updates.totalCampeonatos = nextId;
-                } 
-                else if (deletedCamps.includes(nextId)) {
-                    updates.deletedCamps = deletedCamps.filter(id => id !== nextId);
-                }
-                
-                if (Object.keys(updates).length > 0) {
-                    await updateDoc(refDoc, updates);
-                }
-                
-                window.location.href = `teams.html?camp=${nextId}`;
-            } catch(err) {
-                alert("Erro ao criar campeonato. Permissão Negada.");
-                console.error(err);
-            }
-        };
+      window.criarCampeonato = async (e, nextId) => {
+        e.preventDefault();
+        if (!confirm(`Deseja abrir as inscrições para o Campeonato ${nextId}?`))
+          return;
 
-        const displayNameEl = document.getElementById('display-name');
-        let authChecked = false;
+        const refDoc = doc(db, "sistema", "geral");
+        try {
+          let updates = {};
+          if (nextId > currentTotalCamps) {
+            updates.totalCampeonatos = nextId;
+          } else if (deletedCamps.includes(nextId)) {
+            updates.deletedCamps = deletedCamps.filter((id) => id !== nextId);
+          }
 
-        if (displayNameEl) {
-            displayNameEl.textContent = 'CARREGANDO...';
+          if (Object.keys(updates).length > 0) {
+            await updateDoc(refDoc, updates);
+          }
+
+          window.location.href = `teams.html?camp=${nextId}`;
+        } catch (err) {
+          alert("Erro ao criar campeonato. Permissão Negada.");
+          console.error(err);
         }
+      };
 
-        onAuthStateChanged(auth, (user) => {
-            authChecked = true;
-            
-            if (!user) {
-                window.location.href = "login.html";
-            } else {
-                const userName = user.displayName || (user.email ? user.email.split("@")[0] : "Usuário");
-                if (displayNameEl) {
-                    displayNameEl.textContent = userName.toUpperCase();
-                }
-                
-                const isAdmin = ADMIN_UIDS.includes(user.uid);
-                if (isAdmin) {
-                    document.getElementById('finish-var-btn').style.display = 'block';
-                    document.getElementById('reset-all-btn').style.display = 'block';
-                }
-                
-                renderCampDropdown();
-            }
-        });
+      const displayNameEl = document.getElementById("display-name");
+      let authChecked = false;
 
-        setTimeout(() => {
-            if (!authChecked && displayNameEl) {
-                displayNameEl.textContent = '...';
-            }
-        }, 3000);
+      if (displayNameEl) {
+        displayNameEl.textContent = "CARREGANDO...";
+      }
 
-        const userTrigger = document.getElementById('user-profile-trigger');
-        const userSubmenu = document.getElementById('user-submenu');
-        let isMenuOpen = false;
-        let animationTimeout = null;
+      onAuthStateChanged(auth, (user) => {
+        authChecked = true;
 
-        if (userTrigger) {
-            userTrigger.addEventListener('click', function(e) {
-                e.stopPropagation();
-                
-                userSubmenu.classList.remove('hiding');
-                
-                if (isMenuOpen) {
-                    userSubmenu.classList.remove('show');
-                    userSubmenu.classList.add('hiding');
-                    userTrigger.classList.remove('open');
-                    
-                    clearTimeout(animationTimeout);
-                    animationTimeout = setTimeout(() => {
-                        userSubmenu.classList.remove('hiding');
-                    }, 250);
-                    
-                    isMenuOpen = false;
-                } else {
-                    userSubmenu.classList.remove('hiding');
-                    userSubmenu.classList.add('show');
-                    userTrigger.classList.add('open');
-                    isMenuOpen = true;
-                }
-            });
+        if (!user) {
+          window.location.href = "login.html";
+        } else {
+          const userName =
+            user.displayName ||
+            (user.email ? user.email.split("@")[0] : "Usuário");
+          if (displayNameEl) {
+            displayNameEl.textContent = userName.toUpperCase();
+          }
+
+          const isAdmin = ADMIN_UIDS.includes(user.uid);
+          if (isAdmin) {
+            document.getElementById("finish-var-btn").style.display = "block";
+            document.getElementById("reset-all-btn").style.display = "block";
+          }
+
+          renderCampDropdown();
         }
+      });
 
-        document.addEventListener('click', function(e) {
-            if (userTrigger && userSubmenu) {
-                if (!userTrigger.contains(e.target) && !userSubmenu.contains(e.target)) {
-                    if (isMenuOpen) {
-                        userSubmenu.classList.remove('show');
-                        userSubmenu.classList.add('hiding');
-                        userTrigger.classList.remove('open');
-                        
-                        clearTimeout(animationTimeout);
-                        animationTimeout = setTimeout(() => {
-                            userSubmenu.classList.remove('hiding');
-                        }, 250);
-                        
-                        isMenuOpen = false;
-                    }
-                }
-            }
+      setTimeout(() => {
+        if (!authChecked && displayNameEl) {
+          displayNameEl.textContent = "...";
+        }
+      }, 3000);
+
+      const userTrigger = document.getElementById("user-profile-trigger");
+      const userSubmenu = document.getElementById("user-submenu");
+      let isMenuOpen = false;
+      let animationTimeout = null;
+
+      if (userTrigger) {
+        userTrigger.addEventListener("click", function (e) {
+          e.stopPropagation();
+
+          userSubmenu.classList.remove("hiding");
+
+          if (isMenuOpen) {
+            userSubmenu.classList.remove("show");
+            userSubmenu.classList.add("hiding");
+            userTrigger.classList.remove("open");
+
+            clearTimeout(animationTimeout);
+            animationTimeout = setTimeout(() => {
+              userSubmenu.classList.remove("hiding");
+            }, 250);
+
+            isMenuOpen = false;
+          } else {
+            userSubmenu.classList.remove("hiding");
+            userSubmenu.classList.add("show");
+            userTrigger.classList.add("open");
+            isMenuOpen = true;
+          }
         });
+      }
 
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && isMenuOpen) {
-                userSubmenu.classList.remove('show');
-                userSubmenu.classList.add('hiding');
-                userTrigger.classList.remove('open');
-                
-                clearTimeout(animationTimeout);
-                animationTimeout = setTimeout(() => {
-                    userSubmenu.classList.remove('hiding');
-                }, 250);
-                
-                isMenuOpen = false;
+      document.addEventListener("click", function (e) {
+        if (userTrigger && userSubmenu) {
+          if (
+            !userTrigger.contains(e.target) &&
+            !userSubmenu.contains(e.target)
+          ) {
+            if (isMenuOpen) {
+              userSubmenu.classList.remove("show");
+              userSubmenu.classList.add("hiding");
+              userTrigger.classList.remove("open");
+
+              clearTimeout(animationTimeout);
+              animationTimeout = setTimeout(() => {
+                userSubmenu.classList.remove("hiding");
+              }, 250);
+
+              isMenuOpen = false;
             }
-        });
+          }
+        }
+      });
 
-        document.getElementById("logout-btn").onclick = () => signOut(auth);
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && isMenuOpen) {
+          userSubmenu.classList.remove("show");
+          userSubmenu.classList.add("hiding");
+          userTrigger.classList.remove("open");
 
-        const navbar = document.getElementById('navbar');
+          clearTimeout(animationTimeout);
+          animationTimeout = setTimeout(() => {
+            userSubmenu.classList.remove("hiding");
+          }, 250);
 
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                navbar.classList.remove('navbar-transparent');
-                navbar.classList.add('navbar-scrolled');
-            } else {
-                navbar.classList.remove('navbar-scrolled');
-                navbar.classList.add('navbar-transparent');
-            }
-        });
+          isMenuOpen = false;
+        }
+      });
 
+      document.getElementById("logout-btn").onclick = () => signOut(auth);
+
+      const navbar = document.getElementById("navbar");
+
+      window.addEventListener("scroll", () => {
         if (window.scrollY > 50) {
-            navbar.classList.remove('navbar-transparent');
-            navbar.classList.add('navbar-scrolled');
+          navbar.classList.remove("navbar-transparent");
+          navbar.classList.add("navbar-scrolled");
+        } else {
+          navbar.classList.remove("navbar-scrolled");
+          navbar.classList.add("navbar-transparent");
         }
+      });
 
-        let rendered = false;
-        function render(aberta) {
-            if(rendered) return;
-            rendered = true;
-            const grid = document.getElementById('var-grid');
-            const jaVotouVariante = localStorage.getItem('jaVotouVariante');
-            
-            mapData.variants.forEach(v => {
-                const card = document.createElement('div');
-                card.className = 'map-card variant-card map-card-anim';
-                card.style.backgroundColor = "rgba(0,0,0,0.85)"; 
-                
-                if(jaVotouVariante || !aberta) card.style.opacity = "0.5";
-                
-                card.innerHTML = `<div class="vote-badge" id="v-voto-${v.name}">0</div><img src="${v.img}"><div class="map-name">${v.name}</div>`;
-                
-                if(aberta && !jaVotouVariante) {
-                    card.style.cursor = "pointer";
-                    card.onclick = async () => {
-                        if(localStorage.getItem('jaVotouVariante')) return;
-                        localStorage.setItem('jaVotouVariante', 'true');
-                        await setDoc(doc(db, "VOTOS_VARIANTES", v.name), { quantidade: increment(1) }, { merge: true });
-                        document.querySelectorAll('.map-card').forEach(c => c.style.opacity = "0.5");
-                    };
-                }
-                grid.appendChild(card);
-            });
-        }
+      if (window.scrollY > 50) {
+        navbar.classList.remove("navbar-transparent");
+        navbar.classList.add("navbar-scrolled");
+      }
 
-        onSnapshot(collection(db, "VOTOS_VARIANTES"), (s) => {
-            s.forEach(d => {
-                const b = document.getElementById(`v-voto-${d.id}`);
-                if(b) b.innerText = d.data().quantidade || 0;
-            });
+      let rendered = false;
+      function render(aberta) {
+        if (rendered) return;
+        rendered = true;
+        const grid = document.getElementById("var-grid");
+        const jaVotouVariante = localStorage.getItem("jaVotouVariante");
+
+        mapData.variants.forEach((v) => {
+          const card = document.createElement("div");
+          card.className = "map-card variant-card map-card-anim";
+          card.style.backgroundColor = "rgba(0,0,0,0.85)";
+
+          if (jaVotouVariante || !aberta) card.style.opacity = "0.5";
+
+          card.innerHTML = `<div class="vote-badge" id="v-voto-${v.name}">0</div><img src="${v.img}"><div class="map-name">${v.name}</div>`;
+
+          if (aberta && !jaVotouVariante) {
+            card.style.cursor = "pointer";
+            card.onclick = async () => {
+              if (localStorage.getItem("jaVotouVariante")) return;
+              localStorage.setItem("jaVotouVariante", "true");
+              await setDoc(
+                doc(db, "VOTOS_VARIANTES", v.name),
+                { quantidade: increment(1) },
+                { merge: true },
+              );
+              document
+                .querySelectorAll(".map-card")
+                .forEach((c) => (c.style.opacity = "0.5"));
+            };
+          }
+          grid.appendChild(card);
         });
+      }
 
-        onSnapshot(doc(db, "sistema", "status_variante"), (s) => {
-            const aberta = s.data()?.votacaoAberta;
-            if(aberta === false) document.getElementById('var-status').innerText = "VOTAÇÃO ENCERRADA!";
-            render(aberta);
+      onSnapshot(collection(db, "VOTOS_VARIANTES"), (s) => {
+        s.forEach((d) => {
+          const b = document.getElementById(`v-voto-${d.id}`);
+          if (b) b.innerText = d.data().quantidade || 0;
         });
+      });
 
-        document.getElementById('finish-var-btn').onclick = async () => {
-            const snap = await getDocs(collection(db, "VOTOS_VARIANTES"));
-            let max = -1; let pool = [];
-            snap.forEach(d => {
-                const q = d.data().quantidade || 0;
-                if(q > max) { max = q; pool = [d.id]; }
-                else if(q === max) pool.push(d.id);
-            });
-            const win = pool[Math.floor(Math.random() * pool.length)] || "Ninguém";
-            await updateDoc(doc(db, "sistema", "status_variante"), { votacaoAberta: false });
-            alert("Vencedor sorteado: " + win);
-        };
+      onSnapshot(doc(db, "sistema", "status_variante"), (s) => {
+        const aberta = s.data()?.votacaoAberta;
+        if (aberta === false)
+          document.getElementById("var-status").innerText =
+            "VOTAÇÃO ENCERRADA!";
+        render(aberta);
+      });
 
-        document.getElementById('reset-all-btn').onclick = async () => {
-            if(!confirm("Reiniciar todo o sistema?")) return;
-            const batch = writeBatch(db);
-            
-            batch.set(doc(db, "sistema", "status"), { 
-                votacaoIniciada: false, 
-                mapasAtivos: [], 
-                totalVotos: 0,
-                vencedorNome: null
-            }, { merge: true });
+      document.getElementById("finish-var-btn").onclick = async () => {
+        const snap = await getDocs(collection(db, "VOTOS_VARIANTES"));
+        let max = -1;
+        let pool = [];
+        snap.forEach((d) => {
+          const q = d.data().quantidade || 0;
+          if (q > max) {
+            max = q;
+            pool = [d.id];
+          } else if (q === max) pool.push(d.id);
+        });
+        const win = pool[Math.floor(Math.random() * pool.length)] || "Ninguém";
+        await updateDoc(doc(db, "sistema", "status_variante"), {
+          votacaoAberta: false,
+        });
+        alert("Vencedor sorteado: " + win);
+      };
 
-            batch.set(doc(db, "sistema", "status_variante"), { votacaoAberta: true }, { merge: true });
-            
-            const reinosSnap = await getDocs(collection(db, "VOTOS"));
-            reinosSnap.forEach(d => batch.set(d.ref, { quantidade: 0 }, { merge: true }));
-            
-            const varSnap = await getDocs(collection(db, "VOTOS_VARIANTES"));
-            varSnap.forEach(d => batch.delete(d.ref));
-            
-            await batch.commit();
-            
-            localStorage.removeItem('jaVotou');
-            localStorage.removeItem('jaVotouVariante');
-            localStorage.removeItem('selectedMap');
-            window.location.href = 'home.html';
-        };
+      document.getElementById("reset-all-btn").onclick = async () => {
+        if (!confirm("Reiniciar todo o sistema?")) return;
+        const batch = writeBatch(db);
+
+        batch.set(
+          doc(db, "sistema", "status"),
+          {
+            votacaoIniciada: false,
+            mapasAtivos: [],
+            totalVotos: 0,
+            vencedorNome: null,
+          },
+          { merge: true },
+        );
+
+        batch.set(
+          doc(db, "sistema", "status_variante"),
+          { votacaoAberta: true },
+          { merge: true },
+        );
+
+        const reinosSnap = await getDocs(collection(db, "VOTOS"));
+        reinosSnap.forEach((d) =>
+          batch.set(d.ref, { quantidade: 0 }, { merge: true }),
+        );
+
+        const varSnap = await getDocs(collection(db, "VOTOS_VARIANTES"));
+        varSnap.forEach((d) => batch.delete(d.ref));
+
+        await batch.commit();
+
+        localStorage.removeItem("jaVotou");
+        localStorage.removeItem("jaVotouVariante");
+        localStorage.removeItem("selectedMap");
+        window.location.href = "home.html";
+      };
     </script>
-</body>
+  </body>
 </html>
