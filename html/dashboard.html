@@ -1,591 +1,903 @@
 <!doctype html>
 <html lang="pt-br">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>REFÚGIO DA NÉVOA</title>
-    <link rel="stylesheet" href="../assets/css/global.css" />
-    <link rel="stylesheet" href="../assets/css/navbar.css" />
-    <link rel="stylesheet" href="../assets/css/dashboard.css" />
-    <link rel="stylesheet" href="../assets/css/components.css" />
-    <link rel="stylesheet" href="../assets/css/modal.css" />
-    <link rel="stylesheet" href="../assets/css/responsive.css" />    
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-    />
-    <link rel="icon" href="../assets/icon.jpg" type="image/jpg" />
-  </head>
-  <body>
-    <header id="navbar" class="dashboard-header navbar-transparent">
-      <div class="logo">REFÚGIO DA NÉVOA</div>
 
-      <nav class="nav-menu">
-        <a href="#" class="nav-link active">Home</a>
-        <a href="regras_servidor.html" class="nav-link">Regras do Servidor</a>
-        <a href="mapas.html" class="nav-link">Numeração de Mapas</a>
-      </nav>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>REFÚGIO DA NÉVOA</title>
+  <link rel="stylesheet" href="../assets/css/global.css" />
+  <link rel="stylesheet" href="../assets/css/navbar.css" />
+  <link rel="stylesheet" href="../assets/css/dashboard.css" />
+  <link rel="stylesheet" href="../assets/css/components.css" />
+  <link rel="stylesheet" href="../assets/css/modal.css" />
+  <link rel="stylesheet" href="../assets/css/responsive.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <link rel="icon" href="../assets/icon.jpg" type="image/jpg" />
+</head>
 
-      <div class="nav-actions">
-        <div class="user-container" id="user-profile-trigger">
-          <span id="display-name">CARREGANDO...</span>
-          <div class="avatar-circle">
-            <img src="../assets/icon.jpg" alt="User Profile" />
+<body>
+
+  <header id="navbar" class="dashboard-header navbar-transparent">
+    <div class="logo">REFÚGIO DA NÉVOA</div>
+
+    <nav class="nav-menu pill-nav">
+      <a href="dashboard.html" class="nav-item">Início</a>
+
+      <div class="nav-item has-dropdown">
+        <span class="dropdown-trigger">Campeonato <i class="fas fa-chevron-down" style="font-size: 0.7em; margin-left: 5px;"></i></span>
+
+        <div class="mega-menu">
+          <div class="mega-menu-grid">
+            <a href="santuario.html" class="mega-menu-item">
+              <div class="mega-icon"><i class="fas fa-gem"></i></div>
+              <div class="mega-text">
+                <span class="mega-title">Santuário dos Segredos</span>
+                <span class="mega-desc">Vantagens semanais disponíveis.</span>
+              </div>
+            </a>
+            <a href="home.html" class="mega-menu-item">
+              <div class="mega-icon"><i class="fas fa-map-marked-alt"></i></div>
+              <div class="mega-text">
+                <span class="mega-title">Votação de Reinos</span>
+                <span class="mega-desc">Defina o palco do próximo massacre.</span>
+              </div>
+            </a>
+            <a href="teams.html" class="mega-menu-item">
+              <div class="mega-icon"><i class="fas fa-users"></i></div>
+              <div class="mega-text">
+                <span class="mega-title">Equipes</span>
+                <span class="mega-desc">Veja os sobreviventes e assassinos.</span>
+              </div>
+            </a>
+            <a href="bracket.html" class="mega-menu-item">
+              <div class="mega-icon"><i class="fas fa-sitemap"></i></div>
+              <div class="mega-text">
+                <span class="mega-title">Chaves</span>
+                <span class="mega-desc">Acompanhe os confrontos do torneio.</span>
+              </div>
+            </a>
+            <a href="perks.html" class="mega-menu-item">
+              <div class="mega-icon"><i class="fas fa-ban"></i></div>
+              <div class="mega-text">
+                <span class="mega-title">Perks Banidas</span>
+                <span class="mega-desc">O que é proibido pela Entidade.</span>
+              </div>
+            </a>
+            <a href="regras.html" class="mega-menu-item">
+              <div class="mega-icon"><i class="fas fa-star"></i></div>
+              <div class="mega-text">
+                <span class="mega-title">Sistema de Pontuação</span>
+                <span class="mega-desc">Regras do campeonato e penalidades.</span>
+              </div>
+            </a>
           </div>
         </div>
       </div>
 
-      <div id="user-submenu" class="dropdown-menu">
-        <button id="logout-btn">
-          <i class="fas fa-sign-out-alt"></i> SAIR DA NÉVOA
-        </button>
-      </div>
-    </header>
+      <a href="regras_servidor.html" class="nav-item">Regras</a>
+      <a href="mapas.html" class="nav-item">Numeração Mapas</a>
+      <a href="santuario.html" class="nav-item">Santuário</a>
+    </nav>
 
-    <div class="fade-in">
-      
-      <section class="hero-section unified-hero">
-        <div class="hero-overlay-global"></div>
-        
-        <div class="container hero-centered-container">
-          
-          <div class="hero-content-centered reveal">
-            <div class="badge-pill">A NÉVOA CHAMA</div>
-            <h1 class="glitch-text">REFÚGIO DA NÉVOA</h1>
-            <p>
-              O servidor da comunidade de <span class="glitch-text">Dead By Daylight</span> mais sombrio da Névoa. Junte-se a nós.
+    <div class="nav-actions">
+      <div class="user-container" id="user-profile-trigger">
+        <span id="display-name">CARREGANDO...</span>
+        <div class="avatar-circle">
+          <img src="../assets/icon.jpg" alt="User Profile" />
+        </div>
+      </div>
+    </div>
+
+    <div id="user-submenu" class="dropdown-menu">
+      <button id="logout-btn">
+        <i class="fas fa-sign-out-alt"></i> SAIR DA NÉVOA
+      </button>
+    </div>
+  </header>
+
+  <div class="fade-in">
+
+    <section class="hero-section unified-hero">
+      <div class="hero-overlay-global"></div>
+
+      <div class="container hero-centered-container">
+
+        <div class="hero-content-centered reveal">
+          <div class="badge-pill">A NÉVOA CHAMA</div>
+          <h1 class="glitch-text">REFÚGIO DA NÉVOA</h1>
+          <p>
+            O servidor da comunidade de <span class="glitch-text">Dead By Daylight</span> mais sombrio da Névoa.
+            Junte-se a nós.
+          </p>
+          <div class="hero-buttons-centered">
+            <a href="#ferramentas" class="cta-btn">CAMPEONATOS</a>
+            <a href="#discord-invite" class="cta-btn outline">DISCORD</a>
+          </div>
+        </div>
+
+        <div class="feature-showcase reveal">
+          <div class="showcase-tabs">
+            <div class="tab-slider"></div>
+
+            <button class="showcase-tab active" data-target="tab-server">
+              <i class="fas fa-server"></i> Server
+            </button>
+            <button class="showcase-tab" data-target="tab-support">
+              <i class="fas fa-headset"></i> Support
+            </button>
+            <button class="showcase-tab" data-target="tab-bots">
+              <i class="fas fa-robot"></i> Bots
+            </button>
+            <button class="showcase-tab" data-target="tab-journal">
+              <i class="fas fa-book"></i> Journal
+            </button>
+            <button class="showcase-tab" data-target="tab-tournament">
+              <i class="fas fa-trophy"></i> Social Media
+            </button>
+          </div>
+
+          <div class="showcase-content-container">
+            <div class="showcase-panel active" id="tab-server">
+              <video src="../assets/videos/servidor.mp4" class="showcase-img" autoplay loop muted playsinline></video>
+            </div>
+
+            <div class="showcase-panel" id="tab-support">
+              <video src="../assets/videos/suporte.mp4" class="showcase-img" autoplay loop muted playsinline></video>
+            </div>
+
+            <div class="showcase-panel" id="tab-bots">
+              <video src="../assets/videos/bots.mp4" class="showcase-img" autoplay loop muted playsinline></video>
+            </div>
+
+            <div class="showcase-panel" id="tab-journal">
+              <video src="../assets/videos/noticias.mp4" class="showcase-img" autoplay loop muted playsinline></video>
+            </div>
+
+            <div class="showcase-panel" id="tab-tournament">
+              <video src="../assets/videos/redesocial.mp4" class="showcase-img" autoplay loop muted playsinline></video>
+            </div>
+          </div>
+        </div>
+
+        <div class="ritual-section-divider" aria-hidden="true">
+          <span class="ritual-divider-line"></span>
+          <span class="ritual-divider-mark">✦</span>
+          <span class="ritual-divider-line"></span>
+        </div>
+
+        <section class="ritual-section reveal" id="santuario-preview" aria-labelledby="ritual-title"
+          onclick="window.location.href='santuario.html'">
+          <div class="ritual-noise" aria-hidden="true"></div>
+          <div class="ritual-mist ritual-mist-one" aria-hidden="true"></div>
+          <div class="ritual-mist ritual-mist-two" aria-hidden="true"></div>
+          <div class="ritual-grid-lines" aria-hidden="true"></div>
+
+          <div class="ritual-bg-mark" aria-hidden="true">NÉVOA</div>
+
+          <div class="ritual-header">
+            <div class="ritual-kicker">
+              <span class="ritual-kicker-line"></span>
+              <span>ARQUIVO DA ENTIDADE</span>
+            </div>
+
+            <h2 id="ritual-title">O Ritual da Névoa</h2>
+
+            <p class="ritual-intro">
+              Quatro oferendas foram escolhidas para esta rotação. Entre na Névoa e
+              descubra quais favores ainda podem ser reivindicados.
             </p>
-            <div class="hero-buttons-centered">
-              <a href="#ferramentas" class="cta-btn">CAMPEONATOS</a>
-              <a href="#discord-invite" class="cta-btn outline">DISCORD</a>
-            </div>
           </div>
 
-          <div class="feature-showcase reveal">
-            <div class="showcase-tabs">
-              <div class="tab-slider"></div> 
+          <div class="ritual-layout">
+            <div class="ritual-offerings" id="shrine-preview-icons" aria-label="Vantagens disponíveis">
+              <article class="offering-card offering-card-one">
+                <div class="offering-card-top">
+                  <span class="offering-number">01</span>
+                  <span class="offering-status">ATIVA</span>
+                </div>
+                <div class="offering-icon-wrap">
+                  <i class="fas fa-eye" aria-hidden="true"></i>
+                </div>
+                <div class="offering-info">
+                  <span class="offering-label">OFERENDA</span>
+                  <h3>Olho da Névoa</h3>
+                  <p>Revele os sinais antes que desapareçam.</p>
+                </div>
+              </article>
 
-              <button class="showcase-tab active" data-target="tab-server">
-                <i class="fas fa-server"></i> Server
-              </button>
-              <button class="showcase-tab" data-target="tab-support">
-                <i class="fas fa-headset"></i> Support
-              </button>
-              <button class="showcase-tab" data-target="tab-bots">
-                <i class="fas fa-robot"></i> Bots
-              </button>
-              <button class="showcase-tab" data-target="tab-journal">
-                <i class="fas fa-book"></i> Journal
-              </button>
-              <button class="showcase-tab" data-target="tab-tournament">
-                <i class="fas fa-trophy"></i> Social Media
-              </button>
+              <article class="offering-card offering-card-two">
+                <div class="offering-card-top">
+                  <span class="offering-number">02</span>
+                  <span class="offering-status">ATIVA</span>
+                </div>
+                <div class="offering-icon-wrap">
+                  <i class="fas fa-fist-raised" aria-hidden="true"></i>
+                </div>
+                <div class="offering-info">
+                  <span class="offering-label">OFERENDA</span>
+                  <h3>Pulso Brutal</h3>
+                  <p>A força da Entidade nunca chega em silêncio.</p>
+                </div>
+              </article>
+
+              <article class="offering-card offering-card-three">
+                <div class="offering-card-top">
+                  <span class="offering-number">03</span>
+                  <span class="offering-status">ATIVA</span>
+                </div>
+                <div class="offering-icon-wrap">
+                  <i class="fas fa-spider" aria-hidden="true"></i>
+                </div>
+                <div class="offering-info">
+                  <span class="offering-label">OFERENDA</span>
+                  <h3>Teia Faminta</h3>
+                  <p>O caminho mais curto também pode ser uma armadilha.</p>
+                </div>
+              </article>
+
+              <article class="offering-card offering-card-four">
+                <div class="offering-card-top">
+                  <span class="offering-number">04</span>
+                  <span class="offering-status">ATIVA</span>
+                </div>
+                <div class="offering-icon-wrap">
+                  <i class="fas fa-mask" aria-hidden="true"></i>
+                </div>
+                <div class="offering-info">
+                  <span class="offering-label">OFERENDA</span>
+                  <h3>Véu Partido</h3>
+                  <p>Nem tudo o que observa a Névoa pode ser visto.</p>
+                </div>
+              </article>
             </div>
 
-            <div class="showcase-content-container">
-              <!-- Painel 1: Server -->
-              <div class="showcase-panel active" id="tab-server">
-                <video src="../assets/videos/servidor.mp4" class="showcase-img" autoplay loop muted playsinline></video>
-              </div>
-              
-              <!-- Painel 2: Support -->
-              <div class="showcase-panel" id="tab-support">
-                <video src="../assets/videos/suporte.mp4" class="showcase-img" autoplay loop muted playsinline></video>
-              </div>
-              
-              <!-- Painel 3: Bots -->
-              <div class="showcase-panel" id="tab-bots">
-                <video src="../assets/videos/bots.mp4" class="showcase-img" autoplay loop muted playsinline></video>
+            <aside class="ritual-seal-panel" aria-label="Informações do período atual">
+              <div class="ritual-seal" aria-hidden="true">
+                <span class="seal-ring seal-ring-outer"></span>
+                <span class="seal-ring seal-ring-inner"></span>
+                <span class="seal-mark">✦</span>
+                <span class="seal-caption">A ENTIDADE<br />OBSERVA</span>
               </div>
 
-              <!-- Painel 4: Journal -->
-              <div class="showcase-panel" id="tab-journal">
-                <video src="../assets/videos/noticias.mp4" class="showcase-img" autoplay loop muted playsinline></video>
+              <div class="ritual-period-box">
+                <span class="period-label">CICLO ATUAL</span>
+                <strong class="period-dates shrine-dates">Calculando a Entidade...</strong>
+                <span class="period-divider"></span>
+                <span class="period-note">A rotação será renovada ao fim do ciclo.</span>
               </div>
 
-              <!-- Painel 5: Tournament -->
-              <div class="showcase-panel" id="tab-tournament">
-                <video src="../assets/videos/redesocial.mp4" class="showcase-img" autoplay loop muted playsinline></video>
+              <span class="ritual-progress-label">A Névoa está se fechando</span>
+              <div class="ritual-progress" aria-hidden="true">
+                <span class="ritual-progress-fill"></span>
               </div>
-            </div>
+
+              <a class="ritual-access-button" href="santuario.html" aria-label="Abrir o Santuário"
+                onclick="event.stopPropagation()">
+                <span>ABRIR O SANTUÁRIO</span>
+                <i class="fas fa-arrow-right" aria-hidden="true"></i>
+              </a>
+            </aside>
           </div>
 
+          <span class="ritual-corner ritual-corner-tl" aria-hidden="true"></span>
+          <span class="ritual-corner ritual-corner-tr" aria-hidden="true"></span>
+          <span class="ritual-corner ritual-corner-bl" aria-hidden="true"></span>
+          <span class="ritual-corner ritual-corner-br" aria-hidden="true"></span>
+        </section>
+
+      </div>
+    </section>
+
+    <div class="ritual-section-divider" aria-hidden="true">
+      <span class="ritual-divider-line"></span>
+      <span class="ritual-divider-mark">✦</span>
+      <span class="ritual-divider-line"></span>
+    </div>
+
+    <section class="fog-stats-section reveal" aria-labelledby="fog-stats-title">
+      <div class="fog-stats-bg-mark" aria-hidden="true">NÉVOA</div>
+      <div class="fog-stats-orbit fog-stats-orbit-one" aria-hidden="true"></div>
+      <div class="fog-stats-orbit fog-stats-orbit-two" aria-hidden="true"></div>
+
+      <div class="fog-stats-heading">
+        <div class="fog-stats-kicker">
+          <span class="fog-stats-kicker-dot"></span>
+          MONITORAMENTO DA ENTIDADE
         </div>
-      </section>
 
-      <section id="ferramentas" class="content-section">
-        <div class="container">
-          <h2 class="section-title reveal">FERRAMENTAS DE TORNEIO</h2>
-          <div class="tools-grid">
-            <div class="tool-card reveal" onclick="window.location.href = 'home.html'">
-              <div class="tool-icon"><i class="fas fa-map-marked-alt"></i></div>
-              <h3>VOTAÇÃO DE REINOS</h3>
-              <p>Defina o palco do próximo massacre.</p>
-            </div>
-            <div class="tool-card reveal" onclick="window.location.href = 'teams.html'">
-              <div class="tool-icon"><i class="fas fa-users"></i></div>
-              <h3>EQUIPES</h3>
-              <p>Veja quem são os sobreviventes e assassinos.</p>
-            </div>
-            <div class="tool-card reveal" onclick="window.location.href = 'perks.html'">
-              <div class="tool-icon"><i class="fas fa-ban"></i></div>
-              <h3>PERKS BANIDAS</h3>
-              <p>O que é proibido pela Entidade.</p>
-            </div>
-            <div class="tool-card reveal" onclick="window.location.href = 'regras.html'">
-              <div class="tool-icon"><i class="fas fa-star"></i></div>
-              <h3>SISTEMA DE PONTUAÇÃO</h3>
-              <p>Regras do campeonato, pontuações e penalidades.</p>
-            </div>
+        <h2 id="fog-stats-title" class="stats-title">Estatísticas da Névoa</h2>
+
+        <p class="fog-stats-description">
+          Os números mudam. A Névoa observa. A comunidade permanece.
+        </p>
+      </div>
+
+      <div class="fog-status-line" aria-label="Status do servidor">
+        <span class="fog-status-pulse"></span>
+        <span>SISTEMA ATIVO</span>
+        <span class="fog-status-separator">/</span>
+        <span>ÚLTIMA LEITURA EM TEMPO REAL</span>
+      </div>
+
+      <div class="container fog-stats-grid">
+        <article class="fog-stat-card fog-stat-members reveal">
+          <div class="fog-stat-card-top">
+            <span class="fog-stat-index">01</span>
+            <span class="fog-stat-tag">COMUNIDADE</span>
           </div>
-        </div>
-      </section>
 
-      <section class="stats-section">
-        <h2 class="stats-title reveal">ESTATÍSTICAS DA NÉVOA</h2>
-        <div class="container stats-grid-glass">
-          <div class="glass-card reveal">
-            <div class="card-3d-element">
-              <i class="fas fa-users stat-icon-users"></i>
+          <div class="fog-stat-main">
+            <div class="fog-stat-icon-wrap">
+              <i class="fas fa-users fog-stat-icon-users" aria-hidden="true"></i>
             </div>
-            <div class="card-content">
+            <div class="fog-stat-value-wrap">
               <h3 id="stat-members">0</h3>
               <p>MEMBROS TOTAIS</p>
             </div>
-            <div class="card-glow"></div>
           </div>
-          <div class="glass-card reveal" style="animation-delay: 0.2s">
-            <div class="card-3d-element">
-              <i class="fas fa-circle stat-icon-online"></i>
+
+          <div class="fog-stat-footer">
+            <span>Presenças registradas na Névoa</span>
+            <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i>
+          </div>
+          <span class="fog-stat-glow" aria-hidden="true"></span>
+        </article>
+
+        <article class="fog-stat-card fog-stat-online reveal" style="animation-delay: 0.12s">
+          <div class="fog-stat-card-top">
+            <span class="fog-stat-index">02</span>
+            <span class="fog-stat-tag fog-tag-online">AO VIVO</span>
+          </div>
+
+          <div class="fog-stat-main">
+            <div class="fog-stat-icon-wrap">
+              <i class="fas fa-signal fog-stat-icon-online" aria-hidden="true"></i>
             </div>
-            <div class="card-content">
+            <div class="fog-stat-value-wrap">
               <h3 id="stat-online" class="stat-text-online">0</h3>
               <p class="stat-label-white">ONLINE AGORA</p>
             </div>
-            <div class="card-glow glow-online"></div>
           </div>
-          <div class="glass-card reveal boost-card-wrapper">
-            <button id="edit-boost-btn" class="hidden">
-              <i class="fas fa-pen"></i>
-            </button>
-            <div class="card-3d-element">
-              <i class="fas fa-gem stat-icon-boosts"></i>
+
+          <div class="fog-stat-footer">
+            <span>Sobreviventes detectados agora</span>
+            <i class="fas fa-wifi" aria-hidden="true"></i>
+          </div>
+          <span class="fog-stat-glow" aria-hidden="true"></span>
+        </article>
+
+        <article class="fog-stat-card fog-stat-boosts reveal boost-card-wrapper" style="animation-delay: 0.24s">
+          <button id="edit-boost-btn" class="fog-edit-stat-button hidden" type="button"
+            aria-label="Editar quantidade de boosters">
+            <i class="fas fa-pen" aria-hidden="true"></i>
+          </button>
+
+          <div class="fog-stat-card-top">
+            <span class="fog-stat-index">03</span>
+            <span class="fog-stat-tag fog-tag-boost">APOIO</span>
+          </div>
+
+          <div class="fog-stat-main">
+            <div class="fog-stat-icon-wrap">
+              <i class="fas fa-gem fog-stat-icon-boosts" aria-hidden="true"></i>
             </div>
-            <div class="card-content">
+            <div class="fog-stat-value-wrap">
               <h3 id="stat-boosts" class="stat-text-boosts">0</h3>
               <p class="stat-label-white">BOOSTERS</p>
             </div>
-            <div class="card-glow glow-boosts"></div>
           </div>
-        </div>
-      </section>
 
-      <section class="content-section">
-        <div class="container">
-          <h2 class="section-title reveal">A ENTIDADE (STAFF)</h2>
-          <div class="staff-grid">
-            <div class="staff-card reveal" onclick="openStaffModal('Ravik')">
-              <div class="staff-img-container">
-                <img src="https://i.ibb.co/ch2qxHcP/Peachy-20250911-015431303.jpg" alt="Dono" />
-              </div>
-              <h3>RAVIK</h3>
-              <span class="role owner">DONO</span>
-            </div>
+          <div class="fog-stat-footer">
+            <span>Favores oferecidos à comunidade</span>
+            <i class="fas fa-gem" aria-hidden="true"></i>
           </div>
-        </div>
-      </section>
+          <span class="fog-stat-glow" aria-hidden="true"></span>
+        </article>
+      </div>
 
-      <section id="discord-invite" class="invite-section reveal">
-        <div class="invite-content">
-          <i class="fab fa-discord"></i>
-          <h2>JUNTE-SE À NÉVOA</h2>
-          <p>Clique abaixo para entrar no nosso servidor oficial.</p>
-          <a href="#" target="_blank" class="discord-btn" id="btn-invite">ENTRAR AGORA</a>
-        </div>
-      </section>
+      <div class="fog-stats-bottom-line">
+        <span></span>
+        <small>A ENTIDADE MANTÉM O REGISTRO</small>
+        <span></span>
+      </div>
+    </section>
 
-      <footer class="site-footer">
-        &copy; 2026 COMUNIDADE DBD. Todos os direitos reservados. Feito por Anthonny Michael
-      </footer>
-    </div>
+    <section class="community-disclaimer-section reveal">
+      <div class="container">
+        <div class="disclaimer-banner">
+          <div class="disclaimer-bg-text">NÉVOA</div>
 
-    <div id="staff-modal" class="perk-modal" onclick="closeStaffModalOut(event)">
-      <div class="perk-modal-content">
-        <button class="close-modal-btn" onclick="closeStaffModal()">&times;</button>
-        <div class="modal-image-side modal-col-side">
-          <img id="staff-modal-img" src="" alt="Staff Profile" />
-          <span id="staff-modal-role">CARGO</span>
-        </div>
-        <div class="modal-info-side">
-          <h2 id="staff-modal-name" class="modal-perk-name staff-modal-title">NOME</h2>
-          <p id="staff-modal-desc" class="modal-perk-desc staff-modal-subtitle">Descrição do membro.</p>
-          <div class="staff-details-horizontal">
-            <div class="detail-item"><strong class="staff-detail-label">Idade:</strong><span id="staff-age">--</span></div>
-            <div class="detail-item"><strong class="staff-detail-label">Local:</strong><span id="staff-loc">--</span></div>
-            <div class="detail-item"><strong class="staff-detail-label">Tempo de jogo:</strong><span id="staff-time">--</span></div>
-            <div class="detail-item"><strong class="staff-detail-label">Main:</strong><span id="staff-main">--</span></div>
+          <div class="disclaimer-content">
+            <span class="disclaimer-label">PROJETO DA COMUNIDADE</span>
+            <h2 class="disclaimer-title">Forjado na Névoa.</h2>
+            <p class="disclaimer-text">
+              O Refúgio da Névoa é um espaço independente criado por e para sobreviventes e assassinos. Não possuímos
+              vínculos oficiais com a Behaviour Interactive. Marcas, nomes e elementos de Dead by Daylight pertencem aos
+              seus respectivos proprietários originais.
+            </p>
           </div>
-          <span class="social-title">Redes Sociais</span>
-          <div class="staff-socials">
-            <a id="link-insta" href="#" target="_blank"><i class="fab fa-instagram"></i></a>
-            <a id="link-tiktok" href="#" target="_blank"><i class="fab fa-tiktok"></i></a>
-            <a id="link-steam" href="#" target="_blank"><i class="fab fa-steam"></i></a>
-            <a id="link-twitch" href="#" target="_blank"><i class="fab fa-twitch"></i></a>
+
+          <div class="disclaimer-badge">
+            <span class="pulse-dot"></span>
+            INICIATIVA NÃO OFICIAL
           </div>
         </div>
       </div>
+    </section>
+
+    <section class="staff-section reveal">
+      <div class="container">
+        <div class="section-header-styled">
+          <span class="header-kicker">OS ARQUITETOS DA NÉVOA</span>
+          <h2 class="section-title-styled">A Entidade (Staff)</h2>
+          <button id="add-staff-btn" class="cta-btn hidden" style="margin-top: 15px; padding: 10px 20px; font-size: 0.8rem;" onclick="openAdminStaffModal()">+ ADICIONAR MEMBRO</button>
+        </div>
+
+        <!-- Renderizado dinamicamente pelo Firebase -->
+        <div class="staff-grid" id="staff-grid-container">
+          <p style="color: #888; text-align: center; width: 100%;">Convocando a Entidade...</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="discord-invite" class="discord-portal-section reveal">
+      <div class="container">
+        <div class="discord-portal-card">
+          <div class="discord-portal-glow" aria-hidden="true"></div>
+          
+          <div class="discord-portal-content">
+            <div class="discord-icon-wrapper">
+              <span class="pulse-ring ring-1"></span>
+              <span class="pulse-ring ring-2"></span>
+              <i class="fab fa-discord"></i>
+            </div>
+            
+            <div class="discord-text-block">
+              <h2>O Chamado da Névoa</h2>
+              <p>Os geradores não vão se consertar sozinhos. Sobreviva com amigos ou cace em grupo no nosso servidor oficial.</p>
+            </div>
+            
+            <a href="#" target="_blank" class="discord-action-btn" id="btn-invite">
+              <span>ENTRAR NO DISCORD</span>
+              <i class="fas fa-arrow-right"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="custom-footer">
+      <div class="footer-top-glow"></div>
+
+      <div class="container footer-content">
+        <div class="footer-brand">
+          <div class="logo">REFÚGIO DA NÉVOA</div>
+          <p>O servidor da comunidade mais sombrio da Névoa. Junte-se a nós para campeonatos, discussões e muito mais.</p>
+        </div>
+
+        <div class="footer-nav">
+          <h4>NAVEGAÇÃO</h4>
+          <div class="nav-links">
+            <a href="#">Sobre a Comunidade</a>
+            <a href="#">Regras do Servidor</a>
+            <a href="#">Termos de Uso</a>
+            <a href="#">Privacidade</a>
+          </div>
+        </div>
+
+        <div class="footer-connect">
+          <h4>CONECTE-SE</h4>
+          <div class="social-buttons">
+            <a href="#" class="social-btn discord-btn">
+              <i class="fab fa-discord"></i> Entrar no Discord
+            </a>
+            <a href="#" class="social-btn mail-btn">
+              <i class="far fa-envelope"></i> Contato
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom-bar">
+        <div class="container bottom-flex">
+          <span class="copy">&copy; 2026 Refúgio da Névoa. Desenvolvido por <strong style="color:#fff;">Anthonny Michael</strong>.</span>
+          <span class="disclaimer">Não afiliado à Behaviour Interactive ou a Dead by Daylight™</span>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- MODAL DE EXIBIÇÃO DE STAFF (Público) -->
+  <div id="staff-modal" class="perk-modal" onclick="closeStaffModalOut(event)">
+    <div class="perk-modal-content">
+      <button class="close-modal-btn" onclick="closeStaffModal()">&times;</button>
+
+      <div class="modal-image-side modal-col-side">
+        <img id="staff-modal-img" src="" alt="Staff Profile" />
+        <span id="staff-modal-role">CARGO</span>
+      </div>
+
+      <div class="modal-info-side">
+        <h2 id="staff-modal-name" class="modal-perk-name staff-modal-title">NOME</h2>
+        <p id="staff-modal-desc" class="modal-perk-desc staff-modal-subtitle">Descrição do membro.</p>
+
+        <div class="staff-details-horizontal">
+          <div class="detail-item">
+            <strong class="staff-detail-label">Idade:</strong>
+            <span id="staff-age">--</span>
+          </div>
+          <div class="detail-item">
+            <strong class="staff-detail-label">Local:</strong>
+            <span id="staff-loc">--</span>
+          </div>
+          <div class="detail-item">
+            <strong class="staff-detail-label">Tempo de jogo:</strong>
+            <span id="staff-time">--</span>
+          </div>
+          <div class="detail-item">
+            <strong class="staff-detail-label">Main:</strong>
+            <span id="staff-main">--</span>
+          </div>
+        </div>
+
+        <span class="social-title">Redes Sociais</span>
+
+        <div class="staff-socials">
+          <a id="link-insta" href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+          <a id="link-tiktok" href="#" target="_blank"><i class="fab fa-tiktok"></i></a>
+          <a id="link-steam" href="#" target="_blank"><i class="fab fa-steam"></i></a>
+          <a id="link-twitch" href="#" target="_blank"><i class="fab fa-twitch"></i></a>
+        </div>
+      </div>
     </div>
-    
-    <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-      import {
-        getAuth,
-        signOut,
-        onAuthStateChanged,
-      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-      import {
-        getFirestore,
-        doc,
-        onSnapshot,
-        setDoc,
-      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+  </div>
 
-      const DISCORD_SERVER_ID = "1443645419853840559";
-      const DISCORD_INVITE_CODE = "YvzKApj7DJ";
+  <!-- MODAL DE CADASTRO/EDIÇÃO DE STAFF (Somente Admins) -->
+  <div id="admin-staff-modal" class="perk-modal">
+    <div class="perk-modal-content" style="max-width: 600px; padding: 30px;">
+      <button class="close-modal-btn" onclick="closeAdminStaffModal()">&times;</button>
+      <h2 style="color: #fff; font-family: var(--font-game); margin-bottom: 20px;">GERENCIAR STAFF</h2>
+      
+      <form id="admin-staff-form" onsubmit="saveStaffMember(event)">
+        <div class="admin-form-row">
+          <div class="admin-form-group">
+            <label>ID (ex: ravik, sem espaços)</label>
+            <input type="text" id="staff-form-id" required>
+          </div>
+          <div class="admin-form-group">
+            <label>Nome Visível</label>
+            <input type="text" id="staff-form-name" required>
+          </div>
+        </div>
 
-      const firebaseConfig = {
-        apiKey: "AIzaSyARpVKfzOMm-v0pv9-7w9xahvhItosrI2Q",
-        authDomain: "dbd-camp.firebaseapp.com",
-        projectId: "dbd-camp",
-        storageBucket: "dbd-camp.firebasestorage.app",
-        messagingSenderId: "357760091556",
-        appId: "1:357760091556:web:4d9191b487baf240e92d31",
-        measurementId: "G-THBBGJTTMJ",
-      };
+        <div class="admin-form-row">
+          <div class="admin-form-group">
+            <label>Cargo</label>
+            <select id="staff-form-role" required>
+              <option value="DONO">DONO</option>
+              <option value="ADMINISTRADOR(A)">ADMINISTRADOR(A)</option>
+              <option value="MODERADOR(A)">MODERADOR(A)</option>
+              <option value="DEV">DEV</option>
+            </select>
+          </div>
+          <div class="admin-form-group">
+            <label>Link da Imagem (URL)</label>
+            <input type="url" id="staff-form-img" required>
+          </div>
+        </div>
 
-      const app = initializeApp(firebaseConfig);
-      const auth = getAuth(app);
-      const db = getFirestore(app);
+        <div class="admin-form-group">
+          <label>Descrição (Biografia)</label>
+          <textarea id="staff-form-desc" rows="2" required></textarea>
+        </div>
 
-      window.staffData = {
-        Ravik: {
-          name: "RAVIK",
-          role: "DONO",
-          color: "gold",
-          img: "https://i.ibb.co/ch2qxHcP/Peachy-20250911-015431303.jpg",
-          desc: "O criador da comunidade.",
-          age: "21 Anos",
-          loc: "Ceará",
-          time: "1000 horas",
-          main: "Survivor (Renato Lira)",
-          links: {
-            insta: "https://www.instagram.com/ravikinho/",
-            tiktok: "https://www.tiktok.com/@refugionevoa",
-            steam: "https://steamcommunity.com/profiles/76561199478856074/",
-            twitch: "#",
-          },
-        },
-      };
+        <div class="admin-form-row">
+          <div class="admin-form-group"><label>Idade</label><input type="text" id="staff-form-age"></div>
+          <div class="admin-form-group"><label>Localidade</label><input type="text" id="staff-form-loc"></div>
+        </div>
 
-      window.openStaffModal = (id) => {
-        const data = window.staffData[id];
-        if (!data) return;
+        <div class="admin-form-row">
+          <div class="admin-form-group"><label>Tempo de Jogo</label><input type="text" id="staff-form-time"></div>
+          <div class="admin-form-group"><label>Main (Personagem)</label><input type="text" id="staff-form-main"></div>
+        </div>
 
-        document.getElementById("staff-modal-img").src = data.img;
-        document.getElementById("staff-modal-name").innerText = data.name;
-        document.getElementById("staff-modal-role").innerText = data.role;
-        document.getElementById("staff-modal-role").style.color = data.color;
-        document.getElementById("staff-modal-role").style.borderColor = data.color;
-        document.getElementById("staff-modal-desc").innerText = `"${data.desc}"`;
+        <div class="admin-form-row">
+          <div class="admin-form-group"><label>Instagram URL</label><input type="text" id="staff-form-insta"></div>
+          <div class="admin-form-group"><label>TikTok URL</label><input type="text" id="staff-form-tiktok"></div>
+        </div>
 
-        document.getElementById("staff-age").innerText = data.age;
-        document.getElementById("staff-loc").innerText = data.loc;
-        document.getElementById("staff-time").innerText = data.time;
-        document.getElementById("staff-main").innerText = data.main;
+        <div class="admin-form-row">
+          <div class="admin-form-group"><label>Steam URL</label><input type="text" id="staff-form-steam"></div>
+          <div class="admin-form-group"><label>Twitch URL</label><input type="text" id="staff-form-twitch"></div>
+        </div>
 
-        const socialMapping = {
-          "link-insta": data.links.insta,
-          "link-tiktok": data.links.tiktok,
-          "link-steam": data.links.steam,
-          "link-twitch": data.links.twitch,
-        };
+        <button type="submit" class="cta-btn" style="width: 100%; margin-top: 15px;">SALVAR MEMBRO</button>
+      </form>
+    </div>
+  </div>
 
-        Object.entries(socialMapping).forEach(([id, url]) => {
-          const el = document.getElementById(id);
-          if (el) {
-            el.href = url;
-            if (url === "#") {
-              el.classList.add("disabled-social");
-            } else {
-              el.classList.remove("disabled-social");
-            }
-          }
-        });
+  <script src="../js/navbar.js"></script>
+  <script src="../js/shrine.js"></script>
 
-        document.getElementById("staff-modal").classList.add("open");
-      };
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { getFirestore, doc, onSnapshot, setDoc, deleteDoc, collection } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-      window.closeStaffModal = () => {
-        document.getElementById("staff-modal").classList.remove("open");
-      };
-      window.closeStaffModalOut = (e) => {
-        if (e.target.id === "staff-modal") window.closeStaffModal();
-      };
+    const DISCORD_SERVER_ID = "1443645419853840559";
+    const DISCORD_INVITE_CODE = "YvzKApj7DJ";
 
-      const ADMIN_UIDS = [
-        "discord:1400218900284571689",
-        "discord:1522742461389078568",
-        "discord:743696235248091206"
-      ];
+    const firebaseConfig = {
+      apiKey: "AIzaSyARpVKfzOMm-v0pv9-7w9xahvhItosrI2Q",
+      authDomain: "dbd-camp.firebaseapp.com",
+      projectId: "dbd-camp",
+      storageBucket: "dbd-camp.firebasestorage.app",
+      messagingSenderId: "357760091556",
+      appId: "1:357760091556:web:4d9191b487baf240e92d31",
+      measurementId: "G-THBBGJTTMJ",
+    };
 
-      const displayNameEl = document.getElementById('display-name');
-      let authChecked = false;
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-      if (displayNameEl) {
-        displayNameEl.textContent = 'CARREGANDO...';
+    const ADMIN_UIDS = [
+      "discord:1400218900284571689",
+      "discord:1522742461389078568",
+      "discord:743696235248091206"
+    ];
+
+    let currentUserIsAdmin = false;
+    window.staffData = {}; 
+
+    // Ouve o login do usuário
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.href = "login.html";
+      } else {
+        const userName = user.displayName || (user.email ? user.email.split("@")[0] : "Usuário");
+        document.getElementById('display-name').textContent = userName.toUpperCase();
+
+        currentUserIsAdmin = ADMIN_UIDS.includes(user.uid);
+        if (currentUserIsAdmin) {
+          document.getElementById("edit-boost-btn")?.classList.remove("hidden");
+          document.getElementById("add-staff-btn")?.classList.remove("hidden");
+        }
       }
+    });
 
-      onAuthStateChanged(auth, (user) => {
-        authChecked = true;
-        
-        if (!user) {
-          window.location.href = "login.html";
-        } else {
-          const userName = user.displayName || (user.email ? user.email.split("@")[0] : "Usuário");
-          if (displayNameEl) {
-            displayNameEl.textContent = userName.toUpperCase();
-          }
-          
-          const isAdmin = ADMIN_UIDS.includes(user.uid);
-          if (isAdmin) {
-            const btnEdit = document.getElementById("edit-boost-btn");
-            if (btnEdit) btnEdit.classList.remove("hidden");
+    document.getElementById("logout-btn").onclick = () => signOut(auth);
+
+    // Sistema Automático de Staff
+    onSnapshot(collection(db, "staff"), (snapshot) => {
+      const grid = document.getElementById("staff-grid-container");
+      if(!grid) return;
+      grid.innerHTML = "";
+      window.staffData = {};
+
+      const staffArray = [];
+      snapshot.forEach(docSnap => {
+        staffArray.push({ id: docSnap.id, ...docSnap.data() });
+      });
+
+      // Ordenação: Dono -> Admin -> Mod -> Dev
+      const roleOrder = { "DONO": 1, "ADMINISTRADOR(A)": 2, "MODERADOR(A)": 3, "DEV": 4 };
+      staffArray.sort((a,b) => (roleOrder[a.role] || 99) - (roleOrder[b.role] || 99));
+
+      staffArray.forEach(data => {
+        window.staffData[data.id] = data;
+
+        let roleClass = "role-MOD";
+        let icon = "fa-shield-alt";
+        let roleColor = "#d45ce8";
+
+        if(data.role === "DONO") { roleClass = "role-DONO"; icon = "fa-crown"; roleColor = "#ffd700"; }
+        else if(data.role === "ADMINISTRADOR(A)") { roleClass = "role-ADMIN"; icon = "fa-gavel"; roleColor = "#ff4545"; }
+        else if(data.role === "DEV") { roleClass = "role-DEV"; icon = "fa-code"; roleColor = "#5865f2"; }
+
+        // Adiciona a cor ao objeto para o modal público
+        window.staffData[data.id].color = roleColor;
+
+        const adminControls = currentUserIsAdmin ? `<button class="delete-staff-btn" onclick="event.stopPropagation(); deleteStaffMember('${data.id}')" title="Remover Membro"><i class="fas fa-trash"></i></button>` : '';
+
+        grid.innerHTML += `
+          <div class="staff-card ${roleClass} reveal active" onclick="openStaffModal('${data.id}')">
+            ${adminControls}
+            <div class="staff-card-inner">
+              <div class="staff-avatar-wrapper">
+                <div class="staff-avatar-ring"></div>
+                <img src="${data.img}" alt="${data.name}" class="staff-avatar-img" />
+              </div>
+              <div class="staff-info">
+                <h3>${data.name}</h3>
+                <span class="staff-role">
+                  <i class="fas ${icon}"></i> ${data.role}
+                </span>
+                <p class="staff-bio">${data.desc}</p>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+    });
+
+    // Funções do Modal Admin (CRUD)
+    window.openAdminStaffModal = () => {
+      document.getElementById("admin-staff-modal").classList.add("open");
+      document.getElementById("admin-staff-form").reset();
+    };
+
+    window.closeAdminStaffModal = () => {
+      document.getElementById("admin-staff-modal").classList.remove("open");
+    };
+
+    window.saveStaffMember = async (e) => {
+      e.preventDefault();
+      const idInput = document.getElementById("staff-form-id").value.trim().toLowerCase().replace(/\s+/g, '-');
+      const payload = {
+        name: document.getElementById("staff-form-name").value,
+        role: document.getElementById("staff-form-role").value,
+        img: document.getElementById("staff-form-img").value,
+        desc: document.getElementById("staff-form-desc").value,
+        age: document.getElementById("staff-form-age").value || "--",
+        loc: document.getElementById("staff-form-loc").value || "--",
+        time: document.getElementById("staff-form-time").value || "--",
+        main: document.getElementById("staff-form-main").value || "--",
+        links: {
+          insta: document.getElementById("staff-form-insta").value || "#",
+          tiktok: document.getElementById("staff-form-tiktok").value || "#",
+          steam: document.getElementById("staff-form-steam").value || "#",
+          twitch: document.getElementById("staff-form-twitch").value || "#",
+        }
+      };
+
+      try {
+        await setDoc(doc(db, "staff", idInput), payload);
+        closeAdminStaffModal();
+      } catch (err) {
+        alert("Erro ao salvar: " + err.message);
+      }
+    };
+
+    window.deleteStaffMember = async (id) => {
+      if(confirm(`A Entidade exige sacrifícios... Deseja remover o membro '${id}' da Staff?`)) {
+        await deleteDoc(doc(db, "staff", id));
+      }
+    };
+
+    // Abre o Modal Público (Exibição)
+    window.openStaffModal = (id) => {
+      const data = window.staffData[id];
+      if (!data) return;
+
+      document.getElementById("staff-modal-img").src = data.img;
+      document.getElementById("staff-modal-name").innerText = data.name;
+      document.getElementById("staff-modal-role").innerText = data.role;
+      document.getElementById("staff-modal-role").style.color = data.color;
+      document.getElementById("staff-modal-role").style.borderColor = data.color;
+      document.getElementById("staff-modal-desc").innerText = `"${data.desc}"`;
+
+      document.getElementById("staff-age").innerText = data.age;
+      document.getElementById("staff-loc").innerText = data.loc;
+      document.getElementById("staff-time").innerText = data.time;
+      document.getElementById("staff-main").innerText = data.main;
+
+      const socialMapping = {
+        "link-insta": data.links.insta,
+        "link-tiktok": data.links.tiktok,
+        "link-steam": data.links.steam,
+        "link-twitch": data.links.twitch,
+      };
+
+      Object.entries(socialMapping).forEach(([linkId, url]) => {
+        const el = document.getElementById(linkId);
+        if (el) {
+          el.href = url;
+          if (url === "#" || url === "") {
+            el.classList.add("disabled-social");
+          } else {
+            el.classList.remove("disabled-social");
           }
         }
       });
 
+      document.getElementById("staff-modal").classList.add("open");
+    };
+
+    window.closeStaffModal = () => document.getElementById("staff-modal").classList.remove("open");
+    window.closeStaffModalOut = (e) => { if (e.target.id === "staff-modal") window.closeStaffModal(); };
+
+    // Efeitos da Página e Stats do Discord
+    window.addEventListener("scroll", reveal);
+    function reveal() {
+      var reveals = document.querySelectorAll(".reveal");
+      for (var i = 0; i < reveals.length; i++) {
+        var windowHeight = window.innerHeight;
+        var elementTop = reveals[i].getBoundingClientRect().top;
+        if (elementTop < windowHeight - 150) { reveals[i].classList.add("active"); }
+      }
+    }
+    reveal();
+
+    function animateValue(id, start, end, duration) {
+      const obj = document.getElementById(id);
+      if (!obj) return;
+      if (end === 0 || end === undefined) { obj.innerText = "0"; return; }
+      let startTimestamp = null;
+      const step = (timestamp) => {
+        if (!startTimestamp) startTimestamp = timestamp;
+        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+        obj.innerHTML = Math.floor(progress * (end - start) + start);
+        if (progress < 1) window.requestAnimationFrame(step);
+        else obj.innerHTML = end;
+      };
+      window.requestAnimationFrame(step);
+    }
+
+    async function fetchDiscordStats() {
+      let onlineCount = 0, totalMembers = 0;
+      try {
+        const widgetRes = await fetch(`https://discord.com/api/guilds/${DISCORD_SERVER_ID}/widget.json`);
+        if (widgetRes.ok) onlineCount = (await widgetRes.json()).presence_count || 0;
+      } catch (e) {}
+      try {
+        const inviteRes = await fetch(`https://discord.com/api/v9/invites/${DISCORD_INVITE_CODE}?with_counts=true`);
+        if (inviteRes.ok) totalMembers = (await inviteRes.json()).approximate_member_count || 0;
+      } catch (e) {}
+      
+      const btn = document.getElementById("btn-invite");
+      if (btn) btn.href = `https://discord.gg/${DISCORD_INVITE_CODE}`;
+      
       setTimeout(() => {
-        if (!authChecked && displayNameEl) {
-          displayNameEl.textContent = '...';
-        }
-      }, 3000);
-      
-      const userTrigger = document.getElementById('user-profile-trigger');
-      const userSubmenu = document.getElementById('user-submenu');
-      let isMenuOpen = false;
-      let animationTimeout = null;
+        animateValue("stat-members", 0, totalMembers, 2000);
+        animateValue("stat-online", 0, onlineCount, 2000);
+      }, 500);
+    }
 
-      userTrigger.addEventListener('click', function(e) {
-        e.stopPropagation();
-        
-        userSubmenu.classList.remove('hiding');
-        
-        if (isMenuOpen) {
-          userSubmenu.classList.remove('show');
-          userSubmenu.classList.add('hiding');
-          userTrigger.classList.remove('open');
-          
-          clearTimeout(animationTimeout);
-          animationTimeout = setTimeout(() => {
-            userSubmenu.classList.remove('hiding');
-          }, 250);
-          
-          isMenuOpen = false;
-        } else {
-          userSubmenu.classList.remove('hiding');
-          userSubmenu.classList.add('show');
-          userTrigger.classList.add('open');
-          isMenuOpen = true;
-        }
-      });
-
-      document.addEventListener('click', function(e) {
-        if (!userTrigger.contains(e.target) && !userSubmenu.contains(e.target)) {
-          if (isMenuOpen) {
-            userSubmenu.classList.remove('show');
-            userSubmenu.classList.add('hiding');
-            userTrigger.classList.remove('open');
-            
-            clearTimeout(animationTimeout);
-            animationTimeout = setTimeout(() => {
-              userSubmenu.classList.remove('hiding');
-            }, 250);
-            
-            isMenuOpen = false;
-          }
-        }
-      });
-
-      document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && isMenuOpen) {
-          userSubmenu.classList.remove('show');
-          userSubmenu.classList.add('hiding');
-          userTrigger.classList.remove('open');
-          
-          clearTimeout(animationTimeout);
-          animationTimeout = setTimeout(() => {
-            userSubmenu.classList.remove('hiding');
-          }, 250);
-          
-          isMenuOpen = false;
-        }
-      });
-
-      document.getElementById("logout-btn").onclick = () => signOut(auth);
-      
-      const navbar = document.getElementById('navbar');
-      window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-          navbar.classList.remove('navbar-transparent');
-          navbar.classList.add('navbar-scrolled');
-        } else {
-          navbar.classList.remove('navbar-scrolled');
-          navbar.classList.add('navbar-transparent');
-        }
-      });
-
-      if (window.scrollY > 50) {
-        navbar.classList.remove('navbar-transparent');
-        navbar.classList.add('navbar-scrolled');
+    document.getElementById("edit-boost-btn").onclick = async () => {
+      const currentVal = document.getElementById("stat-boosts").innerText;
+      const newVal = prompt("Digite a quantidade atual de Boosts:", currentVal);
+      if (newVal !== null && newVal !== "") {
+        const num = parseInt(newVal);
+        if (!isNaN(num)) {
+          await setDoc(doc(db, "sistema", "discord_stats"), { boosts: num }, { merge: true });
+        } else { alert("Por favor, digite apenas números."); }
       }
-      
-      window.addEventListener("scroll", reveal);
-      function reveal() {
-        var reveals = document.querySelectorAll(".reveal");
-        for (var i = 0; i < reveals.length; i++) {
-          var windowHeight = window.innerHeight;
-          var elementTop = reveals[i].getBoundingClientRect().top;
-          var elementVisible = 150;
-          if (elementTop < windowHeight - elementVisible) {
-            reveals[i].classList.add("active");
-          }
-        }
+    };
+
+    fetchDiscordStats();
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const tabs = document.querySelectorAll('.showcase-tab');
+      const panels = document.querySelectorAll('.showcase-panel');
+      const slider = document.querySelector('.tab-slider');
+
+      function updateSlider(tab) {
+        if (!slider || !tab) return;
+        slider.style.width = `${tab.offsetWidth}px`;
+        slider.style.transform = `translateX(${tab.offsetLeft}px)`;
       }
-      reveal();
-      
-      function animateValue(id, start, end, duration) {
-        const obj = document.getElementById(id);
-        if (!obj) return;
-        if (end === 0 || end === undefined) {
-          obj.innerText = "0";
-          return;
-        }
-        let startTimestamp = null;
-        const step = (timestamp) => {
-          if (!startTimestamp) startTimestamp = timestamp;
-          const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-          obj.innerHTML = Math.floor(progress * (end - start) + start);
-          if (progress < 1) {
-            window.requestAnimationFrame(step);
-          } else {
-            obj.innerHTML = end;
-          }
-        };
-        window.requestAnimationFrame(step);
-      }
-      
-      async function fetchDiscordStats() {
-        let onlineCount = 0;
-        let totalMembers = 0;
-        try {
-          const widgetRes = await fetch(
-            `https://discord.com/api/guilds/${DISCORD_SERVER_ID}/widget.json`,
-          );
-          if (widgetRes.ok) {
-            const widgetData = await widgetRes.json();
-            onlineCount = widgetData.presence_count || 0;
-          }
-        } catch (e) {
-          console.warn("Erro Widget:", e);
-        }
-        try {
-          const inviteRes = await fetch(
-            `https://discord.com/api/v9/invites/${DISCORD_INVITE_CODE}?with_counts=true`,
-          );
-          if (inviteRes.ok) {
-            const inviteData = await inviteRes.json();
-            totalMembers = inviteData.approximate_member_count || 0;
-          }
-        } catch (e) {
-          console.warn("Erro Invite:", e);
-        }
-        const btn = document.getElementById("btn-invite");
-        if (btn) btn.href = `https://discord.gg/${DISCORD_INVITE_CODE}`;
-        setTimeout(() => {
-          animateValue("stat-members", 0, totalMembers, 2000);
-          animateValue("stat-online", 0, onlineCount, 2000);
-        }, 500);
-      }
-      
-      onSnapshot(doc(db, "sistema", "discord_stats"), (docSnapshot) => {
-        if (docSnapshot.exists()) {
-          const data = docSnapshot.data();
-          animateValue("stat-boosts", 0, data.boosts || 0, 2000);
-        } else {
-          animateValue("stat-boosts", 0, 0, 1000);
-        }
-      });
-      
-      document.getElementById("edit-boost-btn").onclick = async () => {
-        const currentVal = document.getElementById("stat-boosts").innerText;
-        const newVal = prompt(
-          "Digite a quantidade atual de Boosts:",
-          currentVal,
-        );
-        if (newVal !== null && newVal !== "") {
-          const num = parseInt(newVal);
-          if (!isNaN(num)) {
-            await setDoc(
-              doc(db, "sistema", "discord_stats"),
-              { boosts: num },
-              { merge: true },
-            );
-          } else {
-            alert("Por favor, digite apenas números.");
-          }
-        }
-      };
-      
-      fetchDiscordStats();
 
-      document.addEventListener("DOMContentLoaded", () => {
-        const tabs = document.querySelectorAll('.showcase-tab');
-        const panels = document.querySelectorAll('.showcase-panel');
-        const slider = document.querySelector('.tab-slider');
-
-        function updateSlider(tab) {
-          if (!slider || !tab) return;
-          slider.style.width = `${tab.offsetWidth}px`;
-          slider.style.transform = `translateX(${tab.offsetLeft}px)`;
-        }
-
-        tabs.forEach(tab => {
-          tab.addEventListener('click', () => {
-            tabs.forEach(t => t.classList.remove('active'));
-            panels.forEach(p => p.classList.remove('active'));
-
-            tab.classList.add('active');
-            
-            const targetId = tab.getAttribute('data-target');
-            const targetPanel = document.getElementById(targetId);
-            if (targetPanel) {
-              targetPanel.classList.add('active');
-            }
-
-            updateSlider(tab);
-          });
-        });
-
-        const initialActiveTab = document.querySelector('.showcase-tab.active');
-        if (initialActiveTab) {
-          setTimeout(() => updateSlider(initialActiveTab), 50); // Delay para renderização correta
-        }
-
-        window.addEventListener('resize', () => {
-          const currentActive = document.querySelector('.showcase-tab.active');
-          if (currentActive) updateSlider(currentActive);
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          tabs.forEach(t => t.classList.remove('active'));
+          panels.forEach(p => p.classList.remove('active'));
+          tab.classList.add('active');
+          const targetPanel = document.getElementById(tab.getAttribute('data-target'));
+          if (targetPanel) targetPanel.classList.add('active');
+          updateSlider(tab);
         });
       });
-    </script>
-  </body>
+
+      const initialActiveTab = document.querySelector('.showcase-tab.active');
+      if (initialActiveTab) setTimeout(() => updateSlider(initialActiveTab), 50);
+      window.addEventListener('resize', () => {
+        const currentActive = document.querySelector('.showcase-tab.active');
+        if (currentActive) updateSlider(currentActive);
+      });
+    });
+  </script>
+</body>
+
 </html>

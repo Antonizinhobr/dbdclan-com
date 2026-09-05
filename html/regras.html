@@ -13,11 +13,60 @@
     <link rel="icon" href="../assets/icon.jpg" type="image/jpg" />
   </head>
   <body class="fade-in">
+
     <header id="navbar" class="dashboard-header navbar-transparent">
       <div class="logo">REFÚGIO DA NÉVOA</div>
-      <nav class="nav-menu">
-        <a href="dashboard.html" class="nav-link">Home</a>
-        <a href="regras_servidor.html" class="nav-link">Regras do Servidor</a>
+
+      <nav class="nav-menu pill-nav">
+        <a href="dashboard.html" class="nav-item">Início</a>
+        
+        <div class="nav-item has-dropdown">
+          <span class="dropdown-trigger">Ferramentas <i class="fas fa-chevron-down" style="font-size: 0.7em; margin-left: 5px;"></i></span>
+          
+          <div class="mega-menu">
+            <div class="mega-menu-grid">
+              <a href="home.html" class="mega-menu-item">
+                <div class="mega-icon"><i class="fas fa-map-marked-alt"></i></div>
+                <div class="mega-text">
+                  <span class="mega-title">Votação de Reinos</span>
+                  <span class="mega-desc">Defina o palco do próximo massacre.</span>
+                </div>
+              </a>
+              <a href="teams.html" class="mega-menu-item">
+                <div class="mega-icon"><i class="fas fa-users"></i></div>
+                <div class="mega-text">
+                  <span class="mega-title">Equipes</span>
+                  <span class="mega-desc">Veja os sobreviventes e assassinos.</span>
+                </div>
+              </a>
+              <a href="bracket.html" class="mega-menu-item">
+                <div class="mega-icon"><i class="fas fa-sitemap"></i></div>
+                <div class="mega-text">
+                  <span class="mega-title">Chaves</span>
+                  <span class="mega-desc">Acompanhe os confrontos do torneio.</span>
+                </div>
+              </a>
+              <a href="perks.html" class="mega-menu-item">
+                <div class="mega-icon"><i class="fas fa-ban"></i></div>
+                <div class="mega-text">
+                  <span class="mega-title">Perks Banidas</span>
+                  <span class="mega-desc">O que é proibido pela Entidade.</span>
+                </div>
+              </a>
+              <a href="regras.html" class="mega-menu-item">
+                <div class="mega-icon"><i class="fas fa-star"></i></div>
+                <div class="mega-text">
+                  <span class="mega-title">Sistema de Pontuação</span>
+                  <span class="mega-desc">Regras do campeonato e penalidades.</span>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <a href="regras_servidor.html" class="nav-item">Regras</a>
+        <a href="mapas.html" class="nav-item">Numeração Mapas</a>
+        <a href="santuario.html" class="nav-item">Santuário</a>
       </nav>
 
       <div class="nav-actions">
@@ -122,10 +171,47 @@
       </section>
     </main>
 
-    <footer style="text-align: center; padding: 20px; color: #444; font-size: 0.7rem;">
-        &copy; 2026 REGRAS COMPETITIVAS
+    <footer class="custom-footer">
+      <div class="footer-top-glow"></div>
+      
+      <div class="container footer-content">
+        <div class="footer-brand">
+          <div class="logo">REFÚGIO DA NÉVOA</div>
+          <p>O servidor da comunidade mais sombrio da Névoa. Junte-se a nós para campeonatos, discussões e muito mais.</p>
+        </div>
+        
+        <div class="footer-nav">
+          <h4>NAVEGAÇÃO</h4>
+          <div class="nav-links">
+            <a href="#">Sobre a Comunidade</a>
+            <a href="#">Regras do Servidor</a>
+            <a href="#">Termos de Uso</a>
+            <a href="#">Privacidade</a>
+          </div>
+        </div>
+
+        <div class="footer-connect">
+          <h4>CONECTE-SE</h4>
+          <div class="social-buttons">
+            <a href="#" class="social-btn discord-btn">
+              <i class="fab fa-discord"></i> Entrar no Discord
+            </a>
+            <a href="#" class="social-btn mail-btn">
+              <i class="far fa-envelope"></i> Contato
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="footer-bottom-bar">
+        <div class="container bottom-flex">
+          <span class="copy">&copy; 2026 Refúgio da Névoa. Desenvolvido por <strong style="color:#fff;">Anthonny Michael</strong>.</span>
+          <span class="disclaimer">Não afiliado à Behaviour Interactive ou a Dead by Daylight™</span>
+        </div>
+      </div>
     </footer>
 
+    <script src="../js/navbar.js"></script>
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
       import {

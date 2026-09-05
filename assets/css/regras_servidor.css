@@ -1,83 +1,185 @@
-.rules-main-content {
-  padding: 100px;
-  position: relative;
-  z-index: 1;
+/* ===== BACKGROUND E LAYOUT GLOBAL DA PÁGINA ===== */
+body.rules-page {
+  background: url("../bg.jpg") no-repeat center center fixed; /* Mesmo BG do Dashboard */
+  background-size: cover;
+  color: #fff;
 }
 
+.page-overlay {
+  position: fixed;
+  top: 0; 
+  left: 0; 
+  right: 0; 
+  bottom: 0;
+  background: radial-gradient(circle at center, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.95) 100%);
+  z-index: -1;
+}
+
+.rules-main-content {
+  padding-top: 140px;
+  padding-bottom: 60px;
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ===== GRID DOS CARDS DE REGRAS ===== */
 .server-rules-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 25px;
   padding-bottom: 40px;
 }
 
+/* ===== CARD ESTILO FUTURISTA (GLASSMORPHISM + LED) ===== */
 .rule-card {
-  background: linear-gradient(145deg, #111, #0a0a0a);
-  border: 1px solid #333;
-  border-left: 4px solid var(--accent-red);
-  padding: 25px;
-  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 35px 25px;
   display: flex;
   align-items: flex-start;
   gap: 20px;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
   overflow: hidden;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  
+  /* Cor base padrão caso não seja especificada no HTML */
+  --rule-color: var(--accent-red); 
 }
 
+/* LED de topo apagado */
+.rule-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50%;
+  height: 2px;
+  background: transparent;
+  box-shadow: 0 0 20px 2px transparent;
+  transition: 0.4s ease;
+  border-radius: 0 0 4px 4px;
+}
+
+/* Brilho interno sutil atrás do ícone */
+.rule-card::after {
+  content: '';
+  position: absolute;
+  top: -20%;
+  left: 20px; /* Posicionado atrás do ícone */
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle, var(--rule-color) 0%, transparent 70%);
+  opacity: 0;
+  transition: 0.4s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Hover: levanta, acende a luz no topo e o brilho atrás */
 .rule-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-  background: #161616;
-  border-color: #555;
-  border-left-color: #ff0000;
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.7);
 }
 
+.rule-card:hover::before {
+  background: var(--rule-color);
+  box-shadow: 0 0 15px 2px var(--rule-color);
+}
+
+.rule-card:hover::after {
+  opacity: 0.15;
+}
+
+/* Deixa o conteúdo acima dos brilhos */
+.rule-icon, .rule-text {
+  position: relative;
+  z-index: 1;
+}
+
+/* Ícone */
 .rule-icon {
-  font-size: 2rem;
-  color: var(--accent-red);
-  background: rgba(255, 0, 0, 0.1);
+  font-size: 1.8rem;
+  color: var(--rule-color);
   width: 60px;
   height: 60px;
   min-width: 60px;
-  border-radius: 50%;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(255, 0, 0, 0.2);
-  animation: floatRuleIcon 3s ease-in-out infinite;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: 0.4s ease;
 }
 
-.rule-icon i {
-  display: inline-block;
-  transition: all 0.3s ease;
+.rule-card:hover .rule-icon {
+  transform: scale(1.1) rotate(5deg);
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  text-shadow: 0 0 15px var(--rule-color);
 }
 
+/* Textos */
 .rule-text h3 {
   font-family: var(--font-game);
   font-size: 1.1rem;
   color: #fff;
   margin-bottom: 8px;
   text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .rule-text p {
-  color: #888;
+  color: #9ca3af; /* Cinza moderno estilo Featurebase */
   font-size: 0.9rem;
   line-height: 1.5;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   margin: 0;
 }
 
-@keyframes floatRuleIcon {
-  0%, 100% { transform: translateY(0) scale(1); box-shadow: 0 0 0 rgba(255,0,0,0); }
-  50% { transform: translateY(-5px) scale(1.05); box-shadow: 0 5px 15px rgba(255, 0, 0, 0.2); border-color: rgba(255, 0, 0, 0.5); }
+/* ===== CAIXA DE CONCORDÂNCIA (FINAL DA PÁGINA) ===== */
+.agreement-box {
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
 }
 
-.rule-card:hover .rule-icon {
-  box-shadow: 0 0 20px var(--accent-red);
-  border-color: var(--accent-red);
+.centered-rule-card {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  max-width: 600px;
+  padding: 40px;
+  border-color: rgba(0, 255, 0, 0.2); /* Borda esverdeada base */
 }
 
+.centered-rule-card .rule-icon {
+  width: 80px;
+  height: 80px;
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.centered-rule-card::after {
+  left: 50%;
+  top: -10%;
+  transform: translateX(-50%);
+  width: 180px;
+  height: 180px;
+}
+
+
+/* ===== ELEMENTOS MANTIDOS DO CÓDIGO ORIGINAL (OUTRAS PÁGINAS QUE POSSAM DEPENDER) ===== */
 .rules-grid-score {
   display: flex;
   justify-content: center;

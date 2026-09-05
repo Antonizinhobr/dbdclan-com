@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Santuário dos Segredos - Refúgio da Névoa</title>
+    <link rel="stylesheet" href="../assets/css/global.css" />
+    <link rel="stylesheet" href="../assets/css/navbar.css" />
+    <link rel="stylesheet" href="../assets/css/dashboard.css" />
+    <link rel="stylesheet" href="../assets/css/components.css" />
+    <link rel="stylesheet" href="../assets/css/responsive.css" />    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+    <link rel="icon" href="../assets/icon.jpg" type="image/jpg" />
+  </head>
+  <body class="fade-in">
+
+    <header id="navbar" class="dashboard-header navbar-transparent">
+      <div class="logo">REFÚGIO DA NÉVOA</div>
+
+      <nav class="nav-menu pill-nav">
+        <a href="dashboard.html" class="nav-item">Início</a>
+        
+        <div class="nav-item has-dropdown active">
+          <span class="dropdown-trigger">Campeonato <i class="fas fa-chevron-down" style="font-size: 0.7em; margin-left: 5px;"></i></span>
+          <div class="mega-menu">
+            <div class="mega-menu-grid">
+              <a href="santuario.html" class="mega-menu-item">
+                <div class="mega-icon"><i class="fas fa-gem"></i></div>
+                <div class="mega-text">
+                  <span class="mega-title">Santuário dos Segredos</span>
+                  <span class="mega-desc">Vantagens semanais disponíveis.</span>
+                </div>
+              </a>
+              <a href="home.html" class="mega-menu-item">
+                <div class="mega-icon"><i class="fas fa-map-marked-alt"></i></div>
+                <div class="mega-text">
+                  <span class="mega-title">Votação de Reinos</span>
+                  <span class="mega-desc">Defina o palco do próximo massacre.</span>
+                </div>
+              </a>
+              <a href="teams.html" class="mega-menu-item">
+                <div class="mega-icon"><i class="fas fa-users"></i></div>
+                <div class="mega-text">
+                  <span class="mega-title">Equipes</span>
+                  <span class="mega-desc">Veja os sobreviventes e assassinos.</span>
+                </div>
+              </a>
+              <a href="bracket.html" class="mega-menu-item">
+                <div class="mega-icon"><i class="fas fa-sitemap"></i></div>
+                <div class="mega-text">
+                  <span class="mega-title">Chaves</span>
+                  <span class="mega-desc">Acompanhe os confrontos do torneio.</span>
+                </div>
+              </a>
+              <a href="perks.html" class="mega-menu-item">
+                <div class="mega-icon"><i class="fas fa-ban"></i></div>
+                <div class="mega-text">
+                  <span class="mega-title">Perks Banidas</span>
+                  <span class="mega-desc">O que é proibido pela Entidade.</span>
+                </div>
+              </a>
+              <a href="regras.html" class="mega-menu-item">
+                <div class="mega-icon"><i class="fas fa-star"></i></div>
+                <div class="mega-text">
+                  <span class="mega-title">Sistema de Pontuação</span>
+                  <span class="mega-desc">Regras do campeonato e penalidades.</span>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <a href="regras_servidor.html" class="nav-item">Regras</a>
+        <a href="mapas.html" class="nav-item">Numeração Mapas</a>
+        <a href="santuario.html" class="nav-item">Santuário</a>
+      </nav>
+
+      <div class="nav-actions">
+        <div class="user-container" id="user-profile-trigger">
+          <span id="display-name">CARREGANDO...</span>
+          <div class="avatar-circle"><img src="../assets/icon.jpg" alt="User Profile" /></div>
+        </div>
+      </div>
+      <div id="user-submenu" class="dropdown-menu">
+        <button id="logout-btn"><i class="fas fa-sign-out-alt"></i> SAIR DA NÉVOA</button>
+      </div>
+    </header>
+
+    <main style="padding-top: 100px; min-height: 80vh;">
+      <section id="santuario" class="content-section" style="background: transparent;">
+        <div class="container">
+          
+          <div class="shrine-header reveal active">
+            <h2 class="shrine-title">Santuário dos Segredos</h2>
+            <div class="shrine-period-box">
+              <span class="period-label">PERÍODO ATUAL</span>
+              <span class="period-dates shrine-dates">Calculando a Entidade...</span>
+            </div>
+          </div>
+          
+          <p class="shrine-subtitle reveal active">Vantagens do Santuário</p>
+          
+          <div class="shrine-grid reveal active" id="shrine-grid">
+            <p class="empty-msg" style="grid-column: 1 / -1; text-align: center;">Consultando a Entidade...</p>
+          </div>
+
+        </div>
+      </section>
+    </main>
+
+    <footer class="custom-footer">
+      <div class="footer-top-glow"></div>
+      
+      <div class="container footer-content">
+        <div class="footer-brand">
+          <div class="logo">REFÚGIO DA NÉVOA</div>
+          <p>O servidor da comunidade mais sombrio da Névoa. Junte-se a nós para campeonatos, discussões e muito mais.</p>
+        </div>
+        
+        <div class="footer-nav">
+          <h4>NAVEGAÇÃO</h4>
+          <div class="nav-links">
+            <a href="#">Sobre a Comunidade</a>
+            <a href="#">Regras do Servidor</a>
+            <a href="#">Termos de Uso</a>
+            <a href="#">Privacidade</a>
+          </div>
+        </div>
+
+        <div class="footer-connect">
+          <h4>CONECTE-SE</h4>
+          <div class="social-buttons">
+            <a href="#" class="social-btn discord-btn">
+              <i class="fab fa-discord"></i> Entrar no Discord
+            </a>
+            <a href="#" class="social-btn mail-btn">
+              <i class="far fa-envelope"></i> Contato
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="footer-bottom-bar">
+        <div class="container bottom-flex">
+          <span class="copy">&copy; 2026 Refúgio da Névoa. Desenvolvido por <strong style="color:#fff;">Anthonny Michael</strong>.</span>
+          <span class="disclaimer">Não afiliado à Behaviour Interactive ou a Dead by Daylight™</span>
+        </div>
+      </div>
+    </footer>
+
+    <script src="../js/navbar.js"></script>
+    <script src="../js/shrine.js"></script>
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+      import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyARpVKfzOMm-v0pv9-7w9xahvhItosrI2Q",
+        authDomain: "dbd-camp.firebaseapp.com",
+        projectId: "dbd-camp",
+        storageBucket: "dbd-camp.firebasestorage.app",
+        messagingSenderId: "357760091556",
+        appId: "1:357760091556:web:4d9191b487baf240e92d31",
+        measurementId: "G-THBBGJTTMJ",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+
+      const displayNameEl = document.getElementById('display-name');
+      let authChecked = false;
+
+      if (displayNameEl) {
+        displayNameEl.textContent = 'CARREGANDO...';
+      }
+
+      onAuthStateChanged(auth, (user) => {
+        authChecked = true;
+        
+        if (!user) {
+          window.location.href = "login.html";
+        } else {
+          const userName = user.displayName || (user.email ? user.email.split("@")[0] : "Usuário");
+          if (displayNameEl) {
+            displayNameEl.textContent = userName.toUpperCase();
+          }
+        }
+      });
+
+      setTimeout(() => {
+        if (!authChecked && displayNameEl) {
+          displayNameEl.textContent = '...';
+        }
+      }, 3000);
+
+      document.getElementById("logout-btn").onclick = () => signOut(auth);
+    </script>
+  </body>
+</html>
