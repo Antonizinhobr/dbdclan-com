@@ -1,7 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const currentPath = window.location.pathname.split('/').pop() || 'dashboard.html';
-  const activeLink = document.querySelector(`.nav-item[href="${currentPath}"]`);
-  const megaLink = document.querySelector(`.mega-menu-item[href="${currentPath}"]`);
+  let currentFileName = window.location.pathname.split('/').pop() || 'dashboard.html';
+  if (currentFileName && !currentFileName.includes('.')) {
+    currentFileName += '.html';
+  }
+
+  const activeLink = document.querySelector(`.nav-item[href="${currentFileName}"], .nav-item[href="${currentFileName.replace('.html', '')}"]`);
+  const megaLink = document.querySelector(`.mega-menu-item[href="${currentFileName}"], .mega-menu-item[href="${currentFileName.replace('.html', '')}"]`);
   
   document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
   
