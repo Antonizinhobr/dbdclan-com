@@ -4,11 +4,13 @@ document.addEventListener("DOMContentLoaded", () => {
     currentFileName += '.html';
   }
 
-  const activeLink = document.querySelector(`.nav-item[href="${currentFileName}"], .nav-item[href="${currentFileName.replace('.html', '')}"]`);
-  const megaLink = document.querySelector(`.mega-menu-item[href="${currentFileName}"], .mega-menu-item[href="${currentFileName.replace('.html', '')}"]`);
-  
+  const currentFileClean = currentFileName.replace(/\.html$/, '');
+
+  const activeLink = document.querySelector(`.nav-item[href$="${currentFileName}"], .nav-item[href$="${currentFileClean}"]`);
+  const megaLink = document.querySelector(`.mega-menu-item[href$="${currentFileName}"], .mega-menu-item[href$="${currentFileClean}"]`);
+
   document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-  
+
   if (activeLink) activeLink.classList.add('active');
   if (megaLink) {
     const parent = megaLink.closest('.has-dropdown');
@@ -24,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
     userTrigger.addEventListener('click', function(e) {
       e.stopPropagation();
       userSubmenu.classList.remove('hiding');
-      
+
       if (isMenuOpen) {
         userSubmenu.classList.remove('show');
         userSubmenu.classList.add('hiding');

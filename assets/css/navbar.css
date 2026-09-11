@@ -385,7 +385,6 @@
     border-bottom: 8px solid rgba(255, 255, 255, 0.06);
 }
 
-/* ===== NAVBAR ESTILO PÍLULA (PILL NAV) ===== */
 .dashboard-header {
   display: flex;
   justify-content: space-between;
@@ -427,7 +426,6 @@
   background: rgba(255, 255, 255, 0.05);
 }
 
-/* Estado Ativo e Linha Colorida */
 .nav-item.active {
   color: #fff;
   background: rgba(255, 255, 255, 0.08);
@@ -437,16 +435,15 @@
 .nav-item.active::after {
   content: '';
   position: absolute;
-  bottom: 2px; /* <-- Movemos bem mais para baixo (antes era 8px) */
+  bottom: 2px;
   left: 50%;
   transform: translateX(-50%);
-  width: 28px; /* <-- Aumentamos a largura (antes era 16px) */
+  width: 28px;
   height: 3px;
   background: var(--accent-red, #ff0000);
   border-radius: 2px;
 }
 
-/* ===== MEGA MENU DROPDOWN ===== */
 .has-dropdown {
   position: relative;
 }
