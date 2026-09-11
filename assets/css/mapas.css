@@ -236,3 +236,7 @@
         max-height: 60vh;
     }
 }
+
+.custom-footer {
+    margin-top: 60px;
+}
