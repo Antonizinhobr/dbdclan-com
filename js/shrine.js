@@ -84,11 +84,10 @@ function renderShrineCards(gridElement, perksArray) {
         "The Doctor": "O Médico"
     };
     
-    perksArray.forEach((perk, index) => {
-      const num = String(index + 1).padStart(2, '0');
+    perksArray.forEach((perk) => {
       const isKiller = perk.character && perk.character.startsWith('The ');
       const roleClass = isKiller ? 'killer-perk' : 'survivor-perk';
-      const roleNome = isKiller ? 'Assassino' : 'Sobrevivente';
+      const roleNome = isKiller ? 'Killer' : 'Surv';
       
       let characterName = perk.character ? perk.character : 'Geral';
       if (traducoesPersonagens[characterName]) {
@@ -106,7 +105,6 @@ function renderShrineCards(gridElement, perksArray) {
         <div class="shrine-card ${roleClass}">
           <div class="character-bg" style="background-image: url('${portraitUrl}')"></div>
           <div class="card-inner">
-            <div class="card-number">${num}</div>
             <div class="diamond-wrapper">
               <div class="diamond-bg"></div>
               <img src="${imgUrl}" alt="${perk.name}" class="shrine-perk-img" crossorigin="anonymous" onerror="this.src='../assets/icon.jpg'">
@@ -117,7 +115,7 @@ function renderShrineCards(gridElement, perksArray) {
             </div>
             <div class="shrine-card-footer">
               <div class="footer-col">
-                <span class="footer-col-label">CATEGORIA</span>
+                <span class="footer-col-label">CLASSE</span>
                 <span class="footer-col-value">${roleNome}</span>
               </div>
               <div class="footer-col" style="text-align: right;">
@@ -126,7 +124,6 @@ function renderShrineCards(gridElement, perksArray) {
               </div>
             </div>
           </div>
-          <div class="card-corner-accent"></div>
         </div>
       `;
       gridElement.insertAdjacentHTML('beforeend', cardHTML);
