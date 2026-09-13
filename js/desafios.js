@@ -1,13 +1,11 @@
 import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import { getFirestore, collection, addDoc, doc, updateDoc, deleteDoc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyARpVKfzOMm-v0pv9-7w9xahvhItosrI2Q",
     authDomain: "dbd-camp.firebaseapp.com",
     projectId: "dbd-camp",
-    storageBucket: "dbd-camp.firebasestorage.app",
     messagingSenderId: "357760091556",
     appId: "1:357760091556:web:4d9191b487baf240e92d31"
 };
@@ -15,7 +13,8 @@ const firebaseConfig = {
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 const auth = getAuth(app);
 const db = getFirestore(app);
-const storage = getStorage(app);
+
+const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1548790410506407986/xmQtfi8mWwpMQ6pfwSsf_l0SUxVL1jPIqtH11COn9lDihtXz3xU5s5qTvN3FDTSgR3ir"; 
 
 const ADMIN_UIDS = [
   "discord:1037035142860001400",
@@ -24,16 +23,16 @@ const ADMIN_UIDS = [
 ];
 
 const killers = [
-  "Qualquer Assassino", "Trapper", "Espectro", "Hillbilly", "Nurse", "Michael Myers", 
-  "Hag", "Doctor", "Huntress", "Cannibal", "Freddy", 
-  "Pig", "Clown", "Spirit", "Legion", "Plague", 
-  "Ghost Face", "Demogorgon", "Oni", "Deathslinger", 
-  "Pyramid Head", "Blight", "Gêmeos", "Trickster", 
-  "Nemesis", "Pin Head", "Artista", "Sadako", "Draga", 
-  "Wesker", "Cavaleiro", "Negociante de Crânios", "Singularidade", 
-  "Alien", "Chuck", "Desconhecido", "Lich", 
-  "Drácula", "Mestra da Matilha", "Kaneki", 
-  "Animatronic", "Krasue", "Vecna"
+  "Qualquer Assassino", "O Trapper", "A Wraith", "O Hillbilly", "A Nurse", "O Shape (Michael Myers)", 
+  "A Hag", "O Doctor", "A Huntress", "O Cannibal", "O Nightmare (Freddy Krueger)", 
+  "A Pig (Amanda Young)", "O Clown", "A Spirit", "A Legion", "A Plague", 
+  "O Ghost Face (Danny Johnson)", "O Demogorgon", "O Oni", "O Deathslinger", 
+  "O Executioner (Pyramid Head)", "O Blight", "Os Twins", "O Trickster", 
+  "O Nemesis", "O Cenobite", "A Artist", "A Onryō", "O Dredge", 
+  "O Mastermind (Albert Wesker)", "O Knight", "O Skull Merchant", "A Singularity", 
+  "O Xenomorph", "O Good Guy (Chucky)", "O Unknown", "O Lich (Vecna)", 
+  "O Dark Lord (Dracula)", "O Houndmaster", "O Ghoul (Ken Kaneki/Rize Kamashiro)", 
+  "O Animatronic (Springtrap/William Afton)", "A Krasue", "O First (Henry Creel/001/Vecna)"
 ];
 
 const survivors = [
@@ -156,6 +155,7 @@ function resetChallengeForm() {
   form.reset();
   $("challenge-id").value = "";
   $("challenge-reward").value = levelRewards["basico"];
+  $("challenge-current-image").value = "";
   
   const killerSelect = $("challenge-killer");
   const survSelect = $("challenge-survivor");
@@ -192,7 +192,10 @@ function loadChallengeIntoForm(id) {
   $("challenge-reward").value = item.reward || levelRewards[item.level || "basico"];
   $("challenge-description").value = item.description || "";
   $("challenge-rules").value = item.rules || "";
-  $("challenge-image").value = item.image || "";
+  
+  $("challenge-current-image").value = item.image || "";
+  $("challenge-image-file").value = "";
+  
   $("challenge-deadline").value = item.deadline || "";
   
   $("challenge-form").querySelector(".red-action span").textContent = "SALVAR ALTERAÇÕES";
@@ -227,20 +230,42 @@ function listenToSubmissions() {
   });
 }
 
-async function uploadVideo(file, uid) {
-  if (!file) return null;
-  if (!file.type.startsWith("video/")) throw new Error("Selecione um arquivo de vídeo válido.");
-  if (file.size > 300 * 1024 * 1024) throw new Error("O vídeo deve ter no máximo 300 MB.");
-  const storageRef = ref(storage, `provas-desafios/${uid}/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g, "_")}`);
-  const task = uploadBytesResumable(storageRef, file);
+async function sendToDiscordWebhook(challenge, link, file, note, user) {
+    const url = DISCORD_WEBHOOK_URL + "?wait=true";
+    const formData = new FormData();
+    
+    let content = `**🛡️ NOVA PROVA ENTREGUE!**\n`;
+    content += `> **Jogador:** ${user.displayName || "Usuário"} (${user.email})\n`;
+    content += `> **Desafio:** ${challenge.title}\n`;
+    content += `> **Personagem:** ${challenge.character}\n`;
+    if (note) content += `> **Observação:** ${note}\n`;
+    if (link) content += `> **Link da Prova:** ${link}\n`;
 
-  const progressContainer = document.querySelector(".upload-progress");
-  if (progressContainer) progressContainer.hidden = false;
+    if (file) {
+        if (file.size > 500 * 1024 * 1024) {
+            throw new Error("O arquivo excede o limite de 500MB permitido pelo Discord. Por favor, envie o link do YouTube ou Google Drive.");
+        }
+        formData.append("file", file);
+        content += `> **Arquivo:** Vídeo anexado.\n`;
+    }
+    
+    formData.append("content", content);
 
-  return new Promise((resolve, reject) => task.on("state_changed", (snapshot) => {
-    const bar = $("upload-progress-bar");
-    if (bar) bar.style.width = `${(snapshot.bytesTransferred / snapshot.totalBytes) * 100}%`;
-  }, reject, async () => resolve(await getDownloadURL(task.snapshot.ref))));
+    const response = await fetch(url, {
+        method: "POST",
+        body: formData
+    });
+
+    if (!response.ok) {
+        throw new Error("Falha ao enviar webhook. O arquivo pode ser pesado demais para a conexão atual.");
+    }
+
+    const data = await response.json();
+    
+    if (data.attachments && data.attachments.length > 0) {
+        return data.attachments[0].url;
+    }
+    return link;
 }
 
 async function handleSubmission(event) {
@@ -257,65 +282,106 @@ async function handleSubmission(event) {
 
   const button = event.submitter;
   button.disabled = true;
-  showFeedback(feedback, "Registrando sua prova...", true);
+  button.querySelector("span").textContent = "ENVIANDO PARA O DISCORD...";
+  showFeedback(feedback, "Realizando o upload da sua prova... Se o arquivo for grande, aguarde.", true);
 
   try {
-    const uploadedUrl = file ? await uploadVideo(file, currentUser.uid) : null;
-    await addDoc(collection(db, "submissoes"), { challengeId: selected.id, challengeTitle: selected.title, userId: currentUser.uid, userName: currentUser.displayName || "Usuário", userEmail: currentUser.email || "", videoUrl: uploadedUrl || link, note: $("submission-note").value.trim(), status: "pending", createdAt: serverTimestamp() });
+    const finalUrl = await sendToDiscordWebhook(selected, link, file, $("submission-note").value.trim(), currentUser);
+    
+    await addDoc(collection(db, "submissoes"), { 
+        challengeId: selected.id, 
+        challengeTitle: selected.title, 
+        userId: currentUser.uid, 
+        userName: currentUser.displayName || "Usuário", 
+        userEmail: currentUser.email || "", 
+        videoUrl: finalUrl || link, 
+        note: $("submission-note").value.trim(), 
+        status: "pending", 
+        createdAt: serverTimestamp() 
+    });
+    
     event.target.reset();
-
-    const progressContainer = document.querySelector(".upload-progress");
-    if (progressContainer) progressContainer.hidden = true;
-
-    const bar = $("upload-progress-bar");
-    if (bar) bar.style.width = "0%";
-
-    showFeedback(feedback, "Prova entregue. A Entidade fará a análise.", true);
+    showFeedback(feedback, "Prova entregue e notificada no Discord. A Entidade fará a análise.", true);
   } catch (error) {
     console.error(error);
     showFeedback(feedback, error.message || "Não foi possível enviar a prova.", false);
   } finally {
     button.disabled = false;
+    button.querySelector("span").textContent = "ENTREGAR PROVA";
   }
 }
 
 async function handleChallengeSave(event) {
   event.preventDefault();
   const feedback = $("admin-feedback");
+  const submitBtn = $("challenge-form").querySelector(".red-action");
   
   const killerVal = $("challenge-killer").value;
   const survVal = $("challenge-survivor").value;
-  const selectedCharacter = killerVal || survVal;
+  const selectedCharacter = killerVal || survVal; 
   
-  const data = { 
-      title: $("challenge-title").value.trim(), 
-      character: selectedCharacter, 
-      level: $("challenge-level").value, 
-      reward: $("challenge-reward").value.trim(), 
-      description: $("challenge-description").value.trim(), 
-      rules: $("challenge-rules").value.trim(), 
-      image: $("challenge-image").value.trim(), 
-      deadline: $("challenge-deadline").value || "", 
-      updatedAt: serverTimestamp() 
-  };
-
-  if (!data.title || !data.character || !data.description) {
+  if (!$("challenge-title").value.trim() || !selectedCharacter || !$("challenge-description").value.trim()) {
       return showFeedback(feedback, "Preencha o nome, escolha um personagem válido e defina o objetivo.", false);
   }
 
+  submitBtn.disabled = true;
+  submitBtn.querySelector("span").textContent = "ENVIANDO PARA A NÉVOA...";
+
   try {
+    let imageUrl = ""; 
+    const fileInput = $("challenge-image-file");
+
+    if (fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+        const formData = new FormData();
+        formData.append("image", file);
+        
+        const IMGBB_API_KEY = "02ac971f74c655e88eb932d14930342f";
+        const response = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+            method: "POST",
+            body: formData
+        });
+        
+        const imgbbData = await response.json();
+        if (imgbbData.success) {
+            imageUrl = imgbbData.data.url; 
+        } else {
+            throw new Error("O servidor de imagens recusou o arquivo.");
+        }
+    } else {
+        imageUrl = $("challenge-current-image").value || "";
+    }
+
+    const data = { 
+        title: $("challenge-title").value.trim(), 
+        character: selectedCharacter, 
+        level: $("challenge-level").value, 
+        reward: $("challenge-reward").value.trim(), 
+        description: $("challenge-description").value.trim(), 
+        rules: $("challenge-rules").value.trim(), 
+        image: imageUrl, 
+        deadline: $("challenge-deadline").value || "", 
+        updatedAt: serverTimestamp() 
+    };
+
     const id = $("challenge-id").value;
     if (id) {
         await updateDoc(doc(db, "desafios", id), data);
     } else {
-        await addDoc(collection(db, "desafios"), { ...data, createdAt: serverTimestamp(), createdBy: currentUser.uid, active: true });
+        data.createdAt = serverTimestamp();
+        data.createdBy = currentUser.uid;
+        data.active = true;
+        await addDoc(collection(db, "desafios"), data);
     }
 
     resetChallengeForm();
     showFeedback(feedback, "Desafio salvo na Névoa.", true);
   } catch (error) {
     console.error(error);
-    showFeedback(feedback, "Não foi possível salvar o desafio.", false);
+    showFeedback(feedback, "Erro ao salvar desafio: " + error.message, false);
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.querySelector("span").textContent = "PUBLICAR DESAFIO";
   }
 }
 
@@ -421,16 +487,12 @@ document.addEventListener("DOMContentLoaded", () => {
     onAuthStateChanged(auth, (user) => {
         if (user) {
             currentUser = user;
-                        
             isAdmin = ADMIN_UIDS.includes(user.uid);
             
             if (isAdmin) {
-                console.log("✅ Permissão de Administrador concedida!");
                 const adminPanel = $("admin-panel");
                 if (adminPanel) adminPanel.hidden = false;
                 listenToSubmissions();
-            } else {
-                console.log("❌ Acesso negado.");
             }
         }
     });

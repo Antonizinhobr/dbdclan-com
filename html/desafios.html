@@ -95,7 +95,6 @@
         </div>
     </header>
 
-
     <div class="fade-in">
         <main class="challenge-page fade-in">
             <section class="challenge-hero">
@@ -139,13 +138,13 @@
                     <span class="section-label">REGISTRO DE CONQUISTA</span>
                     <h2>Terminou o desafio?</h2>
                     <p>
-                        Envie o vídeo da sua partida. A prova será analisada pela Entidade
+                        Envie o link do vídeo da sua partida (YouTube, Twitch, Google Drive) ou anexe diretamente o arquivo. A prova será analisada pela Entidade
                         antes da validação da recompensa em Auric Cells.
                     </p>
                     <div class="submission-steps">
                         <span><b>01</b> Escolha o desafio</span>
-                        <span><b>02</b> Anexe a gravação da tela</span>
-                        <span><b>03</b> Aguarde a análise</span>
+                        <span><b>02</b> Anexe a gravação da tela ou o link</span>
+                        <span><b>03</b> Aguarde a análise no Discord</span>
                     </div>
                 </div>
                 <form id="submission-form" class="submission-form">
@@ -155,13 +154,19 @@
                     <label>Desafio realizado<select id="submission-challenge" required>
                             <option value="">Selecione um desafio</option>
                         </select></label>
-                    <label>Link da prova em vídeo<input id="submission-video-url" type="url"
-                            placeholder="https://youtube.com/... ou link público" /></label>
-                    <div class="upload-divider"><span>OU ENVIE O ARQUIVO</span></div>
-                    <label>Arquivo de vídeo<input id="submission-video-file" type="file" accept="video/*" /></label>
-                    <div class="upload-progress" hidden>
-                        <span id="upload-progress-bar"></span>
-                    </div>
+                    <label>Link da prova em vídeo (RECOMENDADO)<input id="submission-video-url" type="url"
+                            placeholder="https://youtube.com/... ou link público do Drive/Twitch" /></label>
+                    
+                    <div class="upload-divider"><span>OU ENVIE O ARQUIVO DIRETO (MAX 500MB)</span></div>
+                    
+                    <label>
+                        Arquivo de clipe curto
+                        <span style="display: block; color: var(--d-red-soft); font-size: 0.65rem; margin-top: -3px; margin-bottom: 5px; font-weight: normal; letter-spacing: normal;">
+                            ⚠️ <strong>Atenção:</strong> Grave ou exporte o seu vídeo em <strong>720p</strong>. Vídeos em 1080p pesam muito e o envio pode falhar no servidor!
+                        </span>
+                        <input id="submission-video-file" type="file" accept="video/*" />
+                    </label>
+                    
                     <label>Observação para a Entidade<textarea id="submission-note" rows="3"
                             placeholder="Conte algo sobre a partida (opcional)"></textarea>
                     </label>
@@ -195,6 +200,8 @@
                 <div class="admin-view active" id="admin-create">
                     <form id="challenge-form" class="admin-form">
                         <input type="hidden" id="challenge-id" />
+                        <input type="hidden" id="challenge-current-image" />
+                        
                         <div class="form-heading">
                             <i class="fas fa-scroll"></i><span>NOVO REGISTRO DE MISSÃO</span>
                         </div>
@@ -228,8 +235,7 @@
                                 placeholder="Perks permitidas, mapa, condições especiais, gravação..."></textarea>
                         </label>
                         <div class="form-grid">
-                            <label>Imagem de capa (URL)<input id="challenge-image" type="url"
-                                    placeholder="https://... (opcional)" /></label>
+                            <label>Imagem de capa (JPG/PNG)<input id="challenge-image-file" type="file" accept="image/png, image/jpeg" /></label>
                             <label>Data de encerramento<input id="challenge-deadline" type="date" /></label>
                         </div>
                         <div class="form-actions">
@@ -319,6 +325,7 @@
 
     <script src="../js/navbar.js"></script>
 
+    <!-- INICIALIZAÇÃO DA NAVBAR E LOGIN -->
     <script type="module">
         import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
