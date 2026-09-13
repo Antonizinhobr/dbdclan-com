@@ -25,7 +25,7 @@ async function fetchShrineData() {
         return str;
     };
 
-    const textoData = `${formatarData(dataInicio)} &nbsp;&nbsp;<span style="color:#ff0000;">/</span>&nbsp;&nbsp; ${formatarData(dataFim)}`;
+    const textoData = `${formatarData(dataInicio)} &nbsp;&nbsp;<span style="color:#ff0000;">ATÉ</span>&nbsp;&nbsp; ${formatarData(dataFim)}`;
     datesBoxes.forEach(box => box.innerHTML = textoData);
 
     const targetUrl = 'https://botdbdshrine.discloud.app/api/shrine';
