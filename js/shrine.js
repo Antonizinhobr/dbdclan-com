@@ -72,6 +72,9 @@ function renderShrinePreview(container, perksArray) {
 function renderShrineCards(gridElement, perksArray) {
     gridElement.innerHTML = '';
     
+    const traducoesPersonagens = {
+    };
+    
     perksArray.forEach((perk) => {
       const isKiller = perk.character && perk.character.startsWith('The ');
       const roleClass = isKiller ? 'killer-perk' : 'survivor-perk';
