@@ -69,20 +69,8 @@ function renderShrinePreview(container, perksArray) {
     });
 }
 
-// PÁGINA COMPLETA
 function renderShrineCards(gridElement, perksArray) {
     gridElement.innerHTML = '';
-    
-    const traducoesPersonagens = {
-        "The Nurse": "A Enfermeira",
-        "The Good Guy": "O Cara Legal",
-        "The Trapper": "O Caçador",
-        "The Wraith": "O Espectro",
-        "The Hillbilly": "O Caipira",
-        "The Shape": "O Espectro",
-        "The Huntress": "A Caçadora",
-        "The Doctor": "O Médico"
-    };
     
     perksArray.forEach((perk) => {
       const isKiller = perk.character && perk.character.startsWith('The ');
