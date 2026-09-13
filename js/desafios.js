@@ -14,7 +14,6 @@ const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// WEBHOOKS OFICIAIS
 const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1548790410506407986/xmQtfi8mWwpMQ6pfwSsf_l0SUxVL1jPIqtH11COn9lDihtXz3xU5s5qTvN3FDTSgR3ir"; 
 const DISCORD_ANNOUNCE_WEBHOOK_URL = "https://discord.com/api/webhooks/1548800396087136315/SM9L71rcgOf-pbCjEsAJj6bTcoGSCZe2UgWIAPUhRJf7rcPxqwVsyubQ8-XK3eZ5HGuP";
 
@@ -25,16 +24,16 @@ const ADMIN_UIDS = [
 ];
 
 const killers = [
-  "Qualquer Assassino", "O Trapper", "A Wraith", "O Hillbilly", "A Nurse", "O Shape (Michael Myers)", 
-  "A Hag", "O Doctor", "A Huntress", "O Cannibal", "O Nightmare (Freddy Krueger)", 
-  "A Pig (Amanda Young)", "O Clown", "A Spirit", "A Legion", "A Plague", 
-  "O Ghost Face (Danny Johnson)", "O Demogorgon", "O Oni", "O Deathslinger", 
-  "O Executioner (Pyramid Head)", "O Blight", "Os Twins", "O Trickster", 
-  "O Nemesis", "O Cenobite", "A Artist", "A Onryō", "O Dredge", 
-  "O Mastermind (Albert Wesker)", "O Knight", "O Skull Merchant", "A Singularity", 
-  "O Xenomorph", "O Good Guy (Chucky)", "O Unknown", "O Lich (Vecna)", 
-  "O Dark Lord (Dracula)", "O Houndmaster", "O Ghoul (Ken Kaneki/Rize Kamashiro)", 
-  "O Animatronic (Springtrap/William Afton)", "A Krasue", "O First (Henry Creel/001/Vecna)"
+  "Qualquer Assassino", "Trapper", "Espectro", "Hillbilly", "Nurse", "Michael Myers", 
+  "Hag", "Doctor", "Huntress", "Leatherface", "Freddy Krueger", 
+  "Pig", "Clown", "Spirit", "Legion", "Plague", 
+  "Ghost Face", "Demogorgon", "Oni", "Deathslinger", 
+  "Pyramid Head", "Blight", "Gêmeos", "Trickster", 
+  "Nemesis", "Pin Head", "Artista", "Sadako", "Draga", 
+  "Albert Wesker", "Cavaleiro", "Negociante de Crânios", "Singularidade", 
+  "O Xenomorph", "Chucky", "Desconhecido", "Lich", 
+  "Dracula", "Mestra da Matilha", "Ghoul", 
+  "Animatronic", "Krasue", "Vecna"
 ];
 
 const survivors = [
@@ -246,7 +245,7 @@ async function sendToDiscordWebhook(challenge, link, file, note, user) {
 
     const embed = {
         title: "🛡️ NOVA PROVA ENTREGUE!",
-        color: 15277667, // Vermelho
+        color: 15277667,
         fields: [
             { name: "👤 Jogador", value: user.displayName || "Usuário", inline: true },
             { name: "🆔 Discord ID", value: discordId, inline: true },
@@ -347,25 +346,28 @@ async function announceChallengeToDiscord(data) {
     if (data.level === 'avancado') embedColor = 11889919;
     
     const embed = {
+        author: {
+            name: "🩸 ARQUIVO DE MISSÕES DA ENTIDADE"
+        },
         title: "🔥 " + data.title,
-        description: data.description + "\n\n**Regras:**\n" + (data.rules || "Nenhuma regra adicional especificada."),
+        description: `**Objetivo Principal:**\n> ${data.description}\n\n**📜 Regras da Missão:**\n> ${data.rules || "Nenhuma regra adicional especificada."}`,
         color: embedColor,
         fields: [
-            { name: "🔪 Personagem Alvo", value: data.character, inline: true },
-            { name: "💎 Recompensa", value: data.reward, inline: true },
-            { name: "📊 Dificuldade", value: levelLabels[data.level] || data.level, inline: true },
-            { name: "⏳ Encerramento", value: challengeDate(data.deadline), inline: true },
-            { name: "💳 Pagamento", value: "5º dia útil do mês seguinte após a aprovação.", inline: false }
+            { name: "🔪 Personagem Alvo", value: `**${data.character}**`, inline: true },
+            { name: "💎 Recompensa", value: `**${data.reward}**`, inline: true },
+            { name: "📊 Dificuldade", value: `**${levelLabels[data.level] || data.level}**`, inline: true },
+            { name: "⏳ Encerramento", value: `**${challengeDate(data.deadline)}**`, inline: false }
         ],
-        footer: { text: "Refúgio da Névoa • Seja o primeiro a completar e enviar a prova no site!" }
+        timestamp: new Date().toISOString(),
+        footer: { text: "Refúgio da Névoa • Envie sua prova pelo site para garantir a recompensa!" }
     };
 
-    if (data.image) {
+    if (data.image && data.image.trim() !== "") {
         embed.image = { url: data.image };
     }
 
     const payload = {
-        content: "@everyone 🚨 **NOVO DESAFIO DA NÉVOA LANÇADO!** 🚨\nAcesse o site e envie sua prova para garantir a recompensa!",
+        content: "@everyone 🚨 **NOVO DESAFIO DA NÉVOA LANÇADO!** 🚨\nAcesse o site e envie sua prova para clamar a recompensa da Entidade!",
         embeds: [embed]
     };
 
