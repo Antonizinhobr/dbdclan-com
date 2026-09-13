@@ -1,8 +1,5 @@
 const CAMINHO_PASTA = "../assets/img/MAPAS NUMERADOS DBD/";
 
-let currentGrupoIndex = null;
-let currentMapaIndex = null;
-
 const bancoDeMapas = [
     { nomeGrupo: "JARDIM DA ALEGRIA", mapas: [{ nome: "JARDIM DA ALEGRIA", qtdVariacoes: 1 }] },
     { nomeGrupo: "POUSO DO LAGO TOBA", mapas: [{ nome: "POUSO DO LAGO TOBA", qtdVariacoes: 1 }] },
@@ -113,12 +110,17 @@ const bancoDeMapas = [
 ];
 
 document.addEventListener("DOMContentLoaded", () => {
-    renderMainGrid();
+    if (document.getElementById("maps-main-grid")) {
+        renderMainGrid();
+    }
+    
+    if (document.getElementById("detail-grid")) {
+        initMapaDetail();
+    }
 });
 
 function renderMainGrid() {
     const grid = document.getElementById("maps-main-grid");
-    if (!grid) return;
     grid.innerHTML = "";
 
     bancoDeMapas.forEach((grupo, index) => {
@@ -138,163 +140,88 @@ function renderMainGrid() {
             <div class="map-card-title">${grupo.nomeGrupo}</div>
         `;
 
-        card.onclick = () => openModalMaps(index);
+        card.onclick = () => {
+            window.location.href = `mapa.html?reino=${index}`;
+        };
+        
         grid.appendChild(card);
     });
 }
 
-function openModalMaps(grupoIndex) {
-    currentGrupoIndex = grupoIndex;
-    const grupo = bancoDeMapas[grupoIndex];
+function initMapaDetail() {
+    const detailGrid = document.getElementById('detail-grid');
+    const notFound = document.getElementById('detail-notfound');
 
-    if (grupo.mapas.length === 1) {
-        currentMapaIndex = 0;
-        const mapa = grupo.mapas[0];
-        if (mapa.qtdVariacoes === 1) {
-            const nomeVariacao = /\d$/.test(mapa.nome) ? `${mapa.nome} VARIACAO` : `${mapa.nome} 1 VARIACAO`;
+    const params = new URLSearchParams(window.location.search);
+    const reinoIndex = parseInt(params.get('reino'), 10);
 
-            let imgSrcVar = grupo.isReino
-                ? `${CAMINHO_PASTA}${grupo.nomeGrupo}/${mapa.nome}/${nomeVariacao}.png`
-                : `${CAMINHO_PASTA}${grupo.nomeGrupo}/${nomeVariacao}.png`;
-            openModalFullscreen(imgSrcVar, mapa.nome);
-        } else {
-            openModalVariations(grupoIndex, 0);
-        }
+    if (isNaN(reinoIndex) || !bancoDeMapas[reinoIndex]) {
+        detailGrid.hidden = true;
+        notFound.removeAttribute('hidden');
         return;
     }
 
-    document.getElementById("m-realm-name").innerText = grupo.nomeGrupo;
-    const grid = document.getElementById("maps-grid");
-    grid.innerHTML = "";
+    const grupo = bancoDeMapas[reinoIndex];
+    
+    document.title = `${grupo.nomeGrupo} - Numeração Cartográfica`;
+    document.getElementById('detail-realm').innerText = grupo.nomeGrupo;
+    document.getElementById('detail-type').innerText = grupo.isReino ? 'REINO DE ORIGEM' : 'MAPA INDIVIDUAL';
+    
+    const listContainer = document.getElementById('map-variations-list');
+    listContainer.innerHTML = ''; 
+    
+    let firstButton = null;
 
-    grupo.mapas.forEach((mapa, mapaIndex) => {
-        let imgSrcBase = grupo.isReino
-            ? `${CAMINHO_PASTA}${grupo.nomeGrupo}/${mapa.nome}/${mapa.nome}.png`
-            : `${CAMINHO_PASTA}${grupo.nomeGrupo}/${mapa.nome}.png`;
-
-        const card = document.createElement("div");
-        card.className = "map-card";
-        card.innerHTML = `
-            <img src="${imgSrcBase}" alt="${mapa.nome}" onerror="this.src='../assets/icon.jpg'">
-            <div class="map-card-title">${mapa.nome}</div>
-        `;
-
-        card.onclick = () => {
-            currentMapaIndex = mapaIndex;
-            closeModal('modal-maps');
-
-            if (mapa.qtdVariacoes === 1) {
-                const nomeVariacao = /\d$/.test(mapa.nome) ? `${mapa.nome} VARIACAO` : `${mapa.nome} 1 VARIACAO`;
-
-                let imgSrcVar = grupo.isReino
+    grupo.mapas.forEach(mapa => {
+        if (mapa.qtdVariacoes === 1) {
+            const nomeVariacao = /\d$/.test(mapa.nome) ? `${mapa.nome} VARIACAO` : `${mapa.nome} 1 VARIACAO`;
+            const imgSrc = grupo.isReino 
+                ? `${CAMINHO_PASTA}${grupo.nomeGrupo}/${mapa.nome}/${nomeVariacao}.png`
+                : `${CAMINHO_PASTA}${grupo.nomeGrupo}/${nomeVariacao}.png`;
+            
+            const btn = createVariationButton(mapa.nome, imgSrc);
+            listContainer.appendChild(btn);
+            if (!firstButton) firstButton = { btn, nome: mapa.nome, src: imgSrc };
+            
+        } else {
+            for (let i = 1; i <= mapa.qtdVariacoes; i++) {
+                const nomeVariacao = `${mapa.nome} ${i} VARIACAO`;
+                const tituloCard = `${mapa.nome} ${i}`;
+                const imgSrc = grupo.isReino
                     ? `${CAMINHO_PASTA}${grupo.nomeGrupo}/${mapa.nome}/${nomeVariacao}.png`
                     : `${CAMINHO_PASTA}${grupo.nomeGrupo}/${nomeVariacao}.png`;
-
-                openModalFullscreen(imgSrcVar, mapa.nome);
-            } else {
-                openModalVariations(grupoIndex, mapaIndex);
+                    
+                const btn = createVariationButton(tituloCard, imgSrc);
+                listContainer.appendChild(btn);
+                if (!firstButton) firstButton = { btn, nome: tituloCard, src: imgSrc };
             }
-        };
-        grid.appendChild(card);
+        }
     });
 
-    document.getElementById("modal-maps").classList.add("open");
-}
-
-function openModalVariations(grupoIndex, mapaIndex) {
-    currentGrupoIndex = grupoIndex;
-    currentMapaIndex = mapaIndex;
-    const grupo = bancoDeMapas[grupoIndex];
-    const mapa = grupo.mapas[mapaIndex];
-
-    document.getElementById("v-map-name").innerText = mapa.nome;
-    const grid = document.getElementById("variations-grid");
-    grid.innerHTML = "";
-
-    for (let i = 1; i <= mapa.qtdVariacoes; i++) {
-        const nomeVariacao = `${mapa.nome} ${i} VARIACAO`;
-        let imgSrcBase = "";
-        let imgSrcVar = "";
-
-        if (grupo.isReino) {
-            imgSrcBase = `${CAMINHO_PASTA}${grupo.nomeGrupo}/${mapa.nome}/${mapa.nome}.png`;
-            imgSrcVar = `${CAMINHO_PASTA}${grupo.nomeGrupo}/${mapa.nome}/${nomeVariacao}.png`;
-        } else {
-            imgSrcBase = `${CAMINHO_PASTA}${grupo.nomeGrupo}/${mapa.nome}.png`;
-            imgSrcVar = `${CAMINHO_PASTA}${grupo.nomeGrupo}/${nomeVariacao}.png`;
-        }
-
-        let tituloCard = mapa.nome;
-        if (mapa.qtdVariacoes > 1) {
-            tituloCard += ` ${i}`;
-        }
-
-        const card = document.createElement("div");
-        card.className = "map-card";
-        card.innerHTML = `
-            <img src="${imgSrcBase}" alt="${tituloCard}" onerror="this.src='../assets/icon.jpg'">
-            <div class="map-card-title">${tituloCard}</div>
-        `;
-
-        card.onclick = () => openModalFullscreen(imgSrcVar, tituloCard);
-        grid.appendChild(card);
+    if (firstButton) {
+        firstButton.btn.click();
     }
-
-    document.getElementById("modal-variations").classList.add("open");
+    
+    notFound.setAttribute('hidden', '');
 }
 
-function openModalFullscreen(imgSrc, titulo) {
-    closeModal('modal-variations');
-
-    const fullscreenModal = document.getElementById("modal-fullscreen");
-    const title = document.getElementById("f-variation-name");
-    const img = document.getElementById("f-variation-img");
-
-    title.innerText = titulo;
-
-    const tempImg = new Image();
-    tempImg.onload = function() {
-        img.src = this.src;
+function createVariationButton(nome, imgSrc) {
+    const btn = document.createElement('button');
+    btn.className = 'map-var-btn';
+    btn.innerText = nome;
+    
+    btn.onclick = () => {
+        document.querySelectorAll('.map-var-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        document.getElementById('current-map-name').innerText = nome;
+        const imgEl = document.getElementById('detail-img');
+        
+        const tempImg = new Image();
+        tempImg.onload = () => imgEl.src = tempImg.src;
+        tempImg.onerror = () => imgEl.src = '../assets/icon.jpg';
+        tempImg.src = imgSrc;
     };
-    tempImg.onerror = function() {
-        img.src = '../assets/icon.jpg';
-    };
-    tempImg.src = imgSrc;
-
-    fullscreenModal.classList.add("open");
-}
-
-function voltarParaMaps() {
-    closeModal('modal-variations');
-    const grupo = bancoDeMapas[currentGrupoIndex];
-    if (grupo.mapas.length > 1) {
-        document.getElementById("modal-maps").classList.add("open");
-    }
-}
-
-function voltarParaVariacoes() {
-    closeModal('modal-fullscreen');
-    const grupo = bancoDeMapas[currentGrupoIndex];
-    const mapa = grupo.mapas[currentMapaIndex];
-
-    if (mapa.qtdVariacoes === 1) {
-        if (grupo.mapas.length > 1) {
-            document.getElementById("modal-maps").classList.add("open");
-        }
-    } else {
-        document.getElementById("modal-variations").classList.add("open");
-    }
-}
-
-function closeModal(modalId) {
-    const modal = document.getElementById(modalId);
-    if (modal) {
-        modal.classList.remove("open");
-    }
-}
-
-function closeModalOut(event, modalId) {
-    if (event.target.id === modalId) {
-        closeModal(modalId);
-    }
+    
+    return btn;
 }

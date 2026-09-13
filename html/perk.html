@@ -89,63 +89,34 @@
             </button>
         </div>
     </header>
-
     <div class="fade-in">
+
         <main class="ban-page">
-            <section class="ban-hero container">
-                <div class="ban-hero-copy">
-                    <span class="eyebrow"><i></i> REGULAMENTO COMPETITIVO</span>
-                    <h1>PERKS<br><em>BANIDAS</em></h1>
-                    <p>O que a Entidade proibiu. Consulte as vantagens restritas do campeonato e abra cada registro para
-                        entender o motivo da interdição.</p>
-                    <div class="ban-hero-status"><span></span> REGISTROS ATIVOS <b>/</b> TEMPORADA 2026</div>
-                </div>
-                <div class="ban-seal"><span>DBD</span><strong>COMPETITIVE<br>RULEBOOK</strong><i class="fas fa-ban"></i>
-                </div>
-            </section>
+            <section class="ban-detail container">
+                <a href="perks.html" class="ban-detail-back"><i class="fas fa-arrow-left"></i> VOLTAR PARA A LISTA</a>
 
-            <section class="ban-console container">
-                <div class="ban-console-top">
-                    <div><span class="section-label">CENTRAL DE CONSULTA</span>
-                        <h2>Escolha uma categoria</h2>
+                <div class="ban-detail-grid" id="detail-grid">
+                    <div class="ban-detail-left">
+                        <img id="detail-img" src="" alt="Perk Banida">
                     </div>
-                    <div class="ban-stats">
-                        <div><strong id="total-perks">0</strong><span>RESTRIÇÕES</span></div>
-                        <div><strong id="total-killers">0</strong><span>ASSASSINOS</span></div>
-                        <div><strong id="total-survivors">0</strong><span>SOBREVIVENTES</span></div>
-                    </div>
-                </div>
-                <div class="ban-controls">
-                    <div class="ban-search"><i class="fas fa-search"></i><input id="perk-search" type="search"
-                            placeholder="Buscar perk por nome..." autocomplete="off" /></div>
-                    <div class="ban-tabs" role="tablist"><button class="ban-tab active" data-perk-filter="all">Todas <b
-                                id="all-count">0</b></button><button class="ban-tab" data-perk-filter="killer"><i
-                                class="fas fa-skull"></i> Assassinos <b id="killer-count">0</b></button><button
-                            class="ban-tab" data-perk-filter="survivor"><i class="fas fa-person-running"></i>
-                            Sobreviventes <b id="survivor-count">0</b></button></div>
-                </div>
-            </section>
 
-            <section class="perks-container container">
-                <div class="perk-category" id="killer-category">
-                    <div class="category-heading">
-                        <div><span class="category-code">01 / KILLER</span>
-                            <h2><i class="fas fa-skull"></i> ASSASSINOS</h2>
-                        </div><span class="category-note">VANTAGENS RESTRITAS</span>
+                    <div class="ban-detail-right">
+                        <span class="ban-detail-tag">REGISTRO DE INTERDIÇÃO</span>
+                        <div class="ban-detail-type" id="detail-type">TIPO</div>
+                        <h1 class="ban-detail-title" id="detail-name">NOME DA PERK</h1>
+                        <p class="ban-detail-desc" id="detail-desc">Descrição...</p>
+
+                        <div class="ban-detail-alert">
+                            <i class="fas fa-triangle-exclamation"></i>
+                            <span>Esta vantagem não pode ser utilizada durante o campeonato.</span>
+                        </div>
                     </div>
-                    <div class="perk-grid" id="killer-grid"></div>
                 </div>
-                <div class="perk-category" id="survivor-category">
-                    <div class="category-heading">
-                        <div><span class="category-code">02 / SURVIVOR</span>
-                            <h2><i class="fas fa-person-running"></i> SOBREVIVENTES</h2>
-                        </div><span class="category-note">VANTAGENS RESTRITAS</span>
-                    </div>
-                    <div class="perk-grid" id="survivor-grid"></div>
-                </div>
-                <div id="no-perks" class="no-perks" hidden><i class="fas fa-magnifying-glass"></i>
-                    <h3>Nenhum registro encontrado</h3>
-                    <p>Tente buscar por outro nome ou altere o filtro.</p>
+
+                <div id="detail-notfound" class="no-perks" hidden>
+                    <i class="fas fa-magnifying-glass"></i>
+                    <h3>Registro não encontrado</h3>
+                    <p>O ID informado não corresponde a nenhuma perk banida.</p>
                 </div>
             </section>
         </main>
@@ -206,6 +177,7 @@
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
+
         const displayNameEl = document.getElementById('display-name');
 
         onAuthStateChanged(auth, (user) => {
@@ -219,97 +191,26 @@
 
         document.getElementById("logout-btn").onclick = () => signOut(auth);
 
-        const perksData = window.PERKS_DATA;
-        const killerGrid = document.getElementById('killer-grid');
-        const survivorGrid = document.getElementById('survivor-grid');
+        const perksData = window.PERKS_DATA || [];
+        const params = new URLSearchParams(window.location.search);
+        const perkId = params.get('perk');
+        const perk = perksData.find(p => p.id === perkId);
 
-        let activePerkFilter = 'all';
-        let perkSearchTerm = '';
+        const detailGrid = document.getElementById('detail-grid');
+        const notFound = document.getElementById('detail-notfound');
 
-        function normalizarTexto(texto) {
-            return texto
-                .toLowerCase()
-                .normalize("NFD")
-                .replace(/[\u0300-\u036f]/g, "");
+        if (!perk) {
+            detailGrid.setAttribute('hidden', '');
+            notFound.removeAttribute('hidden');
+        } else {
+            document.title = `${perk.name} - Perk Banida`;
+            document.getElementById('detail-img').src = perk.img;
+            document.getElementById('detail-img').alt = perk.name;
+            document.getElementById('detail-type').innerText = perk.label || 'VANTAGEM';
+            document.getElementById('detail-name').innerText = perk.name;
+            document.getElementById('detail-desc').innerText = perk.description;
+            notFound.setAttribute('hidden', '');
         }
-
-        function renderPerks() {
-            killerGrid.innerHTML = '';
-            survivorGrid.innerHTML = '';
-
-            const termo = normalizarTexto(perkSearchTerm);
-
-            const filtered = perksData.filter((perk) => {
-                const matchesType = activePerkFilter === 'all' || perk.type === activePerkFilter;
-                const matchesSearch = termo === '' || normalizarTexto(perk.name).includes(termo);
-                return matchesType && matchesSearch;
-            });
-
-            filtered.forEach((perk) => {
-                const el = document.createElement('button');
-                el.type = 'button';
-                el.className = 'perk-icon-wrapper';
-                el.setAttribute('aria-label', `Ver detalhes de ${perk.name}`);
-                el.onclick = () => { window.location.href = `perk.html?perk=${perk.id}`; };
-                el.innerHTML = `<span class="perk-card-type">${perk.type === 'killer' ? 'KILLER' : 'SURVIVOR'}</span><img src="${perk.img}" alt="${perk.name}" loading="lazy"><span class="perk-card-name">${perk.name}</span><span class="perk-card-status"><i class="fas fa-circle"></i> BANIDA</span>`;
-
-                if (perk.type === 'killer') killerGrid.appendChild(el);
-                else survivorGrid.appendChild(el);
-            });
-
-            const killerItems = filtered.filter((perk) => perk.type === 'killer');
-            const survivorItems = filtered.filter((perk) => perk.type === 'survivor');
-
-            const killerCategory = document.getElementById('killer-category');
-            const survivorCategory = document.getElementById('survivor-category');
-
-            if (killerItems.length > 0) {
-                killerCategory.removeAttribute('hidden');
-            } else {
-                killerCategory.setAttribute('hidden', '');
-            }
-
-            if (survivorItems.length > 0) {
-                survivorCategory.removeAttribute('hidden');
-            } else {
-                survivorCategory.setAttribute('hidden', '');
-            }
-
-            const noPerks = document.getElementById('no-perks');
-            if (filtered.length === 0) {
-                noPerks.removeAttribute('hidden');
-            } else {
-                noPerks.setAttribute('hidden', '');
-            }
-        }
-
-        function updatePerkStats() {
-            const killerTotal = perksData.filter((perk) => perk.type === 'killer').length;
-            const survivorTotal = perksData.filter((perk) => perk.type === 'survivor').length;
-            document.getElementById('total-perks').textContent = perksData.length;
-            document.getElementById('total-killers').textContent = killerTotal;
-            document.getElementById('total-survivors').textContent = survivorTotal;
-            document.getElementById('all-count').textContent = perksData.length;
-            document.getElementById('killer-count').textContent = killerTotal;
-            document.getElementById('survivor-count').textContent = survivorTotal;
-        }
-
-        document.getElementById('perk-search').addEventListener('input', (event) => {
-            perkSearchTerm = event.target.value.trim();
-            renderPerks();
-        });
-
-        document.querySelectorAll('[data-perk-filter]').forEach((button) => {
-            button.addEventListener('click', () => {
-                document.querySelectorAll('[data-perk-filter]').forEach((item) => item.classList.remove('active'));
-                button.classList.add('active');
-                activePerkFilter = button.dataset.perkFilter;
-                renderPerks();
-            });
-        });
-
-        updatePerkStats();
-        renderPerks();
     </script>
 </body>
 

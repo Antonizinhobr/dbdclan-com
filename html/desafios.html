@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DESAFIOS DA NÉVOA</title>
+    <link rel="stylesheet" href="../assets/css/global.css" />
+    <link rel="stylesheet" href="../assets/css/navbar.css" />
+    <link rel="stylesheet" href="../assets/css/dashboard.css" />
+    <link rel="stylesheet" href="../assets/css/responsive.css" />
+    <link rel="stylesheet" href="../assets/css/desafios.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="icon" href="../assets/icon.jpg" type="image/jpg" />
+</head>
+
+<body>
+    <header id="navbar" class="dashboard-header navbar-transparent">
+        <div class="logo">REFÚGIO DA NÉVOA</div>
+        <nav class="nav-menu pill-nav">
+            <a href="dashboard.html" class="nav-item">Início</a>
+
+            <div class="nav-item has-dropdown">
+                <span class="dropdown-trigger">Campeonato
+                    <i class="fas fa-chevron-down" style="font-size: 0.7em; margin-left: 5px"></i></span>
+
+                <div class="mega-menu">
+                    <div class="mega-menu-grid">
+                        <a href="santuario.html" class="mega-menu-item">
+                            <div class="mega-icon"><i class="fas fa-gem"></i></div>
+                            <div class="mega-text">
+                                <span class="mega-title">Santuário dos Segredos</span>
+                                <span class="mega-desc">Vantagens semanais disponíveis.</span>
+                            </div>
+                        </a>
+                        <a href="home.html" class="mega-menu-item">
+                            <div class="mega-icon">
+                                <i class="fas fa-map-marked-alt"></i>
+                            </div>
+                            <div class="mega-text">
+                                <span class="mega-title">Votação de Reinos</span>
+                                <span class="mega-desc">Defina o palco do próximo massacre.</span>
+                            </div>
+                        </a>
+                        <a href="teams.html" class="mega-menu-item">
+                            <div class="mega-icon"><i class="fas fa-users"></i></div>
+                            <div class="mega-text">
+                                <span class="mega-title">Equipes</span>
+                                <span class="mega-desc">Veja os sobreviventes e assassinos.</span>
+                            </div>
+                        </a>
+                        <a href="bracket.html" class="mega-menu-item">
+                            <div class="mega-icon"><i class="fas fa-sitemap"></i></div>
+                            <div class="mega-text">
+                                <span class="mega-title">Chaves</span>
+                                <span class="mega-desc">Acompanhe os confrontos do torneio.</span>
+                            </div>
+                        </a>
+                        <a href="perks.html" class="mega-menu-item">
+                            <div class="mega-icon"><i class="fas fa-ban"></i></div>
+                            <div class="mega-text">
+                                <span class="mega-title">Perks Banidas</span>
+                                <span class="mega-desc">O que é proibido pela Entidade.</span>
+                            </div>
+                        </a>
+                        <a href="regras.html" class="mega-menu-item">
+                            <div class="mega-icon"><i class="fas fa-star"></i></div>
+                            <div class="mega-text">
+                                <span class="mega-title">Sistema de Pontuação</span>
+                                <span class="mega-desc">Regras do campeonato e penalidades.</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <a href="regras_servidor.html" class="nav-item">Regras</a>
+            <a href="mapas.html" class="nav-item">Numeração Mapas</a>
+            <a href="santuario.html" class="nav-item">Santuário</a>
+            <a href="codigos.html" class="nav-item">Códigos</a>
+            <a href="desafios.html" class="nav-item active">Desafios</a>
+        </nav>
+        <div class="nav-actions">
+            <div class="user-container" id="user-profile-trigger">
+                <span id="display-name">CARREGANDO...</span>
+                <div class="avatar-circle">
+                    <img src="../assets/icon.jpg" alt="Perfil" />
+                </div>
+            </div>
+        </div>
+        <div id="user-submenu" class="dropdown-menu">
+            <button id="logout-btn">
+                <i class="fas fa-sign-out-alt"></i> SAIR DA NÉVOA
+            </button>
+        </div>
+    </header>
+
+
+    <div class="fade-in">
+        <main class="challenge-page fade-in">
+            <section class="challenge-hero">
+                <div class="hero-rune">✦</div>
+                <div class="challenge-kicker">
+                    <span></span> PROTOCOLO DE PROVA DA ENTIDADE
+                </div>
+                <h1>DESAFIOS DA <em>NÉVOA</em></h1>
+                <p>
+                    Escolha um desafio, enfrente o personagem indicado e registre sua
+                    conquista.
+                    <strong>O primeiro que provar com gravação de tela leva o prêmio.</strong>
+                </p>
+                <div class="hero-status">
+                    <i></i> TEMPORADA ATIVA <b>/</b> PROVAS ABERTAS
+                </div>
+            </section>
+
+            <section class="challenge-toolbar container">
+                <div class="toolbar-copy">
+                    <span class="section-label">ARQUIVO DE MISSÕES</span>
+                    <h2>Prove que você consegue.</h2>
+                </div>
+                <div class="challenge-filters" role="tablist" aria-label="Filtrar desafios">
+                    <button class="filter-btn active" data-filter="all">Todos</button>
+                    <button class="filter-btn" data-filter="basico">Básico</button>
+                    <button class="filter-btn" data-filter="intermediario">
+                        Intermediário
+                    </button>
+                    <button class="filter-btn" data-filter="avancado">Avançado</button>
+                </div>
+            </section>
+
+            <section class="challenge-grid container" id="challenge-list" aria-live="polite">
+                <div class="empty-state">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Consultando os registros da Entidade...</p>
+                </div>
+            </section>
+
+            <section class="submission-section container" id="submission-section">
+                <div class="submission-copy">
+                    <span class="section-label">REGISTRO DE CONQUISTA</span>
+                    <h2>Terminou o desafio?</h2>
+                    <p>
+                        Envie o vídeo da sua partida. A prova será analisada pela Entidade
+                        antes da validação da recompensa em Auric Cells.
+                    </p>
+                    <div class="submission-steps">
+                        <span><b>01</b> Escolha o desafio</span>
+                        <span><b>02</b> Anexe a gravação da tela</span>
+                        <span><b>03</b> Aguarde a análise</span>
+                    </div>
+                </div>
+                <form id="submission-form" class="submission-form">
+                    <div class="form-heading">
+                        <i class="fas fa-video"></i><span>ENVIAR PROVA</span>
+                    </div>
+                    <label>Desafio realizado<select id="submission-challenge" required>
+                            <option value="">Selecione um desafio</option>
+                        </select></label>
+                    <label>Link da prova em vídeo<input id="submission-video-url" type="url"
+                            placeholder="https://youtube.com/... ou link público" /></label>
+                    <div class="upload-divider"><span>OU ENVIE O ARQUIVO</span></div>
+                    <label>Arquivo de vídeo<input id="submission-video-file" type="file" accept="video/*" /></label>
+                    <div class="upload-progress" hidden>
+                        <span id="upload-progress-bar"></span>
+                    </div>
+                    <label>Observação para a Entidade<textarea id="submission-note" rows="3"
+                            placeholder="Conte algo sobre a partida (opcional)"></textarea>
+                    </label>
+                    <button class="red-action" type="submit">
+                        <span>ENTREGAR PROVA</span><i class="fas fa-arrow-right"></i>
+                    </button>
+                    <small id="submission-feedback" class="form-feedback"></small>
+                </form>
+            </section>
+
+            <section id="admin-panel" class="admin-panel container" hidden>
+                <div class="admin-panel-heading">
+                    <div>
+                        <span class="section-label">ACESSO RESTRITO</span>
+                        <h2>Painel da Entidade</h2>
+                    </div>
+                    <span class="admin-badge"><i class="fas fa-shield-halved"></i> ADMINISTRADOR</span>
+                </div>
+                <div class="admin-tabs">
+                    <button class="admin-tab active" data-admin-tab="create">
+                        Criar desafio
+                    </button>
+                    <button class="admin-tab" data-admin-tab="manage">
+                        Gerenciar desafios
+                    </button>
+                    <button class="admin-tab" data-admin-tab="submissions">
+                        Provas recebidas <b id="pending-count">0</b>
+                    </button>
+                </div>
+
+                <div class="admin-view active" id="admin-create">
+                    <form id="challenge-form" class="admin-form">
+                        <input type="hidden" id="challenge-id" />
+                        <div class="form-heading">
+                            <i class="fas fa-scroll"></i><span>NOVO REGISTRO DE MISSÃO</span>
+                        </div>
+                        <div class="form-grid">
+                            <label>Nome do desafio<input id="challenge-title" required
+                                    placeholder="Ex.: O Silêncio do Carrasco" /></label>
+                            <label>Personagem<select id="challenge-character" required>
+                                    <option value="">Selecione o personagem</option>
+                                </select></label>
+                            <label>Nível<select id="challenge-level" required>
+                                    <option value="basico">Básico</option>
+                                    <option value="intermediario">Intermediário</option>
+                                    <option value="avancado">Avançado</option>
+                                </select></label>
+                            <label>Recompensa<input id="challenge-reward" required readonly value="500 Auric Cells"
+                                    title="Definido automaticamente pelo nível" /></label>
+                        </div>
+                        <label>Objetivo do desafio<textarea id="challenge-description" rows="4" required
+                                placeholder="Descreva exatamente o que o jogador precisa fazer..."></textarea>
+                        </label>
+                        <label>Instruções e regras<textarea id="challenge-rules" rows="4"
+                                placeholder="Perks permitidas, mapa, condições especiais, gravação..."></textarea>
+                        </label>
+                        <div class="form-grid">
+                            <label>Imagem de capa (URL)<input id="challenge-image" type="url"
+                                    placeholder="https://... (opcional)" /></label>
+                            <label>Data de encerramento<input id="challenge-deadline" type="date" /></label>
+                        </div>
+                        <div class="form-actions">
+                            <button class="ghost-action" type="button" id="clear-challenge">
+                                Limpar</button><button class="red-action" type="submit">
+                                <span>PUBLICAR DESAFIO</span><i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                        <small id="admin-feedback" class="form-feedback"></small>
+                    </form>
+                </div>
+
+                <div class="admin-view" id="admin-manage">
+                    <div id="manage-list" class="manage-list"></div>
+                </div>
+                <div class="admin-view" id="admin-submissions">
+                    <div id="submission-list" class="submission-list"></div>
+                </div>
+            </section>
+    </div>
+    </main>
+
+    <div id="challenge-modal" class="challenge-modal" hidden>
+        <div class="challenge-modal-backdrop" data-close-modal></div>
+        <article class="challenge-modal-card">
+            <button class="modal-close" data-close-modal aria-label="Fechar">
+                &times;
+            </button>
+            <div class="modal-level" id="modal-level">NÍVEL</div>
+            <h2 id="modal-title">Desafio</h2>
+            <div class="modal-character">
+                <span>PERSONAGEM DESIGNADO</span><strong id="modal-character">--</strong>
+            </div>
+            <p id="modal-description"></p>
+            <div class="modal-rules" id="modal-rules"></div>
+            <div class="modal-footer">
+                <span id="modal-reward"></span><button class="red-action" id="modal-submit">
+                    <span>ENVIAR PROVA</span><i class="fas fa-video"></i>
+                </button>
+            </div>
+        </article>
+    </div>
+
+    <footer class="custom-footer">
+        <div class="footer-top-glow"></div>
+
+        <div class="container footer-content">
+            <div class="footer-brand">
+                <div class="logo">REFÚGIO DA NÉVOA</div>
+                <p>
+                    O servidor da comunidade mais sombrio da Névoa. Junte-se a nós para
+                    campeonatos, discussões e muito mais.
+                </p>
+            </div>
+
+            <div class="footer-nav">
+                <h4>NAVEGAÇÃO</h4>
+                <div class="nav-links">
+                    <a href="#">Sobre a Comunidade</a>
+                    <a href="#">Regras do Servidor</a>
+                    <a href="#">Termos de Uso</a>
+                    <a href="#">Privacidade</a>
+                </div>
+            </div>
+
+            <div class="footer-connect">
+                <h4>CONECTE-SE</h4>
+                <div class="social-buttons">
+                    <a href="#" class="social-btn discord-btn">
+                        <i class="fab fa-discord"></i> Entrar no Discord
+                    </a>
+                    <a href="#" class="social-btn mail-btn">
+                        <i class="far fa-envelope"></i> Contato
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom-bar">
+            <div class="container bottom-flex">
+                <span class="copy">&copy; 2026 Refúgio da Névoa. Desenvolvido por
+                    <strong style="color: #fff">Anthonny Michael</strong>.</span>
+                <span class="disclaimer">Não afiliado à Behaviour Interactive ou a Dead by Daylight™</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/navbar.js"></script>
+
+    <script type="module">
+        import {
+            initializeApp,
+            getApps,
+            getApp,
+        } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import {
+            getAuth,
+            signOut,
+            onAuthStateChanged,
+        } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyARpVKfzOMm-v0pv9-7w9xahvhItosrI2Q",
+            authDomain: "dbd-camp.firebaseapp.com",
+            projectId: "dbd-camp",
+            storageBucket: "dbd-camp.firebasestorage.app",
+            messagingSenderId: "357760091556",
+            appId: "1:357760091556:web:4d9191b487baf240e92d31",
+            measurementId: "G-THBBGJTTMJ",
+        };
+
+        const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+        const auth = getAuth(app);
+        const displayNameEl = document.getElementById("display-name");
+
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = "login.html";
+            } else {
+                const userName =
+                    user.displayName ||
+                    (user.email ? user.email.split("@")[0] : "Usuário");
+                if (displayNameEl) {
+                    displayNameEl.textContent = userName.toUpperCase();
+                }
+            }
+        });
+
+        const logoutBtn = document.getElementById("logout-btn");
+        if (logoutBtn) {
+            logoutBtn.onclick = () => signOut(auth);
+        }
+    </script>
+
+    <script type="module" src="../js/desafios.js"></script>
+</body>
+
+</html>

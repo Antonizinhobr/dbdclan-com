@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DBD - Numeração de Mapas</title>
+    <title>NUMERAÇÃO DE MAPAS</title>
     <link rel="icon" href="../assets/icon.jpg" type="image/jpg">
     <link rel="stylesheet" href="../assets/css/global.css" />
     <link rel="stylesheet" href="../assets/css/navbar.css" />
@@ -12,179 +13,193 @@
     <link rel="stylesheet" href="../assets/css/responsive.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body class="fade-in">
+
+<body>
 
     <header id="navbar" class="dashboard-header navbar-transparent">
-      <div class="logo">REFÚGIO DA NÉVOA</div>
+        <div class="logo">REFÚGIO DA NÉVOA</div>
 
-      <nav class="nav-menu pill-nav">
-        <a href="dashboard.html" class="nav-item">Início</a>
-        
-        <div class="nav-item has-dropdown">
-          <span class="dropdown-trigger">Campeonato <i class="fas fa-chevron-down" style="font-size: 0.7em; margin-left: 5px;"></i></span>
-          
-          <div class="mega-menu">
-            <div class="mega-menu-grid">
-              <a href="home.html" class="mega-menu-item">
-                <div class="mega-icon"><i class="fas fa-map-marked-alt"></i></div>
-                <div class="mega-text">
-                  <span class="mega-title">Votação de Reinos</span>
-                  <span class="mega-desc">Defina o palco do próximo massacre.</span>
+        <nav class="nav-menu pill-nav">
+            <a href="dashboard.html" class="nav-item">Início</a>
+
+            <div class="nav-item has-dropdown">
+                <span class="dropdown-trigger">Campeonato <i class="fas fa-chevron-down"
+                        style="font-size: 0.7em; margin-left: 5px;"></i></span>
+
+                <div class="mega-menu">
+                    <div class="mega-menu-grid">
+                        <a href="home.html" class="mega-menu-item">
+                            <div class="mega-icon"><i class="fas fa-map-marked-alt"></i></div>
+                            <div class="mega-text">
+                                <span class="mega-title">Votação de Reinos</span>
+                                <span class="mega-desc">Defina o palco do próximo massacre.</span>
+                            </div>
+                        </a>
+                        <a href="teams.html" class="mega-menu-item">
+                            <div class="mega-icon"><i class="fas fa-users"></i></div>
+                            <div class="mega-text">
+                                <span class="mega-title">Equipes</span>
+                                <span class="mega-desc">Veja os sobreviventes e assassinos.</span>
+                            </div>
+                        </a>
+                        <a href="bracket.html" class="mega-menu-item">
+                            <div class="mega-icon"><i class="fas fa-sitemap"></i></div>
+                            <div class="mega-text">
+                                <span class="mega-title">Chaves</span>
+                                <span class="mega-desc">Acompanhe os confrontos do torneio.</span>
+                            </div>
+                        </a>
+                        <a href="perks.html" class="mega-menu-item">
+                            <div class="mega-icon"><i class="fas fa-ban"></i></div>
+                            <div class="mega-text">
+                                <span class="mega-title">Perks Banidas</span>
+                                <span class="mega-desc">O que é proibido pela Entidade.</span>
+                            </div>
+                        </a>
+                        <a href="regras.html" class="mega-menu-item">
+                            <div class="mega-icon"><i class="fas fa-star"></i></div>
+                            <div class="mega-text">
+                                <span class="mega-title">Sistema de Pontuação</span>
+                                <span class="mega-desc">Regras do campeonato e penalidades.</span>
+                            </div>
+                        </a>
+                    </div>
                 </div>
-              </a>
-              <a href="teams.html" class="mega-menu-item">
-                <div class="mega-icon"><i class="fas fa-users"></i></div>
-                <div class="mega-text">
-                  <span class="mega-title">Equipes</span>
-                  <span class="mega-desc">Veja os sobreviventes e assassinos.</span>
-                </div>
-              </a>
-              <a href="bracket.html" class="mega-menu-item">
-                <div class="mega-icon"><i class="fas fa-sitemap"></i></div>
-                <div class="mega-text">
-                  <span class="mega-title">Chaves</span>
-                  <span class="mega-desc">Acompanhe os confrontos do torneio.</span>
-                </div>
-              </a>
-              <a href="perks.html" class="mega-menu-item">
-                <div class="mega-icon"><i class="fas fa-ban"></i></div>
-                <div class="mega-text">
-                  <span class="mega-title">Perks Banidas</span>
-                  <span class="mega-desc">O que é proibido pela Entidade.</span>
-                </div>
-              </a>
-              <a href="regras.html" class="mega-menu-item">
-                <div class="mega-icon"><i class="fas fa-star"></i></div>
-                <div class="mega-text">
-                  <span class="mega-title">Sistema de Pontuação</span>
-                  <span class="mega-desc">Regras do campeonato e penalidades.</span>
-                </div>
-              </a>
             </div>
-          </div>
+
+            <a href="regras_servidor.html" class="nav-item">Regras</a>
+            <a href="mapas.html" class="nav-item active">Numeração Mapas</a>
+            <a href="santuario.html" class="nav-item">Santuário</a>
+            <a href="codigos.html" class="nav-item">Códigos</a>
+            <a href="desafios.html" class="nav-item">Desafios</a>
+
+        </nav>
+
+        <div class="nav-actions">
+            <div class="user-container" id="user-profile-trigger">
+                <span id="display-name">CARREGANDO...</span>
+                <div class="avatar-circle">
+                    <img src="../assets/icon.jpg" alt="User Profile" />
+                </div>
+            </div>
         </div>
 
-        <a href="regras_servidor.html" class="nav-item">Regras</a>
-        <a href="mapas.html" class="nav-item">Numeração Mapas</a>
-        <a href="santuario.html" class="nav-item">Santuário</a>
-        <a href="codigos.html" class="nav-item">Códigos</a>
-
-      </nav>
-
-      <div class="nav-actions">
-        <div class="user-container" id="user-profile-trigger">
-          <span id="display-name">CARREGANDO...</span>
-          <div class="avatar-circle">
-            <img src="../assets/icon.jpg" alt="User Profile" />
-          </div>
+        <div id="user-submenu" class="dropdown-menu">
+            <button id="logout-btn">
+                <i class="fas fa-sign-out-alt"></i> SAIR DA NÉVOA
+            </button>
         </div>
-      </div>
-
-      <div id="user-submenu" class="dropdown-menu">
-        <button id="logout-btn">
-          <i class="fas fa-sign-out-alt"></i> SAIR DA NÉVOA
-        </button>
-      </div>
     </header>
 
-    <main class="main-padding" style="padding-top: 100px;">
-        <div class="info-section transparent-bg">
-            <h1>NUMERAÇÃO DE MAPAS</h1>
-            <p>Selecione um mapa para visualizar suas variações e numerações de callout.</p>
-        </div>
+    <div class="fade-in">
 
-        <div class="perks-container pt-0">
-            <div id="maps-main-grid" class="maps-grid">
-            </div>
-        </div>
-    </main>
+        <main class="maps-archive-page">
+            <section class="maps-archive-hero" aria-labelledby="maps-archive-title">
+                <div class="maps-hero-noise" aria-hidden="true"></div>
+                <div class="maps-hero-grid" aria-hidden="true"></div>
+                <div class="maps-hero-glow" aria-hidden="true"></div>
 
-    <div id="modal-maps" class="perk-modal" onclick="closeModalOut(event, 'modal-maps')">
-        <div class="perk-modal-content modal-max-800">
-            <button class="btn-back-modal" onclick="closeModal('modal-maps')">
-                <i class="fas fa-arrow-left"></i> VOLTAR
-            </button>
-            <button class="close-modal-btn" onclick="closeModal('modal-maps')">×</button>
-            <div class="modal-info-side">
-                <div class="modal-perk-type">ESCOLHA O MAPA</div>
-                <div class="modal-perk-name" id="m-realm-name"></div>
-                
-                <div class="modal-section-divider">
-                    <div id="maps-grid" class="maps-grid variations-grid-layout">
+                <div class="maps-hero-copy">
+                    <div class="maps-overline">
+                        <span class="maps-overline-line"></span>
+                        REGISTRO CARTOGRÁFICO · ARQUIVO 07
+                    </div>
+                    <h1 id="maps-archive-title">A Névoa<br /><em>não tem fronteiras.</em></h1>
+                    <p>
+                        Cada reino esconde uma leitura diferente. Selecione um território para
+                        consultar suas variações e encontrar os pontos de callout.
+                    </p>
+                </div>
+
+                <div class="maps-hero-side">
+                    <div class="maps-radar" aria-hidden="true">
+                        <span class="maps-radar-ring maps-radar-ring-one"></span>
+                        <span class="maps-radar-ring maps-radar-ring-two"></span>
+                        <span class="maps-radar-sweep"></span>
+                        <span class="maps-radar-dot maps-radar-dot-one"></span>
+                        <span class="maps-radar-dot maps-radar-dot-two"></span>
+                        <strong>MAPA<br />ATIVO</strong>
+                    </div>
+                    <div class="maps-hero-side-note">
+                        <span>STATUS DO ARQUIVO</span>
+                        <strong><i></i> CARTOGRAFIA DISPONÍVEL</strong>
+                    </div>
+                </div>
+
+                <div class="maps-hero-foot">
+                    <span>REINOS REGISTRADOS</span>
+                    <span class="maps-foot-rule"></span>
+                    <span>ESCOLHA UM DESTINO</span>
+                </div>
+            </section>
+
+            <section class="maps-catalog-section" aria-labelledby="maps-catalog-title">
+                <div class="maps-catalog-heading">
+                    <div>
+                        <span class="maps-section-index">01 / CATÁLOGO DA NÉVOA</span>
+                        <h2 id="maps-catalog-title">Escolha<br /><em>seu território</em></h2>
+                    </div>
+                    <p>
+                        Os mapas abaixo estão organizados como registros de uma expedição.
+                        Toque em um território para revelar os caminhos conhecidos.
+                    </p>
+                </div>
+
+                <div class="maps-catalog-frame">
+                    <div class="maps-catalog-frame-top">
+                        <span>LEITURA CARTOGRÁFICA // AO VIVO</span>
+                        <span class="maps-catalog-count"><i></i> ACESSO LIBERADO</span>
+                    </div>
+
+                    <div id="maps-main-grid" class="maps-grid maps-archive-grid">
+                        <p class="maps-loading" style="grid-column: 1 / -1;">Carregando os reinos da Névoa...</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="custom-footer">
+            <div class="footer-top-glow"></div>
+
+            <div class="container footer-content">
+                <div class="footer-brand">
+                    <div class="logo">REFÚGIO DA NÉVOA</div>
+                    <p>O servidor da comunidade mais sombrio da Névoa. Junte-se a nós para campeonatos, discussões e
+                        muito mais.</p>
+                </div>
+
+                <div class="footer-nav">
+                    <h4>NAVEGAÇÃO</h4>
+                    <div class="nav-links">
+                        <a href="#">Sobre a Comunidade</a>
+                        <a href="#">Regras do Servidor</a>
+                        <a href="#">Termos de Uso</a>
+                        <a href="#">Privacidade</a>
+                    </div>
+                </div>
+
+                <div class="footer-connect">
+                    <h4>CONECTE-SE</h4>
+                    <div class="social-buttons">
+                        <a href="#" class="social-btn discord-btn">
+                            <i class="fab fa-discord"></i> Entrar no Discord
+                        </a>
+                        <a href="#" class="social-btn mail-btn">
+                            <i class="far fa-envelope"></i> Contato
+                        </a>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <div id="modal-variations" class="perk-modal" onclick="closeModalOut(event, 'modal-variations')">
-        <div class="perk-modal-content modal-max-800">
-            <button class="btn-back-modal" onclick="voltarParaMaps()">
-                <i class="fas fa-arrow-left"></i> VOLTAR
-            </button>
-            <button class="close-modal-btn" onclick="closeModal('modal-variations')">×</button>
-            <div class="modal-info-side">
-                <div class="modal-perk-type">ESCOLHA A VARIAÇÃO</div>
-                <div class="modal-perk-name" id="v-map-name"></div>
-                
-                <div class="modal-section-divider">
-                    <div id="variations-grid" class="maps-grid variations-grid-layout">
-                    </div>
+            <div class="footer-bottom-bar">
+                <div class="container bottom-flex">
+                    <span class="copy">&copy; 2026 Refúgio da Névoa. Desenvolvido por <strong
+                            style="color:#fff;">Anthonny Michael</strong>.</span>
+                    <span class="disclaimer">Não afiliado à Behaviour Interactive ou a Dead by Daylight™</span>
                 </div>
             </div>
-        </div>
+        </footer>
     </div>
-
-    <div id="modal-fullscreen" class="perk-modal" onclick="closeModalOut(event, 'modal-fullscreen')">
-        <div class="perk-modal-content fullscreen-modal-content">
-            <button class="btn-back-modal" onclick="voltarParaVariacoes()">
-                <i class="fas fa-arrow-left"></i> VOLTAR
-            </button>
-            <button class="close-modal-btn" onclick="closeModal('modal-fullscreen')">×</button>
-            <h2 id="f-variation-name" class="fullscreen-title"></h2>
-            <img id="f-variation-img" src="" alt="Mapa Expandido" class="fullscreen-img">
-        </div>
-    </div>
-
-    <footer class="custom-footer">
-      <div class="footer-top-glow"></div>
-      
-      <div class="container footer-content">
-        <div class="footer-brand">
-          <div class="logo">REFÚGIO DA NÉVOA</div>
-          <p>O servidor da comunidade mais sombrio da Névoa. Junte-se a nós para campeonatos, discussões e muito mais.</p>
-        </div>
-        
-        <div class="footer-nav">
-          <h4>NAVEGAÇÃO</h4>
-          <div class="nav-links">
-            <a href="#">Sobre a Comunidade</a>
-            <a href="#">Regras do Servidor</a>
-            <a href="#">Termos de Uso</a>
-            <a href="#">Privacidade</a>
-          </div>
-        </div>
-
-        <div class="footer-connect">
-          <h4>CONECTE-SE</h4>
-          <div class="social-buttons">
-            <a href="#" class="social-btn discord-btn">
-              <i class="fab fa-discord"></i> Entrar no Discord
-            </a>
-            <a href="#" class="social-btn mail-btn">
-              <i class="far fa-envelope"></i> Contato
-            </a>
-          </div>
-        </div>
-      </div>
-      
-      <div class="footer-bottom-bar">
-        <div class="container bottom-flex">
-          <span class="copy">&copy; 2026 Refúgio da Névoa. Desenvolvido por <strong style="color:#fff;">Anthonny Michael</strong>.</span>
-          <span class="disclaimer">Não afiliado à Behaviour Interactive ou a Dead by Daylight™</span>
-        </div>
-      </div>
-    </footer>
 
     <script src="../js/mapas.js"></script>
     <script src="../js/navbar.js"></script>
@@ -217,7 +232,7 @@
 
         onAuthStateChanged(auth, (user) => {
             authChecked = true;
-            
+
             if (!user) {
                 window.location.href = "login.html";
             } else {
@@ -240,21 +255,21 @@
         let animationTimeout = null;
 
         if (userTrigger) {
-            userTrigger.addEventListener('click', function(e) {
+            userTrigger.addEventListener('click', function (e) {
                 e.stopPropagation();
-                
+
                 userSubmenu.classList.remove('hiding');
-                
+
                 if (isMenuOpen) {
                     userSubmenu.classList.remove('show');
                     userSubmenu.classList.add('hiding');
                     userTrigger.classList.remove('open');
-                    
+
                     clearTimeout(animationTimeout);
                     animationTimeout = setTimeout(() => {
                         userSubmenu.classList.remove('hiding');
                     }, 250);
-                    
+
                     isMenuOpen = false;
                 } else {
                     userSubmenu.classList.remove('hiding');
@@ -265,36 +280,36 @@
             });
         }
 
-        document.addEventListener('click', function(e) {
+        document.addEventListener('click', function (e) {
             if (userTrigger && userSubmenu) {
                 if (!userTrigger.contains(e.target) && !userSubmenu.contains(e.target)) {
                     if (isMenuOpen) {
                         userSubmenu.classList.remove('show');
                         userSubmenu.classList.add('hiding');
                         userTrigger.classList.remove('open');
-                        
+
                         clearTimeout(animationTimeout);
                         animationTimeout = setTimeout(() => {
                             userSubmenu.classList.remove('hiding');
                         }, 250);
-                        
+
                         isMenuOpen = false;
                     }
                 }
             }
         });
 
-        document.addEventListener('keydown', function(e) {
+        document.addEventListener('keydown', function (e) {
             if (e.key === 'Escape' && isMenuOpen) {
                 userSubmenu.classList.remove('show');
                 userSubmenu.classList.add('hiding');
                 userTrigger.classList.remove('open');
-                
+
                 clearTimeout(animationTimeout);
                 animationTimeout = setTimeout(() => {
                     userSubmenu.classList.remove('hiding');
                 }, 250);
-                
+
                 isMenuOpen = false;
             }
         });
@@ -330,4 +345,5 @@
         });
     </script>
 </body>
+
 </html>

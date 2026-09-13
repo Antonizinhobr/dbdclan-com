@@ -385,17 +385,6 @@
     border-bottom: 8px solid rgba(255, 255, 255, 0.06);
 }
 
-.dashboard-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 40px;
-  position: fixed;
-  width: 100%;
-  top: 0;
-  z-index: 1000;
-}
-
 .pill-nav {
   display: flex;
   align-items: center;
