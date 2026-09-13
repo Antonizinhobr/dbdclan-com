@@ -25,7 +25,7 @@ async function fetchShrineData() {
         return str;
     };
 
-    const textoData = `${formatarData(dataInicio)} &nbsp;&nbsp;<span style="color:#ff0000;">➔</span>&nbsp;&nbsp; ${formatarData(dataFim)}`;
+    const textoData = `${formatarData(dataInicio)} &nbsp;&nbsp;<span style="color:#ff0000;">/</span>&nbsp;&nbsp; ${formatarData(dataFim)}`;
     datesBoxes.forEach(box => box.innerHTML = textoData);
 
     const targetUrl = 'https://botdbdshrine.discloud.app/api/shrine';
@@ -43,10 +43,7 @@ async function fetchShrineData() {
     console.error("Erro na API. Usando fallback estático.", error);
     
     const staticFallback = [
-        { name: "A Nurse's Calling", image: "perks/a-nurses-calling.png", character: "The Nurse" },
-        { name: "Batteries Included", image: "perks/batteries-included.png", character: "The Good Guy" },
-        { name: "Adrenaline", image: "perks/adrenaline.png", character: "Meg Thomas" },
-        { name: "Road Life", image: "perks/road-life.png", character: "Vee Boonyasak" }
+        
     ];
     if (grid) renderShrineCards(grid, staticFallback);
     if (previewIcons) renderShrinePreview(previewIcons, staticFallback);
