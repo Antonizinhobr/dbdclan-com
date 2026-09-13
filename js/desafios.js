@@ -579,7 +579,6 @@ async function announceChallengeToDiscord(data, originalFile = null) {
   let imageBlob = originalFile;
   let fileName = originalFile?.name || "imagem-desafio.jpg";
 
-  // Usa o arquivo selecionado no formulário. Como fallback, baixa a imagem do ImgBB.
   if (!imageBlob && data.image) {
     try {
       const imageResponse = await fetch(data.image);
@@ -601,11 +600,9 @@ async function announceChallengeToDiscord(data, originalFile = null) {
       );
     }
 
-    // attachment:// exibe o arquivo enviado dentro do próprio embed.
     embed.image = { url: `attachment://${fileName}` };
     formData.append("files[0]", imageBlob, fileName);
   } else if (data.image && data.image.trim() !== "") {
-    // Fallback caso o arquivo não possa ser anexado.
     embed.image = { url: data.image.trim() };
   }
 
