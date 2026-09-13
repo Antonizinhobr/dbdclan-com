@@ -14,7 +14,9 @@ const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+// WEBHOOKS OFICIAIS
 const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1548790410506407986/xmQtfi8mWwpMQ6pfwSsf_l0SUxVL1jPIqtH11COn9lDihtXz3xU5s5qTvN3FDTSgR3ir"; 
+const DISCORD_ANNOUNCE_WEBHOOK_URL = "https://discord.com/api/webhooks/1548800396087136315/SM9L71rcgOf-pbCjEsAJj6bTcoGSCZe2UgWIAPUhRJf7rcPxqwVsyubQ8-XK3eZ5HGuP";
 
 const ADMIN_UIDS = [
   "discord:1037035142860001400",
@@ -78,6 +80,11 @@ function fillCharacterOptions() {
 
 function challengeDate(value) {
   if (!value) return "Sem encerramento";
+  if (typeof value === "string") {
+      const parts = value.split('-');
+      if (parts.length === 3) return `${parts[2]}/${parts[1]}/${parts[0]}`;
+      return value;
+  }
   const date = value?.toDate ? value.toDate() : new Date(value);
   return Number.isNaN(date.getTime()) ? "Sem encerramento" : date.toLocaleDateString("pt-BR");
 }
@@ -234,22 +241,43 @@ async function sendToDiscordWebhook(challenge, link, file, note, user) {
     const url = DISCORD_WEBHOOK_URL + "?wait=true";
     const formData = new FormData();
     
-    let content = `**🛡️ NOVA PROVA ENTREGUE!**\n`;
-    content += `> **Jogador:** ${user.displayName || "Usuário"} (${user.email})\n`;
-    content += `> **Desafio:** ${challenge.title}\n`;
-    content += `> **Personagem:** ${challenge.character}\n`;
-    if (note) content += `> **Observação:** ${note}\n`;
-    if (link) content += `> **Link da Prova:** ${link}\n`;
+    const now = new Date().toLocaleString("pt-BR");
+    const discordId = user.uid.replace('discord:', '');
+
+    const embed = {
+        title: "🛡️ NOVA PROVA ENTREGUE!",
+        color: 15277667, // Vermelho
+        fields: [
+            { name: "👤 Jogador", value: user.displayName || "Usuário", inline: true },
+            { name: "🆔 Discord ID", value: discordId, inline: true },
+            { name: "⏰ Data de Envio", value: now, inline: true },
+            { name: "🎯 Desafio Concluído", value: challenge.title, inline: false },
+            { name: "🔪 Personagem", value: challenge.character, inline: true },
+            { name: "📊 Dificuldade", value: levelLabels[challenge.level] || challenge.level, inline: true },
+            { name: "💎 Recompensa Esperada", value: challenge.reward, inline: true }
+        ],
+        footer: { text: "Painel de Administração • Refúgio da Névoa" }
+    };
+
+    if (note) {
+        embed.fields.push({ name: "📝 Observação do Jogador", value: note, inline: false });
+    }
+    
+    if (link) {
+        embed.fields.push({ name: "🔗 Link da Gravação", value: link, inline: false });
+    }
+
+    let payload = { embeds: [embed] };
 
     if (file) {
         if (file.size > 500 * 1024 * 1024) {
             throw new Error("O arquivo excede o limite de 500MB permitido pelo Discord. Por favor, envie o link do YouTube ou Google Drive.");
         }
         formData.append("file", file);
-        content += `> **Arquivo:** Vídeo anexado.\n`;
+        embed.fields.push({ name: "📁 Arquivo Anexado", value: "Acesse o vídeo na mensagem desta notificação.", inline: false });
     }
     
-    formData.append("content", content);
+    formData.append("payload_json", JSON.stringify(payload));
 
     const response = await fetch(url, {
         method: "POST",
@@ -311,6 +339,43 @@ async function handleSubmission(event) {
   }
 }
 
+async function announceChallengeToDiscord(data) {
+    const url = DISCORD_ANNOUNCE_WEBHOOK_URL;
+    
+    let embedColor = 5359736;
+    if (data.level === 'intermediario') embedColor = 4892927;
+    if (data.level === 'avancado') embedColor = 11889919;
+    
+    const embed = {
+        title: "🔥 " + data.title,
+        description: data.description + "\n\n**Regras:**\n" + (data.rules || "Nenhuma regra adicional especificada."),
+        color: embedColor,
+        fields: [
+            { name: "🔪 Personagem Alvo", value: data.character, inline: true },
+            { name: "💎 Recompensa", value: data.reward, inline: true },
+            { name: "📊 Dificuldade", value: levelLabels[data.level] || data.level, inline: true },
+            { name: "⏳ Encerramento", value: challengeDate(data.deadline), inline: true },
+            { name: "💳 Pagamento", value: "5º dia útil do mês seguinte após a aprovação.", inline: false }
+        ],
+        footer: { text: "Refúgio da Névoa • Seja o primeiro a completar e enviar a prova no site!" }
+    };
+
+    if (data.image) {
+        embed.image = { url: data.image };
+    }
+
+    const payload = {
+        content: "@everyone 🚨 **NOVO DESAFIO DA NÉVOA LANÇADO!** 🚨\nAcesse o site e envie sua prova para garantir a recompensa!",
+        embeds: [embed]
+    };
+
+    await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+    });
+}
+
 async function handleChallengeSave(event) {
   event.preventDefault();
   const feedback = $("admin-feedback");
@@ -367,15 +432,22 @@ async function handleChallengeSave(event) {
     const id = $("challenge-id").value;
     if (id) {
         await updateDoc(doc(db, "desafios", id), data);
+        showFeedback(feedback, "Desafio salvo e atualizado na Névoa.", true);
     } else {
         data.createdAt = serverTimestamp();
         data.createdBy = currentUser.uid;
         data.active = true;
         await addDoc(collection(db, "desafios"), data);
+        showFeedback(feedback, "Novo desafio criado! Anunciando no Discord...", true);
+        
+        try {
+            await announceChallengeToDiscord(data);
+        } catch (e) {
+            console.error("Falha ao anunciar no Discord", e);
+        }
     }
 
     resetChallengeForm();
-    showFeedback(feedback, "Desafio salvo na Névoa.", true);
   } catch (error) {
     console.error(error);
     showFeedback(feedback, "Erro ao salvar desafio: " + error.message, false);
