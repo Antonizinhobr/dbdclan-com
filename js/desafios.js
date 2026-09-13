@@ -1,13 +1,30 @@
+import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getFirestore, collection, addDoc, doc, updateDoc, deleteDoc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyARpVKfzOMm-v0pv9-7w9xahvhItosrI2Q",
+    authDomain: "dbd-camp.firebaseapp.com",
+    projectId: "dbd-camp",
+    storageBucket: "dbd-camp.firebasestorage.app",
+    messagingSenderId: "357760091556",
+    appId: "1:357760091556:web:4d9191b487baf240e92d31"
+};
+
+const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+const auth = getAuth(app);
+const db = getFirestore(app);
+const storage = getStorage(app);
+
 const ADMIN_UIDS = [
   "discord:1037035142860001400",
   "discord:1400218900284571689",
-  "discord:743696235248091206"
+  "discord:743696235248091206",
 ];
 
 const characters = [
   "Qualquer Assassino", "Qualquer Sobrevivente",
-  
-  // Assassinos
   "O Trapper", "A Wraith", "O Hillbilly", "A Nurse", "O Shape (Michael Myers)", 
   "A Hag", "O Doctor", "A Huntress", "O Cannibal", "O Nightmare (Freddy Krueger)", 
   "A Pig (Amanda Young)", "O Clown", "A Spirit", "A Legion", "A Plague", 
@@ -18,8 +35,6 @@ const characters = [
   "O Xenomorph", "O Good Guy (Chucky)", "O Unknown", "O Lich (Vecna)", 
   "O Dark Lord (Dracula)", "O Houndmaster", "O Ghoul (Ken Kaneki/Rize Kamashiro)", 
   "O Animatronic (Springtrap/William Afton)", "A Krasue", "O First (Henry Creel/001/Vecna)",
-  
-  // Sobreviventes
   "Dwight Fairfield", "Meg Thomas", "Claudette Morel", "Jake Park", "Nea Karlsson", 
   "Laurie Strode", "William 'Bill' Overbeck", "David King", "Feng Min", "Kate Denson", 
   "Adam Francis", "Zarina Kassir", "Mikaela Reid", "Renato Lyra", "Thalita Lyra", 
@@ -35,8 +50,6 @@ let isAdmin = false;
 let challenges = [];
 let activeFilter = "all";
 
-let app, auth, db, storage;
-
 const $ = (id) => document.getElementById(id);
 const escapeHtml = (value = "") => String(value).replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[char]));
 
@@ -50,7 +63,8 @@ function showFeedback(element, message, success = true) {
 function fillCharacterOptions() {
   const select = $("challenge-character");
   if (select) {
-    select.insertAdjacentHTML("beforeend", characters.map((char) => `<option value="${char}">${char}</option>`).join(""));
+    select.innerHTML = '<option value="">Selecione o personagem</option>' + 
+      characters.map((char) => `<option value="${char}">${char}</option>`).join("");
   }
 }
 
@@ -149,6 +163,7 @@ function loadChallengeIntoForm(id) {
   $("challenge-image").value = item.image || "";
   $("challenge-deadline").value = item.deadline || "";
   $("challenge-form").querySelector(".red-action span").textContent = "SALVAR ALTERAÇÕES";
+  $("admin-create").classList.add("active");
   $("admin-create").scrollIntoView({ behavior: "smooth" });
 }
 
@@ -199,9 +214,7 @@ async function handleSubmission(event) {
   event.preventDefault();
   const feedback = $("submission-feedback");
 
-  if (!currentUser) {
-    return showFeedback(feedback, "Você precisa estar logado para enviar uma prova.", false);
-  }
+  if (!currentUser) return showFeedback(feedback, "Você precisa estar logado para enviar uma prova.", false);
 
   const selected = challenges.find((item) => item.id === $("submission-challenge").value);
   const link = $("submission-video-url").value.trim();
@@ -236,14 +249,27 @@ async function handleSubmission(event) {
 async function handleChallengeSave(event) {
   event.preventDefault();
   const feedback = $("admin-feedback");
-  const data = { title: $("challenge-title").value.trim(), character: $("challenge-character").value, level: $("challenge-level").value, reward: $("challenge-reward").value.trim(), description: $("challenge-description").value.trim(), rules: $("challenge-rules").value.trim(), image: $("challenge-image").value.trim(), deadline: $("challenge-deadline").value || "", updatedAt: serverTimestamp() };
+  const data = { 
+      title: $("challenge-title").value.trim(), 
+      character: $("challenge-character").value, 
+      level: $("challenge-level").value, 
+      reward: $("challenge-reward").value.trim(), 
+      description: $("challenge-description").value.trim(), 
+      rules: $("challenge-rules").value.trim(), 
+      image: $("challenge-image").value.trim(), 
+      deadline: $("challenge-deadline").value || "", 
+      updatedAt: serverTimestamp() 
+  };
 
   if (!data.title || !data.character || !data.description) return showFeedback(feedback, "Preencha nome, personagem e objetivo.", false);
 
   try {
     const id = $("challenge-id").value;
-    if (id) await updateDoc(doc(db, "desafios", id), data);
-    else await addDoc(collection(db, "desafios"), { ...data, createdAt: serverTimestamp(), createdBy: currentUser.uid, active: true });
+    if (id) {
+        await updateDoc(doc(db, "desafios", id), data);
+    } else {
+        await addDoc(collection(db, "desafios"), { ...data, createdAt: serverTimestamp(), createdBy: currentUser.uid, active: true });
+    }
 
     resetChallengeForm();
     showFeedback(feedback, "Desafio salvo na Névoa.", true);
@@ -325,64 +351,24 @@ function bindEvents() {
   if (clearBtn) clearBtn.addEventListener("click", resetChallengeForm);
 }
 
-async function esperarFirebase() {
-  return new Promise((resolve, reject) => {
-    const inicio = Date.now();
-    const intervalo = setInterval(() => {
-      if (window.__firebaseApp && window.__firebaseAuth && window.__firebaseDb) {
-        clearInterval(intervalo);
-        resolve({
-          app: window.__firebaseApp,
-          auth: window.__firebaseAuth,
-          db: window.__firebaseDb,
-          storage: window.__firebaseStorage
-        });
-      } else if (Date.now() - inicio > 10000) {
-        clearInterval(intervalo);
-        reject(new Error("Firebase não inicializou em 10s. Verifique o script inline do desafios.html."));
-      }
-    }, 50);
-  });
-}
-
-async function init() {
-  try {
-    const fb = await esperarFirebase();
-
-    app = fb.app;
-    auth = fb.auth;
-    db = fb.db;
-    storage = fb.storage;
-
-    const { getFirestore, collection, addDoc, doc, updateDoc, deleteDoc, onSnapshot, serverTimestamp } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
-    const { getStorage, ref, uploadBytesResumable, getDownloadURL } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js");
-    const { onAuthStateChanged } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js");
-
-    window.__fs = { getFirestore, collection, addDoc, doc, updateDoc, deleteDoc, onSnapshot, serverTimestamp };
-    window.__st = { getStorage, ref, uploadBytesResumable, getDownloadURL };
-
-    window.__onUserReady = (user) => {
-      currentUser = user;
-      isAdmin = ADMIN_UIDS.includes(user.uid);
-
-      if (isAdmin) {
-        const adminPanel = $("admin-panel");
-        if (adminPanel) adminPanel.hidden = false;
-        listenToSubmissions();
-      }
-    };
-
-    listenToChallenges();
+document.addEventListener("DOMContentLoaded", () => {
     bindEvents();
+    listenToChallenges();
 
     onAuthStateChanged(auth, (user) => {
-      if (!user) return;
-      window.__onUserReady(user);
+        if (user) {
+            currentUser = user;
+            
+            isAdmin = ADMIN_UIDS.includes(user.uid);
+            
+            if (isAdmin) {
+                console.log("✅ Permissão de Administrador concedida!");
+                const adminPanel = $("admin-panel");
+                if (adminPanel) adminPanel.hidden = false;
+                listenToSubmissions();
+            } else {
+                console.log("❌ Acesso negado ao painel.");
+            }
+        }
     });
-
-  } catch (e) {
-    console.error("Falha ao inicializar desafios.js:", e);
-  }
-}
-
-init();
+});

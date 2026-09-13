@@ -313,16 +313,8 @@
     <script src="../js/navbar.js"></script>
 
     <script type="module">
-        import {
-            initializeApp,
-            getApps,
-            getApp,
-        } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import {
-            getAuth,
-            signOut,
-            onAuthStateChanged,
-        } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyARpVKfzOMm-v0pv9-7w9xahvhItosrI2Q",
@@ -330,8 +322,7 @@
             projectId: "dbd-camp",
             storageBucket: "dbd-camp.firebasestorage.app",
             messagingSenderId: "357760091556",
-            appId: "1:357760091556:web:4d9191b487baf240e92d31",
-            measurementId: "G-THBBGJTTMJ",
+            appId: "1:357760091556:web:4d9191b487baf240e92d31"
         };
 
         const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
@@ -342,9 +333,7 @@
             if (!user) {
                 window.location.href = "login.html";
             } else {
-                const userName =
-                    user.displayName ||
-                    (user.email ? user.email.split("@")[0] : "Usuário");
+                const userName = user.displayName || (user.email ? user.email.split("@")[0] : "Usuário");
                 if (displayNameEl) {
                     displayNameEl.textContent = userName.toUpperCase();
                 }
@@ -359,5 +348,4 @@
 
     <script type="module" src="../js/desafios.js"></script>
 </body>
-
 </html>
