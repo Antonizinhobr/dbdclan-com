@@ -23,19 +23,21 @@ const ADMIN_UIDS = [
   "discord:743696235248091206",
 ];
 
-const characters = [
-  "Qualquer Assassino", "Qualquer Sobrevivente",
-  "O Trapper", "A Wraith", "O Hillbilly", "A Nurse", "O Shape (Michael Myers)", 
-  "A Hag", "O Doctor", "A Huntress", "O Cannibal", "O Nightmare (Freddy Krueger)", 
-  "A Pig (Amanda Young)", "O Clown", "A Spirit", "A Legion", "A Plague", 
-  "O Ghost Face (Danny Johnson)", "O Demogorgon", "O Oni", "O Deathslinger", 
-  "O Executioner (Pyramid Head)", "O Blight", "Os Twins", "O Trickster", 
-  "O Nemesis", "O Cenobite", "A Artist", "A Onryō", "O Dredge", 
-  "O Mastermind (Albert Wesker)", "O Knight", "O Skull Merchant", "A Singularity", 
-  "O Xenomorph", "O Good Guy (Chucky)", "O Unknown", "O Lich (Vecna)", 
-  "O Dark Lord (Dracula)", "O Houndmaster", "O Ghoul (Ken Kaneki/Rize Kamashiro)", 
-  "O Animatronic (Springtrap/William Afton)", "A Krasue", "O First (Henry Creel/001/Vecna)",
-  "Dwight Fairfield", "Meg Thomas", "Claudette Morel", "Jake Park", "Nea Karlsson", 
+const killers = [
+  "Qualquer Assassino", "Trapper", "Espectro", "Hillbilly", "Nurse", "Michael Myers", 
+  "Hag", "Doctor", "Huntress", "Cannibal", "Freddy", 
+  "Pig", "Clown", "Spirit", "Legion", "Plague", 
+  "Ghost Face", "Demogorgon", "Oni", "Deathslinger", 
+  "Pyramid Head", "Blight", "Gêmeos", "Trickster", 
+  "Nemesis", "Pin Head", "Artista", "Sadako", "Draga", 
+  "Wesker", "Cavaleiro", "Negociante de Crânios", "Singularidade", 
+  "Alien", "Chuck", "Desconhecido", "Lich", 
+  "Drácula", "Mestra da Matilha", "Kaneki", 
+  "Animatronic", "Krasue", "Vecna"
+];
+
+const survivors = [
+  "Qualquer Sobrevivente", "Dwight Fairfield", "Meg Thomas", "Claudette Morel", "Jake Park", "Nea Karlsson", 
   "Laurie Strode", "William 'Bill' Overbeck", "David King", "Feng Min", "Kate Denson", 
   "Adam Francis", "Zarina Kassir", "Mikaela Reid", "Renato Lyra", "Thalita Lyra", 
   "Sable Ward", "Aestri Yazar", "Trevor Belmont"
@@ -61,10 +63,17 @@ function showFeedback(element, message, success = true) {
 }
 
 function fillCharacterOptions() {
-  const select = $("challenge-character");
-  if (select) {
-    select.innerHTML = '<option value="">Selecione o personagem</option>' + 
-      characters.map((char) => `<option value="${char}">${char}</option>`).join("");
+  const killerSelect = $("challenge-killer");
+  const survSelect = $("challenge-survivor");
+  
+  if (killerSelect) {
+    killerSelect.innerHTML = '<option value="">Não se aplica</option>' + 
+      killers.map((char) => `<option value="${char}">${char}</option>`).join("");
+  }
+  
+  if (survSelect) {
+    survSelect.innerHTML = '<option value="">Não se aplica</option>' + 
+      survivors.map((char) => `<option value="${char}">${char}</option>`).join("");
   }
 }
 
@@ -147,6 +156,12 @@ function resetChallengeForm() {
   form.reset();
   $("challenge-id").value = "";
   $("challenge-reward").value = levelRewards["basico"];
+  
+  const killerSelect = $("challenge-killer");
+  const survSelect = $("challenge-survivor");
+  if (killerSelect) killerSelect.disabled = false;
+  if (survSelect) survSelect.disabled = false;
+
   form.querySelector(".red-action span").textContent = "PUBLICAR DESAFIO";
 }
 
@@ -155,13 +170,31 @@ function loadChallengeIntoForm(id) {
   if (!item) return;
   $("challenge-id").value = item.id;
   $("challenge-title").value = item.title || "";
-  $("challenge-character").value = item.character || "";
+  
+  const char = item.character || "";
+  const killerSelect = $("challenge-killer");
+  const survSelect = $("challenge-survivor");
+  
+  killerSelect.value = "";
+  survSelect.value = "";
+  killerSelect.disabled = false;
+  survSelect.disabled = false;
+
+  if (killers.includes(char)) {
+      killerSelect.value = char;
+      survSelect.disabled = true;
+  } else if (survivors.includes(char)) {
+      survSelect.value = char;
+      killerSelect.disabled = true;
+  }
+  
   $("challenge-level").value = item.level || "basico";
   $("challenge-reward").value = item.reward || levelRewards[item.level || "basico"];
   $("challenge-description").value = item.description || "";
   $("challenge-rules").value = item.rules || "";
   $("challenge-image").value = item.image || "";
   $("challenge-deadline").value = item.deadline || "";
+  
   $("challenge-form").querySelector(".red-action span").textContent = "SALVAR ALTERAÇÕES";
   $("admin-create").classList.add("active");
   $("admin-create").scrollIntoView({ behavior: "smooth" });
@@ -249,9 +282,14 @@ async function handleSubmission(event) {
 async function handleChallengeSave(event) {
   event.preventDefault();
   const feedback = $("admin-feedback");
+  
+  const killerVal = $("challenge-killer").value;
+  const survVal = $("challenge-survivor").value;
+  const selectedCharacter = killerVal || survVal;
+  
   const data = { 
       title: $("challenge-title").value.trim(), 
-      character: $("challenge-character").value, 
+      character: selectedCharacter, 
       level: $("challenge-level").value, 
       reward: $("challenge-reward").value.trim(), 
       description: $("challenge-description").value.trim(), 
@@ -261,7 +299,9 @@ async function handleChallengeSave(event) {
       updatedAt: serverTimestamp() 
   };
 
-  if (!data.title || !data.character || !data.description) return showFeedback(feedback, "Preencha nome, personagem e objetivo.", false);
+  if (!data.title || !data.character || !data.description) {
+      return showFeedback(feedback, "Preencha o nome, escolha um personagem válido e defina o objetivo.", false);
+  }
 
   try {
     const id = $("challenge-id").value;
@@ -289,6 +329,29 @@ async function changeSubmissionStatus(id, status) {
 
 function bindEvents() {
   fillCharacterOptions();
+
+  const killerSelect = $("challenge-killer");
+  const survSelect = $("challenge-survivor");
+
+  if (killerSelect && survSelect) {
+      killerSelect.addEventListener("change", (e) => {
+          if (e.target.value !== "") {
+              survSelect.value = "";
+              survSelect.disabled = true;
+          } else {
+              survSelect.disabled = false;
+          }
+      });
+
+      survSelect.addEventListener("change", (e) => {
+          if (e.target.value !== "") {
+              killerSelect.value = "";
+              killerSelect.disabled = true;
+          } else {
+              killerSelect.disabled = false;
+          }
+      });
+  }
 
   const levelSelect = $("challenge-level");
   if (levelSelect) {
@@ -358,7 +421,7 @@ document.addEventListener("DOMContentLoaded", () => {
     onAuthStateChanged(auth, (user) => {
         if (user) {
             currentUser = user;
-            
+                        
             isAdmin = ADMIN_UIDS.includes(user.uid);
             
             if (isAdmin) {
@@ -367,7 +430,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (adminPanel) adminPanel.hidden = false;
                 listenToSubmissions();
             } else {
-                console.log("❌ Acesso negado ao painel.");
+                console.log("❌ Acesso negado.");
             }
         }
     });

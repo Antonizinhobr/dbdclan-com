@@ -122,9 +122,7 @@
                 <div class="challenge-filters" role="tablist" aria-label="Filtrar desafios">
                     <button class="filter-btn active" data-filter="all">Todos</button>
                     <button class="filter-btn" data-filter="basico">Básico</button>
-                    <button class="filter-btn" data-filter="intermediario">
-                        Intermediário
-                    </button>
+                    <button class="filter-btn" data-filter="intermediario">Intermediário</button>
                     <button class="filter-btn" data-filter="avancado">Avançado</button>
                 </div>
             </section>
@@ -200,20 +198,29 @@
                         <div class="form-heading">
                             <i class="fas fa-scroll"></i><span>NOVO REGISTRO DE MISSÃO</span>
                         </div>
+                        
                         <div class="form-grid">
                             <label>Nome do desafio<input id="challenge-title" required
                                     placeholder="Ex.: O Silêncio do Carrasco" /></label>
-                            <label>Personagem<select id="challenge-character" required>
-                                    <option value="">Selecione o personagem</option>
-                                </select></label>
-                            <label>Nível<select id="challenge-level" required>
+                            
+                            <label>Nível do desafio<select id="challenge-level" required>
                                     <option value="basico">Básico</option>
                                     <option value="intermediario">Intermediário</option>
                                     <option value="avancado">Avançado</option>
                                 </select></label>
-                            <label>Recompensa<input id="challenge-reward" required readonly value="500 Auric Cells"
-                                    title="Definido automaticamente pelo nível" /></label>
+                                
+                            <label>Personagem (Assassino)<select id="challenge-killer">
+                                    <option value="">Nenhum (ou aplicável a outro)</option>
+                                </select></label>
+                                
+                            <label>Personagem (Sobrevivente)<select id="challenge-survivor">
+                                    <option value="">Nenhum (ou aplicável a outro)</option>
+                                </select></label>
                         </div>
+                        
+                        <label>Recompensa<input id="challenge-reward" required readonly value="500 Auric Cells"
+                                title="Definido automaticamente pelo nível" /></label>
+                                
                         <label>Objetivo do desafio<textarea id="challenge-description" rows="4" required
                                 placeholder="Descreva exatamente o que o jogador precisa fazer..."></textarea>
                         </label>
@@ -242,73 +249,73 @@
                     <div id="submission-list" class="submission-list"></div>
                 </div>
             </section>
-    </div>
-    </main>
+        </main>
 
-    <div id="challenge-modal" class="challenge-modal" hidden>
-        <div class="challenge-modal-backdrop" data-close-modal></div>
-        <article class="challenge-modal-card">
-            <button class="modal-close" data-close-modal aria-label="Fechar">
-                &times;
-            </button>
-            <div class="modal-level" id="modal-level">NÍVEL</div>
-            <h2 id="modal-title">Desafio</h2>
-            <div class="modal-character">
-                <span>PERSONAGEM DESIGNADO</span><strong id="modal-character">--</strong>
-            </div>
-            <p id="modal-description"></p>
-            <div class="modal-rules" id="modal-rules"></div>
-            <div class="modal-footer">
-                <span id="modal-reward"></span><button class="red-action" id="modal-submit">
-                    <span>ENVIAR PROVA</span><i class="fas fa-video"></i>
+        <div id="challenge-modal" class="challenge-modal" hidden>
+            <div class="challenge-modal-backdrop" data-close-modal></div>
+            <article class="challenge-modal-card">
+                <button class="modal-close" data-close-modal aria-label="Fechar">
+                    &times;
                 </button>
+                <div class="modal-level" id="modal-level">NÍVEL</div>
+                <h2 id="modal-title">Desafio</h2>
+                <div class="modal-character">
+                    <span>PERSONAGEM DESIGNADO</span><strong id="modal-character">--</strong>
+                </div>
+                <p id="modal-description"></p>
+                <div class="modal-rules" id="modal-rules"></div>
+                <div class="modal-footer">
+                    <span id="modal-reward"></span><button class="red-action" id="modal-submit">
+                        <span>ENVIAR PROVA</span><i class="fas fa-video"></i>
+                    </button>
+                </div>
+            </article>
+        </div>
+
+        <footer class="custom-footer">
+            <div class="footer-top-glow"></div>
+
+            <div class="container footer-content">
+                <div class="footer-brand">
+                    <div class="logo">REFÚGIO DA NÉVOA</div>
+                    <p>
+                        O servidor da comunidade mais sombrio da Névoa. Junte-se a nós para
+                        campeonatos, discussões e muito mais.
+                    </p>
+                </div>
+
+                <div class="footer-nav">
+                    <h4>NAVEGAÇÃO</h4>
+                    <div class="nav-links">
+                        <a href="#">Sobre a Comunidade</a>
+                        <a href="#">Regras do Servidor</a>
+                        <a href="#">Termos de Uso</a>
+                        <a href="#">Privacidade</a>
+                    </div>
+                </div>
+
+                <div class="footer-connect">
+                    <h4>CONECTE-SE</h4>
+                    <div class="social-buttons">
+                        <a href="#" class="social-btn discord-btn">
+                            <i class="fab fa-discord"></i> Entrar no Discord
+                        </a>
+                        <a href="#" class="social-btn mail-btn">
+                            <i class="far fa-envelope"></i> Contato
+                        </a>
+                    </div>
+                </div>
             </div>
-        </article>
+
+            <div class="footer-bottom-bar">
+                <div class="container bottom-flex">
+                    <span class="copy">&copy; 2026 Refúgio da Névoa. Desenvolvido por
+                        <strong style="color: #fff">Anthonny Michael</strong>.</span>
+                    <span class="disclaimer">Não afiliado à Behaviour Interactive ou a Dead by Daylight™</span>
+                </div>
+            </div>
+        </footer>
     </div>
-
-    <footer class="custom-footer">
-        <div class="footer-top-glow"></div>
-
-        <div class="container footer-content">
-            <div class="footer-brand">
-                <div class="logo">REFÚGIO DA NÉVOA</div>
-                <p>
-                    O servidor da comunidade mais sombrio da Névoa. Junte-se a nós para
-                    campeonatos, discussões e muito mais.
-                </p>
-            </div>
-
-            <div class="footer-nav">
-                <h4>NAVEGAÇÃO</h4>
-                <div class="nav-links">
-                    <a href="#">Sobre a Comunidade</a>
-                    <a href="#">Regras do Servidor</a>
-                    <a href="#">Termos de Uso</a>
-                    <a href="#">Privacidade</a>
-                </div>
-            </div>
-
-            <div class="footer-connect">
-                <h4>CONECTE-SE</h4>
-                <div class="social-buttons">
-                    <a href="#" class="social-btn discord-btn">
-                        <i class="fab fa-discord"></i> Entrar no Discord
-                    </a>
-                    <a href="#" class="social-btn mail-btn">
-                        <i class="far fa-envelope"></i> Contato
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <div class="footer-bottom-bar">
-            <div class="container bottom-flex">
-                <span class="copy">&copy; 2026 Refúgio da Névoa. Desenvolvido por
-                    <strong style="color: #fff">Anthonny Michael</strong>.</span>
-                <span class="disclaimer">Não afiliado à Behaviour Interactive ou a Dead by Daylight™</span>
-            </div>
-        </div>
-    </footer>
 
     <script src="../js/navbar.js"></script>
 
@@ -348,4 +355,5 @@
 
     <script type="module" src="../js/desafios.js"></script>
 </body>
+
 </html>
