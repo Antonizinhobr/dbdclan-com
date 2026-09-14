@@ -607,11 +607,9 @@ async function announceChallengeToDiscord(data, originalFile = null) {
   }
 
   const payload = {
-    content:
-      "@everyone 🚨 **NOVO DESAFIO DA NÉVOA LANÇADO!** 🚨\n" +
-      "Acesse o site e envie sua prova para clamar a recompensa da Entidade!",
+    content: "@everyone <@&1549063748118126702> 🚨 **NOVO DESAFIO DA NÉVOA LANÇADO!** 🚨\nAcesse o site e envie sua prova para clamar a recompensa da Entidade!",
     embeds: [embed],
-    allowed_mentions: { parse: ["everyone"] },
+    allowed_mentions: { parse: ["everyone", "roles"] },
   };
 
   formData.append("payload_json", JSON.stringify(payload));
